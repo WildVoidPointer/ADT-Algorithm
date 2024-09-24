@@ -1,7 +1,8 @@
 #include<stdio.h>
+#include<stdbool.h>
 
 
-#define MAX_LENGTH 1000
+#define MAX_LENGTH 2
 #define INIT_DATA 0
 
 typedef int EleType;
@@ -9,7 +10,7 @@ typedef int EleType;
 
 typedef struct Queue {
     EleType elements[MAX_LENGTH];
-    int fornt;
+    int front;
     int rear;
 } Queue;
 
@@ -18,24 +19,61 @@ void initialize(Queue *queue) {
     for (int i = 0; i < MAX_LENGTH; i++)
         queue->elements[i] = INIT_DATA;
     
-    int front = 0;
-    int rear = 0;
+    queue->front = 0;
+    queue->rear = 0;
 }
 
 
-void put(Queue *queue, EleType ele) {
-    if (queue->rear <= MAX_LENGTH) {
-        queue->elements[queue->rear] = ele;
-        queue->rear++;
-    }
+bool put(Queue *queue, EleType ele) {
+    if (queue->rear == MAX_LENGTH)
+        return false;
+    
+    queue->elements[queue->rear] = ele;
+    queue->rear++;
+    return true;
 }
 
 
 EleType get(Queue *queue) {
-    if (queue->fornt <= queue->rear && queue->rear != 0) {
-        EleType _ele = queue->elements[queue->fornt];
-        queue->rear++;
+    if (queue->front > queue->rear - 1)
+        return INIT_DATA;
+    
+    EleType _ele = queue->elements[queue->front];
+        queue->front++;
         return _ele;
-    }
-    return INIT_DATA;
+}
+
+
+bool is_empty(Queue *queue) {
+    return queue->front >= queue->rear;
+}
+
+
+int len(Queue *queue) {
+    return queue->rear - queue->front;
+}
+
+
+int main(int argc, char const *argv[]) {
+    Queue queue;
+    initialize(&queue);
+    put(&queue, 21);
+    put(&queue, 22);
+    put(&queue, 23);
+    int current_len = len(&queue);
+    for (int i = queue.front; i < queue.rear; i++)
+        printf("%d  ", queue.elements[i]);
+    puts("");
+    printf("current_len: %d\n", current_len);
+    
+    EleType current_element =  get(&queue);
+    for (int i = queue.front; i < queue.rear; i++)
+        printf("%d  ", queue.elements[i]);
+    puts("");
+    
+    current_len = len(&queue);
+    printf("current_len: %d\n", current_len);
+    
+    printf("current_element: %d\n", current_element);
+    return 0;
 }

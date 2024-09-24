@@ -26,8 +26,8 @@ void initialize(struct Stack *stack) {
 bool push(struct Stack *stack, int ele) {
     if (stack->index == MAX_LENGTH)
         return false;
-    stack->index++;
     stack->data[stack->index] = ele;
+    stack->index++;
     return true;
 }
 
@@ -35,24 +35,16 @@ bool push(struct Stack *stack, int ele) {
 EleType pop(struct Stack *stack) {
     if (stack->index <= 0)
         return INTI_DATA;
-
+        
+    stack->index--;
     int _pop_ele = stack->data[stack->index];
     stack->data[stack->index] = 0;
-    stack->index--;
     return _pop_ele;
 }
 
 
 bool is_empty(struct Stack *stack) {
     return stack->index <= 0;
-}
-
-
-void destroy(struct Stack *stack) {
-    for (int i = 0; i < MAX_LENGTH; i++) {
-        stack->data[i] = INTI_DATA;
-    }
-    stack->index = 0;
 }
 
 
