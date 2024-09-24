@@ -25,22 +25,22 @@ void initialize(Queue *queue) {
 
 
 bool put(Queue *queue, EleType ele) {
-    if (queue->rear == MAX_LENGTH)
+    if ((queue->rear + 1) % MAX_LENGTH == queue->front)
         return false;
     
     queue->elements[queue->rear] = ele;
-    queue->rear++;
+    queue->rear = (queue->rear + 1) % MAX_LENGTH;
     return true;
 }
 
 
 EleType get(Queue *queue) {
-    if (queue->front > queue->rear - 1)
+    if (queue->front == queue->rear)
         return INIT_DATA;
     
     EleType _ele = queue->elements[queue->front];
     queue->elements[queue->front] = INIT_DATA;
-    queue->front++;
+    queue->front = (queue->front + 1) % MAX_LENGTH;
     return _ele;
 }
 
@@ -51,7 +51,7 @@ bool is_empty(Queue queue) {
 
 
 int len(Queue queue) {
-    return queue.rear - queue.front;
+    return (queue.rear - queue.front + MAX_LENGTH) % MAX_LENGTH;
 }
 
 
@@ -71,7 +71,7 @@ int main(int argc, char const *argv[]) {
     for (int i = queue.front; i < queue.rear; i++)
         printf("%d  ", queue.elements[i]);
     puts("");
-
+    
     current_len = len(queue);
     printf("current_len: %d\n", current_len);
     

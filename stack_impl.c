@@ -43,8 +43,8 @@ EleType pop(struct Stack *stack) {
 }
 
 
-bool is_empty(struct Stack *stack) {
-    return stack->index <= 0;
+bool is_empty(struct Stack stack) {
+    return stack.index <= 0;
 }
 
 
