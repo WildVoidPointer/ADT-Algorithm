@@ -93,6 +93,6 @@ int main(int argc, char const *argv[]) {
 
     }
     
-    printf("Result: %lf\n", data.numbers[data.index - 1]);
+    printf("Result: %.2g\n", data.numbers[data.index - 1]);
     return 0;
 }
