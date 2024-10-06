@@ -46,7 +46,7 @@ EleType get(Queue *queue) {
 
 
 bool is_empty(Queue queue) {
-    return queue.front >= queue.rear;
+    return queue.front == queue.rear;
 }
 
 
