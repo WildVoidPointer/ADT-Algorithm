@@ -33,6 +33,8 @@ typedef bool (*RemoveElementLinkTable)(struct LinkTable*, EleType);
 
 typedef int (*GetLenLinkTable)(struct LinkTable*);
 
+typedef EleType (*GetElementByPos)(struct LinkTable*, int);
+
 typedef bool (*InsertElemnetLinkTable)(struct LinkTable*, int, EleType);
 
 typedef void (*DestroyElementLinkTable)(struct LinkTable*);
@@ -47,6 +49,7 @@ typedef struct LinkTable {
     GetElementLinkTable get;
     RemoveElementLinkTable remove;
     GetLenLinkTable len;
+    GetElementByPos get_ele_by_pos;
     InsertElemnetLinkTable insert;
     DisplayLinkTable display;
     DestroyElementLinkTable destroy;
@@ -144,6 +147,19 @@ EleType get(LinkTable *table, int pos) {
     return current->data;  
 }
 
+EleType get_ele_by_pos(LinkTable *table, int pos) {
+    LinkNode *current = table->head;
+    int count = 0;
+    while (current != NULL) {
+        if (count == pos) {
+            return current->data;
+        }
+        count++;
+        current = current->next;
+    }
+    return -1;
+}
+
 
 void display(LinkTable *table) {
     LinkNode *current = table->head;
@@ -173,6 +189,7 @@ LinkTable create_table() {
     table.push_front = push_front;
     table.len = len;
     table.get = get;
+    table.get_ele_by_pos = get_ele_by_pos;
     table.insert = insert;
     table.display = display;
     table.destroy = destroy;
@@ -199,6 +216,8 @@ int main() {
     table.insert(&table, 3, 233);
     table.display(&table);
     printf("length: %d\n", table.len(&table));
+
+    printf("The specific element: %d\n", table.get_ele_by_pos(&table, 4));
 
     table.destroy(&table);
     table.display(&table);
