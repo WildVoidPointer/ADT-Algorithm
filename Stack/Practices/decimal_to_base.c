@@ -50,8 +50,8 @@ int main(int argc, char const *argv[]) {
     Stack stack;
     init(&stack);
     int decimal_data = 233;
-    decimal_to_other(&stack, decimal_data, 16);
-    for (int i = stack.index -1; i >= 0; i--)
+    decimal_to_other(&stack, decimal_data, 2);
+    for (int i = stack.index - 1; i >= 0; i--)
         printf("%c", stack.numbers[i]);
     puts("");
     return 0;
