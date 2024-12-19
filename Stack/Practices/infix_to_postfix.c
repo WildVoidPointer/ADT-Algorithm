@@ -27,7 +27,7 @@ typedef struct Stack {
 } Stack;
 
 
-void initialize(Stack *stack) {
+void init(Stack *stack) {
     for (int i = 0; i < MAX_LENGTH; i++) {
         stack->characters[i] = '\0';
     }
@@ -74,10 +74,10 @@ int main(int argc, char const *argv[]) {
     const int prec_map_len = 5;
 
     Stack operators;
-    initialize(&operators);
+    init(&operators);
 
     Stack postfix;
-    initialize(&postfix);
+    init(&postfix);
 
     int infix_len = strlen(infix);
 

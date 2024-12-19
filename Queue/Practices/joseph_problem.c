@@ -8,14 +8,14 @@
 typedef char EleType;
 
 
-typedef struct Queue {
+typedef struct CircularQueue {
     EleType elements[MAX_LENGTH];
     int front;
     int rear;
-} Queue;
+} CircularQueue;
 
 
-void initialize(Queue *queue) {
+void init(CircularQueue *queue) {
     for (int i = 0; i < MAX_LENGTH; i++)
         queue->elements[i] = INIT_DATA;
     
@@ -24,7 +24,7 @@ void initialize(Queue *queue) {
 }
 
 
-bool put(Queue *queue, EleType ele) {
+bool put(CircularQueue *queue, EleType ele) {
     if ((queue->rear + 1) % MAX_LENGTH == queue->front)
         return false;
     
@@ -34,7 +34,7 @@ bool put(Queue *queue, EleType ele) {
 }
 
 
-EleType get(Queue *queue) {
+EleType get(CircularQueue *queue) {
     if (queue->front == queue->rear)
         return INIT_DATA;
     
@@ -45,16 +45,17 @@ EleType get(Queue *queue) {
 }
 
 
-bool is_empty(Queue queue) {
+bool is_empty(CircularQueue queue) {
     return queue.front == queue.rear;
 }
 
 
-int len(Queue *queue) {
+int len(CircularQueue *queue) {
     return (queue->rear - queue->front + MAX_LENGTH) % MAX_LENGTH;
 }
 
-char get_last_survivor(Queue *queue, int interval) {
+
+char get_last_survivor(CircularQueue *queue, int interval) {
     while (len(queue) > 1) {
         for (int i = 0; i < interval - 1 ; i++) 
             put(queue, get(queue));
@@ -65,8 +66,8 @@ char get_last_survivor(Queue *queue, int interval) {
 
 
 int main(int argc, char const *argv[]) {
-    Queue queue;
-    initialize(&queue);
+    CircularQueue queue;
+    init(&queue);
     for (char i = 'a'; i <= 'z'; i++) {
         put(&queue, i);
     }

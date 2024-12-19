@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <string.h>
 
 #define MAX_LENGTH 500
 #define INIT_DATA 0
@@ -13,7 +12,8 @@ typedef struct Deque {
     int rear;
 } Deque;
 
-void initialize(Deque *deque) {
+
+void init(Deque *deque) {
     for (int i = 0; i < MAX_LENGTH; i++)
         deque->elements[i] = INIT_DATA;
     
@@ -29,9 +29,11 @@ bool is_full(Deque *deque) {
     return (deque->rear + 1) % MAX_LENGTH == deque->front;
 }
 
+
 int len(Deque deque) {
     return (deque.rear - deque.front + MAX_LENGTH) % MAX_LENGTH;
 }
+
 
 bool push_back(Deque *deque, EleType ele) {
     if (is_full(deque))
@@ -51,6 +53,7 @@ bool push_front(Deque *deque, EleType ele) {
     return true;
 }
 
+
 EleType pop_front(Deque *deque) {
     if (is_empty(*deque))
         return INIT_DATA;
@@ -60,6 +63,7 @@ EleType pop_front(Deque *deque) {
     deque->front = (deque->front + 1) % MAX_LENGTH;
     return _ele;
 }
+
 
 EleType pop_back(Deque *deque) {
     if (is_empty(*deque))
@@ -71,28 +75,9 @@ EleType pop_back(Deque *deque) {
     return _ele;
 }
 
-bool is_anaphora(char *str) {
-    int len_of_str = strlen(str);
-    Deque deque;
-    initialize(&deque);
-    for (int i = 0; i < len_of_str; i++)
-        push_back(&deque, str[i]);
-    while (len(deque) > 1) {
-        EleType _rear = pop_back(&deque);
-        EleType _front = pop_front(&deque);
-        if (_rear != _front)
-            return false;
-    }
-    return true;
-}
-
 
 int main(int argc, char const *argv[]) {
-    char *ptr = "QAQ";
-    if (is_anaphora(ptr))
-        puts("Yes");
-    else
-        puts("No");
-
+    Deque deque;
+    init(&deque);
     return 0;
 }

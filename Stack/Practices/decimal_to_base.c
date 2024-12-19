@@ -10,7 +10,7 @@ typedef struct Stack {
 } Stack;
 
 
-void initialize(Stack *stack) {
+void init(Stack *stack) {
     for (int i = 0; i < MAX_LENGTH; i++) {
         stack->numbers[i] = 0;
     }
@@ -48,7 +48,7 @@ void decimal_to_other(Stack *stack, int num, int base) {
 int main(int argc, char const *argv[]) {
 
     Stack stack;
-    initialize(&stack);
+    init(&stack);
     int decimal_data = 233;
     decimal_to_other(&stack, decimal_data, 16);
     for (int i = stack.index -1; i >= 0; i--)

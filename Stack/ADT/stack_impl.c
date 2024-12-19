@@ -14,8 +14,7 @@ struct Stack {
 };
 
 
-// Use a struct pointer to pass the stack structure.
-void initialize(struct Stack *stack) {
+void init(struct Stack *stack) {
     for (int i = 0; i < MAX_LENGTH; i++) {
         stack->data[i] = INTI_DATA;
     }
@@ -51,7 +50,7 @@ bool is_empty(struct Stack stack) {
 int main() {
     struct Stack stack;
     
-    initialize(&stack);
+    init(&stack);
     push(&stack, 233);
     push(&stack, 2333);
 

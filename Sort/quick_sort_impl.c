@@ -2,8 +2,10 @@
 
 #define MAX_LEN 1000010 
 
-int G_EFFECTIVE_LEN;
-int G_ARRAY[MAX_LEN];
+
+int G_EFFECTIVE_LEN = 0;
+int G_ARRAY[MAX_LEN] = {0};
+
 
 void quick_sort(int array[], int left_ptr, int right_ptr) {
     if (left_ptr >= right_ptr) 
@@ -31,8 +33,8 @@ void quick_sort(int array[], int left_ptr, int right_ptr) {
     }
     quick_sort(array, left_ptr, _right_ptr);
     quick_sort(array, _left_ptr, right_ptr);
-
 }
+
 
 int main()
 {

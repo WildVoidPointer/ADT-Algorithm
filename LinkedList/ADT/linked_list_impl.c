@@ -3,16 +3,16 @@
 #include <stdbool.h>
 
 typedef int EleType;
-struct LinkTable;
+struct LinkedList;
 
-typedef struct LinkNode {
+typedef struct LinkedNode {
     EleType data;
-    struct LinkNode *next;
-} LinkNode;
+    struct LinkedNode *next;
+} LinkedNode;
 
 
-LinkNode* create_node(EleType ele) {
-    LinkNode *new_node = (LinkNode *)malloc(sizeof(LinkNode));
+LinkedNode* create_node(EleType ele) {
+    LinkedNode *new_node = (LinkedNode *)malloc(sizeof(LinkedNode));
     if (new_node == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
         return NULL;
@@ -23,26 +23,26 @@ LinkNode* create_node(EleType ele) {
 }
 
 
-typedef bool (*PushBackLinkTable)(struct LinkTable*, EleType);
+typedef bool (*PushBackLinkTable)(struct LinkedList*, EleType);
 
-typedef bool (*PushFrontLinkTable)(struct LinkTable*, EleType);
+typedef bool (*PushFrontLinkTable)(struct LinkedList*, EleType);
 
-typedef EleType (*GetElementLinkTable)(struct LinkTable*, int);
+typedef EleType (*GetElementLinkTable)(struct LinkedList*, int);
 
-typedef bool (*RemoveElementLinkTable)(struct LinkTable*, EleType);
+typedef bool (*RemoveElementLinkTable)(struct LinkedList*, EleType);
 
-typedef int (*GetLenLinkTable)(struct LinkTable*);
+typedef int (*GetLenLinkTable)(struct LinkedList*);
 
-typedef EleType (*GetElementByPos)(struct LinkTable*, int);
+typedef EleType (*GetElementByPos)(struct LinkedList*, int);
 
-typedef bool (*InsertElemnetLinkTable)(struct LinkTable*, int, EleType);
+typedef bool (*InsertElemnetLinkTable)(struct LinkedList*, int, EleType);
 
-typedef void (*DestroyElementLinkTable)(struct LinkTable*);
+typedef void (*DestroyElementLinkTable)(struct LinkedList*);
 
-typedef void (*DisplayLinkTable)(struct LinkTable*);
+typedef void (*DisplayLinkTable)(struct LinkedList*);
 
-typedef struct LinkTable {
-    LinkNode *head;
+typedef struct LinkedList {
+    LinkedNode *head;
 
     PushBackLinkTable push_back;
     PushFrontLinkTable push_front;
@@ -53,11 +53,11 @@ typedef struct LinkTable {
     InsertElemnetLinkTable insert;
     DisplayLinkTable display;
     DestroyElementLinkTable destroy;
-} LinkTable;
+} LinkedList;
 
 
-bool push_back(LinkTable *table, EleType ele) {
-    LinkNode *new_node = create_node(ele);
+bool push_back(LinkedList *table, EleType ele) {
+    LinkedNode *new_node = create_node(ele);
     if (new_node == NULL) {
         return false;
     }
@@ -65,7 +65,7 @@ bool push_back(LinkTable *table, EleType ele) {
     if (table->head == NULL) {
         table->head = new_node;
     } else {
-        LinkNode *current = table->head;
+        LinkedNode *current = table->head;
         while (current->next != NULL) {
             current = current->next;
         }
@@ -76,8 +76,8 @@ bool push_back(LinkTable *table, EleType ele) {
 }
 
 
-bool push_front(LinkTable *table, EleType ele) {
-    LinkNode *_new = create_node(ele);
+bool push_front(LinkedList *table, EleType ele) {
+    LinkedNode *_new = create_node(ele);
     if (_new == NULL) {
         return false;
     }
@@ -88,9 +88,9 @@ bool push_front(LinkTable *table, EleType ele) {
 }
 
 
-int len(LinkTable *table) {
+int len(LinkedList *table) {
     int _count = 0;
-    LinkNode *current = table->head;
+    LinkedNode *current = table->head;
     while (current != NULL) {
         _count++;
         current = current->next;
@@ -99,13 +99,13 @@ int len(LinkTable *table) {
 }
 
 
-bool insert(LinkTable *table, int pos, EleType ele) {
+bool insert(LinkedList *table, int pos, EleType ele) {
     if (pos < 0 || pos > table->len(table)) {
         fprintf(stderr, "Invalid Parameters\n");
         return false;
     }
 
-    LinkNode *_new = create_node(ele);
+    LinkedNode *_new = create_node(ele);
     if (_new == NULL) {
         return false;
     }
@@ -117,7 +117,7 @@ bool insert(LinkTable *table, int pos, EleType ele) {
     }
 
     int _count = 0;
-    LinkNode *current = table->head;
+    LinkedNode *current = table->head;
     while (current != NULL && _count < pos - 1) {
         _count++;
         current = current->next;
@@ -129,17 +129,15 @@ bool insert(LinkTable *table, int pos, EleType ele) {
 }
 
 
-
-EleType get(LinkTable *table, int pos) {
+EleType get(LinkedList *table, int pos) {
     if ((pos > table->len(table)) || 
         pos < 0 || table->head == NULL) {
-            
             fprintf(stderr, "Invailid Paraments\n");
             return 0;
         }
 
     int _count = 0;
-    LinkNode *current = table->head;
+    LinkedNode *current = table->head;
     while (current != NULL && _count < pos) {
         _count++;
         current = current->next;
@@ -147,8 +145,9 @@ EleType get(LinkTable *table, int pos) {
     return current->data;  
 }
 
-EleType get_ele_by_pos(LinkTable *table, int pos) {
-    LinkNode *current = table->head;
+
+EleType get_ele_by_pos(LinkedList *table, int pos) {
+    LinkedNode *current = table->head;
     int count = 0;
     while (current != NULL) {
         if (count == pos) {
@@ -161,8 +160,8 @@ EleType get_ele_by_pos(LinkTable *table, int pos) {
 }
 
 
-void display(LinkTable *table) {
-    LinkNode *current = table->head;
+void display(LinkedList *table) {
+    LinkedNode *current = table->head;
     while (current != NULL) {
         printf("%d -> ", current->data);
         current = current->next;
@@ -171,10 +170,10 @@ void display(LinkTable *table) {
 }
 
 
-void destroy(LinkTable *table) {
-    LinkNode *current = table->head;
+void destroy(LinkedList *table) {
+    LinkedNode *current = table->head;
     while (current != NULL) {
-        LinkNode *_tmp = current->next;
+        LinkedNode *_tmp = current->next;
         free(current);
         current = _tmp;
     }
@@ -182,8 +181,8 @@ void destroy(LinkTable *table) {
 }
 
 
-LinkTable create_table() {
-    LinkTable table;
+LinkedList create_table() {
+    LinkedList table;
     table.head = NULL;
     table.push_back = push_back;
     table.push_front = push_front;
@@ -198,7 +197,7 @@ LinkTable create_table() {
 
 
 int main() {
-    LinkTable table = create_table();
+    LinkedList table = create_table();
 
     table.push_back(&table, 10);
     table.push_back(&table, 20);
