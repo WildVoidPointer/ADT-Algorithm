@@ -11,22 +11,22 @@ void quick_sort(int array[], int left_ptr, int right_ptr) {
     if (left_ptr >= right_ptr) 
         return;
     
-    int pivot = (left_ptr + right_ptr) / 2;
-    int median_value = array[pivot];
+    int _pivot_ptr = (left_ptr + right_ptr) / 2;
+    int pivot_ele = array[_pivot_ptr];
     int _left_ptr = left_ptr;
     int _right_ptr = right_ptr;
 
     while (_left_ptr <= _right_ptr) {
-        while (array[_left_ptr] < median_value) {
+        while (array[_left_ptr] < pivot_ele) {
             _left_ptr++;
         }
-        while (array[_right_ptr] > median_value) {
+        while (array[_right_ptr] > pivot_ele) {
             _right_ptr--;
         }
         if (_left_ptr <= _right_ptr) {
-            int temp = array[_left_ptr];
+            int _temp = array[_left_ptr];
             array[_left_ptr] = array[_right_ptr];
-            array[_right_ptr] = temp;
+            array[_right_ptr] = _temp;
             _left_ptr++;
             _right_ptr--;
         }
