@@ -116,10 +116,10 @@ bool insert(LinkedList *table, int pos, EleType ele) {
         return true;
     }
 
-    int _count = 0;
+    int count = 0;
     LinkedNode *current = table->head;
-    while (current != NULL && _count < pos - 1) {
-        _count++;
+    while (current != NULL && count < pos - 1) {
+        count++;
         current = current->next;
     }
 
@@ -136,10 +136,10 @@ EleType get(LinkedList *table, int pos) {
             return 0;
         }
 
-    int _count = 0;
+    int count = 0;
     LinkedNode *current = table->head;
-    while (current != NULL && _count < pos) {
-        _count++;
+    while (current != NULL && count < pos) {
+        count++;
         current = current->next;
     }
     return current->data;  
