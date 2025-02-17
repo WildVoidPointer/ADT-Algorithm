@@ -21,7 +21,7 @@ typedef struct LinkdeList {
 } LinkdeList;
 
 
-LinkdeList* create(ssize_t size) {
+LinkdeList* linkedlist_create(ssize_t size) {
     LinkdeList* list = (LinkdeList*)malloc(sizeof(LinkdeList));
     if (list == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
@@ -34,23 +34,23 @@ LinkdeList* create(ssize_t size) {
 }
 
 
-size_t length(LinkdeList* list) {
+size_t linkedlist_length(LinkdeList* list) {
     return list->length;
 }
 
 
-ssize_t size(LinkdeList* list) {
+ssize_t linkedlist_size(LinkdeList* list) {
     return list->size;
 }
 
 
-int _is_exceed(LinkdeList* list) {
+int _linkedlist_is_exceed(LinkdeList* list) {
     return ((list->size != -1)
         && (list->length + 1 > list->size)) ? 1 : 0;
 }
 
 
-int display(LinkdeList* list) {
+int linkedlist_display(LinkdeList* list) {
     if (list == NULL || list->length == 0) {
         fprintf(stderr, "Exceed capacity limit\n");
         return -1;
@@ -66,8 +66,8 @@ int display(LinkdeList* list) {
 }
 
 
-int push_front(LinkdeList* list, EleType data) {
-    if (_is_exceed(list) || list == NULL) {
+int linkedlist_push_front(LinkdeList* list, EleType data) {
+    if (_linkedlist_is_exceed(list) || list == NULL) {
         fprintf(stderr, "Exceed capacity limit\n");
         return -1;
     }
@@ -93,8 +93,8 @@ int push_front(LinkdeList* list, EleType data) {
 }
 
 
-int push_back(LinkdeList* list, EleType data) {
-    if (_is_exceed(list) || list == NULL) {
+int linkedlist_push_back(LinkdeList* list, EleType data) {
+    if (_linkedlist_is_exceed(list) || list == NULL) {
         fprintf(stderr, "Exceed capacity limit\n");
         return -1;
     }
@@ -123,8 +123,8 @@ int push_back(LinkdeList* list, EleType data) {
 }
 
 
-int insert_item(LinkdeList* list, EleType data, size_t pos) {
-    if (_is_exceed(list) || list == NULL) {
+int linkedlist_insert(LinkdeList* list, EleType data, size_t pos) {
+    if (_linkedlist_is_exceed(list) || list == NULL) {
         fprintf(stderr, "Exceed capacity limit\n");
         return -1;
     }
@@ -152,7 +152,7 @@ int insert_item(LinkdeList* list, EleType data, size_t pos) {
 }
 
 
-int remove_item(LinkdeList* list, size_t pos) {
+int linkedlist_remove(LinkdeList* list, size_t pos) {
     if (pos > list->length || list == NULL) {
         fprintf(stderr, "Exceed capacity limit\n");
         return -1;
@@ -180,7 +180,7 @@ int remove_item(LinkdeList* list, size_t pos) {
 }
 
 
-int get_item(LinkdeList* list, EleType* data, size_t pos) {
+int linkedlist_get_item(LinkdeList* list, EleType* data, size_t pos) {
     if (pos > list->length || list == NULL) {
         fprintf(stderr, "Exceed capacity limit\n");
         return -1;
@@ -209,7 +209,7 @@ int get_item(LinkdeList* list, EleType* data, size_t pos) {
 }
 
 
-int pop_front(LinkdeList* list, EleType* data) {
+int linkedlist_pop_front(LinkdeList* list, EleType* data) {
     if (list == NULL || list->length == 0) {
         fprintf(stderr, "Exceed capacity limit\n");
         return -1;
@@ -223,7 +223,7 @@ int pop_front(LinkdeList* list, EleType* data) {
 }
 
 
-int pop_back(LinkdeList* list, EleType* data) {
+int linkedlist_pop_back(LinkdeList* list, EleType* data) {
     if (list == NULL || list->length == 0) {
         fprintf(stderr, "Exceed capacity limit\n");
         return -1;
@@ -246,7 +246,7 @@ int pop_back(LinkdeList* list, EleType* data) {
 }
 
 
-int front(LinkdeList* list, EleType* data) {
+int linkedlist_front(LinkdeList* list, EleType* data) {
     if (list == NULL || list->length == 0) {
         fprintf(stderr, "Exceed capacity limit\n");
         return -1;
@@ -256,7 +256,7 @@ int front(LinkdeList* list, EleType* data) {
 }
 
 
-int back(LinkdeList* list, EleType* data) {
+int linkedlist_back(LinkdeList* list, EleType* data) {
     if (list == NULL || list->length == 0) {
         fprintf(stderr, "Exceed capacity limit\n");
         return -1;
@@ -271,7 +271,7 @@ int back(LinkdeList* list, EleType* data) {
 }
 
 
-int destroy(LinkdeList* list) {
+int linkedlist_clean(LinkdeList* list) {
     if (list == NULL || list->length == 0) {
         fprintf(stderr, "Exceed capacity limit\n");
         return -1;
@@ -290,45 +290,45 @@ int destroy(LinkdeList* list) {
 
 int main(int argc, char const *argv[]) {
     
-    LinkdeList* list = create(-1);
+    LinkdeList* list = linkedlist_create(-1);
 
-    push_back(list, 233);
-    push_back(list, 2333);
-    push_back(list, 23333);
-    display(list);
-
-
-    push_front(list, 23);
-    display(list);
+    linkedlist_push_back(list, 233);
+    linkedlist_push_back(list, 2333);
+    linkedlist_push_back(list, 23333);
+    linkedlist_display(list);
 
 
-    insert_item(list, 73, 2);
-    display(list);
+    linkedlist_push_front(list, 23);
+    linkedlist_display(list);
 
-    remove_item(list, 2);
-    display(list);
+
+    linkedlist_insert(list, 73, 2);
+    linkedlist_display(list);
+
+    linkedlist_remove(list, 2);
+    linkedlist_display(list);
 
     EleType ele;
-    pop_front(list, &ele);
-    display(list);
+    linkedlist_pop_front(list, &ele);
+    linkedlist_display(list);
     printf("%d\n", ele);
 
-    pop_back(list, &ele);
+    linkedlist_pop_back(list, &ele);
     printf("%d\n", ele);
-    display(list);
+    linkedlist_display(list);
 
-    front(list, &ele);
+    linkedlist_front(list, &ele);
     printf("%d\n", ele);
-    display(list);
+    linkedlist_display(list);
 
-    get_item(list, &ele, 3);
+    linkedlist_get_item(list, &ele, 3);
     printf("%d\n", ele);
 
-    back(list, &ele);
+    linkedlist_back(list, &ele);
     printf("%d\n", ele);
-    display(list);
+    linkedlist_display(list);
 
-    destroy(list);
+    linkedlist_clean(list);
 
     return 0;
 }
