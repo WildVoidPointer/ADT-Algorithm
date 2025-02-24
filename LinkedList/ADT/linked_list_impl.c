@@ -21,7 +21,7 @@ typedef struct LinkdeList {
 } LinkdeList;
 
 
-LinkdeList* linkedlist_create(ssize_t size) {
+LinkdeList* linkedlist_init(ssize_t size) {
     LinkdeList* list = (LinkdeList*)malloc(sizeof(LinkdeList));
     if (list == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
@@ -180,8 +180,8 @@ int linkedlist_remove(LinkdeList* list, size_t pos) {
 }
 
 
-int linkedlist_get_item(LinkdeList* list, EleType* data, size_t pos) {
-    if (pos > list->length || list == NULL) {
+int linkedlist_search(LinkdeList* list, EleType data, size_t pos) {
+    if (list == NULL) {
         fprintf(stderr, "Exceed capacity limit\n");
         return -1;
     }
@@ -194,16 +194,12 @@ int linkedlist_get_item(LinkdeList* list, EleType* data, size_t pos) {
         LinkedNode* current = list->head;
         size_t count = 1;
 
-        while ((current->next != NULL) && (count < pos - 1)) {
+        while ((current->next != NULL) && (count < pos)) {
             current = current->next;
             count++;
         }
 
-        LinkedNode* old = current->next;
-        current->next = current->next->next;
-        *data = old->data;
-        free(old);
-        list->length--;
+        data = current->data;
         return 0;
     }
 }
@@ -290,7 +286,7 @@ int linkedlist_clean(LinkdeList* list) {
 
 int main(int argc, char const *argv[]) {
     
-    LinkdeList* list = linkedlist_create(-1);
+    LinkdeList* list = linkedlist_init(-1);
 
     linkedlist_push_back(list, 233);
     linkedlist_push_back(list, 2333);
@@ -321,7 +317,7 @@ int main(int argc, char const *argv[]) {
     printf("%d\n", ele);
     linkedlist_display(list);
 
-    linkedlist_get_item(list, &ele, 3);
+    linkedlist_search(list, &ele, 3);
     printf("%d\n", ele);
 
     linkedlist_back(list, &ele);
