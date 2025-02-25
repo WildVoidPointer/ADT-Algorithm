@@ -56,26 +56,6 @@ int _linkedlist_is_exceed(LinkdeList* list) {
 }
 
 
-int linkedlist_display(LinkdeList* list) {
-    if (list == NULL) {
-        fprintf(
-            stderr, 
-            "Parameter is incorrect. Please check whether the `LinkedList*` type parameter is passed\n"
-        );
-
-        return -1;
-    }
-    LinkedListNode* current = list->head;
-    while (current != NULL) {
-        printf("%d  ", current->data);
-        current = current->next;
-    }
-    puts("");
-    printf("length: %zu, max: %zd\n\n", list->length, list->size);
-    return 0;
-}
-
-
 int linkedlist_push_front(LinkdeList* list, EleType data) {
     if (_linkedlist_is_exceed(list) || list == NULL) {
         fprintf(stderr, "Exceed capacity limit\n");
@@ -216,7 +196,6 @@ int linkedlist_search(LinkdeList* list, EleType** data, size_t** pos) {
             current = current->next;
             count++;
         }
-        printf("%zu\n", count);
         *data = (EleType*)malloc(sizeof(EleType));
         **data = current->data;
     }
@@ -311,6 +290,27 @@ int linkedlist_back(LinkdeList* list, EleType* data) {
 }
 
 
+int linkedlist_display(LinkdeList* list) {
+    if (list == NULL) {
+        fprintf(
+            stderr, 
+            "Parameter is incorrect. Please check whether the `LinkedList*` type parameter is passed\n"
+        );
+
+        return -1;
+    }
+    LinkedListNode* current = list->head;
+    printf("LinkedList elements: {  ");
+    while (current != NULL) {
+        printf("%d  ", current->data);
+        current = current->next;
+    }
+    printf("}  length: %zu  size: %zd\n", list->length, list->size);
+    return 0;
+}
+
+
+
 int linkedlist_clean(LinkdeList** list) {
     if (list == NULL) {
         fprintf(
@@ -354,17 +354,13 @@ int main(int argc, char const *argv[]) {
 
     linkedlist_pop_front(list, &ele);
     linkedlist_display(list);
-    printf("popped element is: %d\n", ele);
 
     linkedlist_pop_back(list, &ele);
     linkedlist_display(list);
-    printf("popped element is:%d\n", ele);
 
-    printf("fornt element is: %d\n", ele);
     linkedlist_front(list, &ele);
     linkedlist_display(list);
 
-    printf("back element is: %d\n", ele);
     linkedlist_back(list, &ele);
     linkedlist_display(list);
 
@@ -372,7 +368,6 @@ int main(int argc, char const *argv[]) {
     size_t* pos = &seq;
     EleType* res = NULL;
     if (linkedlist_search(list, &res, &pos) == 0) {
-        printf("the 2 elemnet is: %d\n", *res);
         free(res);
     }
     
@@ -381,10 +376,7 @@ int main(int argc, char const *argv[]) {
     ele = 2333;
     res = &ele;
     if (linkedlist_search(list, &res, &target) == 0) {
-        printf("the 2333 elemnet pos is: %zu\n", *target);
         free(target);
-    } else {
-        printf("Element 23333 not found.\n");
     }
 
     linkedlist_clean(&list);
