@@ -321,12 +321,12 @@ int linkedlist_clean(LinkdeList** list) {
     }
 
     LinkedListNode* current = (*list)->head;
-    while (current->next != NULL) {
+    while (current != NULL) {
         LinkedListNode* old = current;
         current = current->next;
         free(old);
     }
-    free(list);
+    free(*list);
     (*list) = NULL;
     return 0;
 }
@@ -336,44 +336,30 @@ int main(int argc, char const *argv[]) {
     
     LinkdeList* list = linkedlist_create(-1);
 
-    puts("  push back: ");
     linkedlist_push_back(list, 2333);
     linkedlist_push_back(list, 23333);
     linkedlist_push_back(list, 233333);
     linkedlist_display(list);
 
-
-    puts("  push front: ");
     linkedlist_push_front(list, 23);
     linkedlist_display(list);
 
-
-    puts("  insert 2: ");
     linkedlist_insert(list, 233, 2);
     linkedlist_display(list);
 
-
-    puts("  remove 5: ");
     linkedlist_remove(list, 5);
     linkedlist_display(list);
 
-
     EleType ele;
 
-
-    puts("  pop front ");
     linkedlist_pop_front(list, &ele);
     linkedlist_display(list);
     printf("popped element is: %d\n", ele);
 
-
-    puts("  pop back ");
     linkedlist_pop_back(list, &ele);
     linkedlist_display(list);
     printf("popped element is:%d\n", ele);
 
-
-    puts("  lookup:");
     printf("fornt element is: %d\n", ele);
     linkedlist_front(list, &ele);
     linkedlist_display(list);
@@ -382,7 +368,6 @@ int main(int argc, char const *argv[]) {
     linkedlist_back(list, &ele);
     linkedlist_display(list);
 
-    puts("  search:");
     size_t seq = 2;
     size_t* pos = &seq;
     EleType* res = NULL;
@@ -402,7 +387,7 @@ int main(int argc, char const *argv[]) {
         printf("Element 23333 not found.\n");
     }
 
-    linkedlist_clean(list);
+    linkedlist_clean(&list);
 
     return 0;
 }
