@@ -60,7 +60,7 @@ int linkedlist_display(LinkdeList* list) {
     if (list == NULL) {
         fprintf(
             stderr, 
-            "Parameter is incorrect. Please check whether the `LinkedList` type parameter is passed\n"
+            "Parameter is incorrect. Please check whether the `LinkedList*` type parameter is passed\n"
         );
 
         return -1;
@@ -288,7 +288,7 @@ int linkedlist_pop_back(LinkdeList* list, EleType* data) {
 
 int linkedlist_front(LinkdeList* list, EleType* data) {
     if (list == NULL || list->length == 0) {
-        fprintf(stderr, "Exceed capacity limit\n");
+        fprintf(stderr, "The parameter is incorrect or the data in `LinkedList` is empty\n");
         return -1;
     }
     *data = list->head->data;
@@ -298,7 +298,7 @@ int linkedlist_front(LinkdeList* list, EleType* data) {
 
 int linkedlist_back(LinkdeList* list, EleType* data) {
     if (list == NULL || list->length == 0) {
-        fprintf(stderr, "`LinkedList` Exceed capacity limit\n");
+        fprintf(stderr, "The parameter is incorrect or the data in `LinkedList` is empty\n");
         return -1;
     }
     LinkedListNode* current = list->head;
@@ -311,19 +311,23 @@ int linkedlist_back(LinkdeList* list, EleType* data) {
 }
 
 
-int linkedlist_clean(LinkdeList* list) {
-    if (list == NULL || list->length == 0) {
-        fprintf(stderr, "`LinkedList` Exceed capacity limit\n");
+int linkedlist_clean(LinkdeList** list) {
+    if (list == NULL) {
+        fprintf(
+            stderr, 
+            "Parameter is incorrect. Please check whether the `LinkedList` type parameter is passed\n"
+        );
         return -1;
     }
 
-    LinkedListNode* current = list->head;
+    LinkedListNode* current = (*list)->head;
     while (current->next != NULL) {
         LinkedListNode* old = current;
         current = current->next;
         free(old);
     }
     free(list);
+    (*list) = NULL;
     return 0;
 }
 
@@ -393,7 +397,7 @@ int main(int argc, char const *argv[]) {
     res = &ele;
     if (linkedlist_search(list, &res, &target) == 0) {
         printf("the 2333 elemnet pos is: %zu\n", *target);
-        free(target); // 确保释放内存
+        free(target);
     } else {
         printf("Element 23333 not found.\n");
     }

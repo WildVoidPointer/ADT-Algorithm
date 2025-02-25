@@ -13,31 +13,31 @@ typedef int EleType;
 
 typedef struct Deque {
     EleType* elements;
-    size_t max;
+    size_t size;
     size_t front;
     size_t rear;
 } Deque;
 
 
-Deque* deque_create(size_t max) {
+Deque* deque_create(size_t max_size) {
     Deque* deque = (Deque*)malloc(sizeof(Deque));
     if (deque == NULL) {
         fprintf(stderr, "Failed to allocate memory for the `Deque`\n");
         return NULL;
     }
 
-    deque->elements = (EleType*)malloc(max * sizeof(EleType));
+    deque->elements = (EleType*)malloc(max_size * sizeof(EleType));
     if (deque->elements == NULL) {
         fprintf(stderr, "Failed to allocate memory for the `elements` of `Deque`\n");
         free(deque);
         return NULL;
     }
 
-    for (size_t i = 0; i < max; i++) {
+    for (size_t i = 0; i < max_size; i++) {
         deque->elements[i] = INIT_DATA;
     }
 
-    deque->max = max;
+    deque->size = max_size;
     deque->front = 0;
     deque->rear = 0;
 
@@ -51,12 +51,12 @@ int deque_is_empty(Deque deque) {
 
 
 int deque_is_full(Deque *deque) {
-    return (deque->rear + 1) % deque->max == deque->front;
+    return (deque->rear + 1) % deque->size == deque->front;
 }
 
 
 ssize_t deque_length(Deque deque) {
-    return ((deque.rear + deque.max) - deque.front) % deque.max;
+    return ((deque.rear + deque.size) - deque.front) % deque.size;
 }
 
 
@@ -67,7 +67,7 @@ int deque_enqueue(Deque *deque, EleType ele) {
     }
 
     deque->elements[deque->rear] = ele;
-    deque->rear = (deque->rear + 1) % deque->max;
+    deque->rear = (deque->rear + 1) % deque->size;
     return 0;
 }
 
@@ -78,7 +78,7 @@ int deque_dequeue(Deque *deque, EleType ele) {
         return -1;
     }
     
-    deque->front = (deque->front - 1 + deque->max) % deque->max;
+    deque->front = (deque->front - 1 + deque->size) % deque->size;
     deque->elements[deque->front] = ele;
     return 0;
 }
