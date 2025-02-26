@@ -20,27 +20,28 @@ typedef struct Deque {
 } Deque;
 
 
-Deque* deque_create(size_t max_size) {
+Deque* deque_create(size_t size) {
+    
     Deque* deque = (Deque*)malloc(sizeof(Deque));
     if (deque == NULL) {
         fprintf(stderr, "Failed to allocate memory for the `Deque`\n");
         return NULL;
     }
 
-    deque->elements = (EleType*)malloc((max_size + 1) * sizeof(EleType));
+    deque->elements = (EleType*)malloc((size + 1) * sizeof(EleType));
     if (deque->elements == NULL) {
         fprintf(stderr, "Failed to allocate memory for the `elements` of `Deque`\n");
         free(deque);
         return NULL;
     }
 
-    deque->_range = max_size + 1;
+    deque->_range = size + 1;
 
     for (size_t i = 0; i < deque->_range; i++) {
         deque->elements[i] = INIT_DATA;
     }
 
-    deque->size = max_size;
+    deque->size = size;
     deque->front = 0;
     deque->rear = 0;
 
