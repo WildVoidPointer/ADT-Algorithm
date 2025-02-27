@@ -50,23 +50,21 @@ int seqlist_is_empty(SeqList* seqlist) {
 
 // TODO: The sequence pointer is abnormal and cannot be executed properly
 int seqlist_insert(SeqList* seqlist, size_t pos, EleType ele) {
-    if (seqlist == NULL || pos > seqlist->size || pos <= 0
-        || seqlist->length == seqlist->size) {
-
+    if (seqlist == NULL) {
             fprintf(stderr, 
                 "SeqListInsertionException: Check whether the parameters are valid\n"
             );
             return -1;
     }
 
-    if (pos < seqlist->start + 1 || pos > seqlist->end + 1) {
+    if (pos <= 0 || seqlist->length >= seqlist->size) {
         fprintf(stderr, 
             "SeqListInsertionException: Index access is out of bounds\n"
         );
         return -1;
     }
 
-    if (seqlist->start == 0 && seqlist->end < seqlist->size) {
+    if (seqlist->end < seqlist->size) {
 
         for (int i = seqlist->end; i >= pos; i--) {
             seqlist->elements[i] = seqlist->elements[i - 1];
@@ -77,7 +75,7 @@ int seqlist_insert(SeqList* seqlist, size_t pos, EleType ele) {
         seqlist->end++;
         seqlist->length++;
     }
-    else if (seqlist->start > 0 && seqlist->end < seqlist->size) {
+    else if (seqlist->end >= seqlist->size && seqlist->start > 0) {
         EleType buf = seqlist->elements[seqlist->start];
 
         for (int i = seqlist->start; i < pos; i++) {
@@ -88,6 +86,13 @@ int seqlist_insert(SeqList* seqlist, size_t pos, EleType ele) {
         seqlist->elements[pos - 1] = ele;
         seqlist->length++;
         seqlist->start--;
+    }
+
+    else {
+        fprintf(stderr, 
+            "SeqListInsertionException: Index access is out of bounds\n"
+        );
+        return -1;
     }
 
     return 0;
