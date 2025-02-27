@@ -1,39 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef __linux__
+    #include <sys/types.h>
+#endif
+
+#define INIT_DATA 0
+
 
 typedef int EleType;
 
-#define INIT_DATA 0
 
 typedef struct SeqList {
     EleType* elements;
     size_t length;
     size_t size;
-    size_t start;
-    size_t end;
 } SeqList;
 
 
 SeqList* seqlist_create(size_t size) {
     SeqList* seqlist = (SeqList*)malloc(sizeof(SeqList));
     if (seqlist == NULL) {
-        fprintf(stderr, "Failed to allocate memory for the SeqList\n");
+        fprintf(stderr, "SeqListInitError: Failed to allocate memory\n");
         return NULL;
     }
     
     seqlist->elements = (EleType*)malloc(size * sizeof(EleType));
     if (seqlist->elements == NULL) {
-        fprintf(stderr, "Failed to allocate memory for elements of SeqList\n");
+        fprintf(stderr, "ElementsInitError: Failed to allocate memory\n");
         free(seqlist);
         return NULL;
     }
 
+    for (size_t i = 0; i < size; i++) {
+        seqlist->elements[i] = INIT_DATA;
+    }
 
     seqlist->size = size;
     seqlist->length = 0;
-    seqlist->start = 0;
-    seqlist->end = 0;
     return seqlist;
 } 
 
@@ -48,120 +52,93 @@ int seqlist_is_empty(SeqList* seqlist) {
 }
 
 
-// TODO: The sequence pointer is abnormal and cannot be executed properly
 int seqlist_insert(SeqList* seqlist, size_t pos, EleType ele) {
     if (seqlist == NULL) {
             fprintf(stderr, 
-                "SeqListInsertionException: Check whether the parameters are valid\n"
+                "SeqListAccessError: Check whether parameter `SeqList*` is valid\n"
             );
             return -1;
     }
 
-    if (pos <= 0 || seqlist->length >= seqlist->size) {
-        fprintf(stderr, 
-            "SeqListInsertionException: Index access is out of bounds\n"
-        );
-        return -1;
-    }
+    if (seqlist->length == 0) {
+        seqlist->elements[seqlist->length] = ele;
+    } else {
+        if (pos <= 0 || pos > seqlist->length || seqlist->length >= seqlist->size) {
+            fprintf(stderr, 
+                "SeqListInsertException: Index access is out of bounds\n"
+            );
+            return -1;
+        }
 
-    if (seqlist->end < seqlist->size) {
-
-        for (int i = seqlist->end; i >= pos; i--) {
+        for (size_t i = seqlist->length; i > pos - 1; i--) {
             seqlist->elements[i] = seqlist->elements[i - 1];
         }
-
+    
         seqlist->elements[pos - 1] = ele;
-
-        seqlist->end++;
-        seqlist->length++;
-    }
-    else if (seqlist->end >= seqlist->size && seqlist->start > 0) {
-        EleType buf = seqlist->elements[seqlist->start];
-
-        for (int i = seqlist->start; i < pos; i++) {
-            seqlist->elements[i - 1] = buf;
-            buf = seqlist->elements[i];
-        }
-
-        seqlist->elements[pos - 1] = ele;
-        seqlist->length++;
-        seqlist->start--;
     }
 
-    else {
-        fprintf(stderr, 
-            "SeqListInsertionException: Index access is out of bounds\n"
-        );
-        return -1;
-    }
-
+    seqlist->length++;
     return 0;
 }
 
 
 
-// TODO: The sequence pointer is abnormal and cannot be executed properly
 int seqlist_remove(SeqList* seqlist, size_t pos, EleType* ele) {
-    if (seqlist == NULL || pos > seqlist->size 
-        || seqlist->length == 0 || pos > seqlist->end) {
-
+    if (seqlist == NULL) {
             fprintf(stderr, 
-                "SeqListRemoveException: Check whether the parameter is valid\n"
+                "SeqListAccessError: Check whether parameter `SeqList*` is valid\n"
             );
             return -1;
     }
 
-    if ((pos - 1) == seqlist->start && seqlist->start > 0) {
-        *ele = seqlist->elements[seqlist->start];
-        seqlist->elements[seqlist->start] = INIT_DATA;
-        seqlist->start++;
-    }
-    else if ((pos - 1) == seqlist->end && seqlist->end < seqlist->size) {
-        *ele = seqlist->elements[seqlist->end];
-        seqlist->elements[seqlist->end] = INIT_DATA;
-        seqlist->end--;
-    }
-    else if ((pos - 1) > seqlist->start && (pos - 1) < seqlist->end) {
-
-        EleType buf = seqlist->elements[pos];
-
-        *ele = seqlist->elements[pos - 1];
-
-        for (int i = pos - 1; i < seqlist->end; i++) {
-            seqlist->elements[i] = buf;
-            buf = seqlist->elements[i + 1];
-        }
-
-        seqlist->elements[seqlist->end--] = INIT_DATA;
-        seqlist->length--;
-    }
-    else {
+    if (seqlist->length == 0 || pos > seqlist->length || pos <= 0) {
         fprintf(stderr, 
-            "SeqListRemoveException: Check whether the parameters are valid\n"
+            "SeqListRemoveException: Index access is out of bounds\n"
         );
         return -1;
     }
 
-    return 0;
+    *ele = seqlist->elements[pos - 1];
 
+    for (size_t i = pos - 1; i < seqlist->length - 1; i++) {
+        seqlist->elements[i] = seqlist->elements[i + 1];
+    }
+
+    seqlist->elements[seqlist->length - 1] = INIT_DATA;
+
+    seqlist->length--;
+    return 0;
+}
+
+
+int seqlist_clean(SeqList** seqlist) {
+    if (seqlist == NULL) {
+        fprintf(stderr, 
+            "SeqListAccessError: Check whether parameter `SeqList*` is valid\n"
+        );
+        return -1;
+    }
+    free((*seqlist)->elements);
+    free(*seqlist);
+    *seqlist = NULL;
+    return 0;
 }
 
 
 int seqlist_display(SeqList* seqlist) {
     if (seqlist == NULL) {
         fprintf(stderr, 
-            "SeqListNotFoundError: Check whether parameter `SeqList*` is valid\n"
+            "SeqListAccessError: Check whether parameter `SeqList*` is valid\n"
         );
         return -1;
     }
 
     printf("SeqList: {  ");
-    for (int i = seqlist->start; i < seqlist->end; i++) {
+    for (size_t i = 0; i < seqlist->length; i++) {
         printf("%d  ", seqlist->elements[i]);
     }
     printf(
-        "}  length: %zu    size: %zu    start: %zu    end: %zu\n",
-         seqlist->length, seqlist->size, seqlist->start, seqlist->end
+        "}  length: %zu    size: %zu\n", seqlist->length, seqlist->size
     );
 
     return 0;
@@ -171,13 +148,16 @@ int seqlist_display(SeqList* seqlist) {
 int main(int argc, char const *argv[])
 {
     SeqList* seqlist = seqlist_create(5);
-    seqlist_insert(seqlist, 1, 1);
-    seqlist_display(seqlist);
 
     seqlist_insert(seqlist, 1, 1);
     seqlist_display(seqlist);
 
-    seqlist_insert(seqlist, 3, 3);
+    seqlist_insert(seqlist, 1, 2);
+    seqlist_display(seqlist);
+
+    seqlist_insert(seqlist, 2, 3);
+    seqlist_display(seqlist);
+
     seqlist_insert(seqlist, 4, 5);
     seqlist_display(seqlist);
 
@@ -185,18 +165,17 @@ int main(int argc, char const *argv[])
     seqlist_insert(seqlist, 3, 6);
     seqlist_display(seqlist);
 
-    if (0) {
-        seqlist->length--;
-        seqlist->end--;
-    }
-    if (1) {
-        seqlist->length--;
-        seqlist->start++;
-    }
+    seqlist_insert(seqlist, 4, 5);
     seqlist_display(seqlist);
 
-    seqlist_insert(seqlist, 1, 7);
+    seqlist_insert(seqlist, 4, 7);
+    seqlist_insert(seqlist, 4, 7);
     seqlist_display(seqlist);
 
+    EleType buf;
+    seqlist_remove(seqlist, 0, &buf);
+    seqlist_display(seqlist);
+
+    seqlist_clean(&seqlist);
     return 0;
 }

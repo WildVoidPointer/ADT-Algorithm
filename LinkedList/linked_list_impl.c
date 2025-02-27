@@ -5,7 +5,6 @@
     #include <sys/types.h>
 #endif
 
-
 #define INIT_DATA 0
 
 
@@ -30,7 +29,7 @@ typedef struct LinkdeList {
 LinkdeList* linkedlist_create(ssize_t size) {
     LinkdeList* list = (LinkdeList*)malloc(sizeof(LinkdeList));
     if (list == NULL) {
-        fprintf(stderr, "Failed to allocate memory for the LinkedList\n");
+        fprintf(stderr, "LinkedListInitError: Failed to allocate memory\n");
         return NULL;
     }
     list->length = 0;
@@ -57,14 +56,22 @@ int _linkedlist_is_exceed(LinkdeList* list) {
 
 
 int linkedlist_push_front(LinkdeList* list, EleType data) {
-    if (_linkedlist_is_exceed(list) || list == NULL) {
-        fprintf(stderr, "Exceed capacity limit\n");
+    if (list == NULL) {
+        fprintf(
+            stderr, 
+            "LinkedListAccessError: Please check whether the `LinkedList` type parameter is passed\n"
+        );
+        return -1;
+    }
+
+    if (_linkedlist_is_exceed(list)) {
+        fprintf(stderr, "LinkedListOverFlowException: Exceed capacity limit\n");
         return -1;
     }
 
     LinkedListNode* node = (LinkedListNode*)malloc(sizeof(LinkedListNode));
     if (node == NULL) {
-        fprintf(stderr, "Failed to allocate memory for the LinkedListNode\n");
+        fprintf(stderr, "LinkedListNodeInitError: Failed to allocate memory\n");
         return -1;
     }
 
@@ -84,14 +91,22 @@ int linkedlist_push_front(LinkdeList* list, EleType data) {
 
 
 int linkedlist_push_back(LinkdeList* list, EleType data) {
-    if (_linkedlist_is_exceed(list) || list == NULL) {
-        fprintf(stderr, "`LinkedList` Exceed capacity limit\n");
+    if (list == NULL) {
+        fprintf(
+            stderr, 
+            "LinkedListAccessError: Please check whether the `LinkedList` type parameter is passed\n"
+        );
+        return -1;
+    }
+
+    if (_linkedlist_is_exceed(list)) {
+        fprintf(stderr, "LinkedListOverFlowException: Exceed capacity limit\n");
         return -1;
     }
 
     LinkedListNode* node = (LinkedListNode*)malloc(sizeof(LinkedListNode));
     if (node == NULL) {
-        fprintf(stderr, "Failed to allocate memory for the `LinkedListNode`\n");
+        fprintf(stderr, "LinkedListNodeInitError: Failed to allocate memory\n");
         return -1;
     }
     node->data = data;
@@ -114,16 +129,29 @@ int linkedlist_push_back(LinkdeList* list, EleType data) {
 
 
 int linkedlist_insert(LinkdeList* list, EleType data, size_t pos) {
-    if (_linkedlist_is_exceed(list) || list == NULL) {
-        fprintf(stderr, "`LinkedList` Exceed capacity limit\n");
+    if (list == NULL) {
+        fprintf(
+            stderr, 
+            "LinkedListAccessError: Please check whether the `LinkedList` type parameter is passed\n"
+        );
         return -1;
     }
 
-    if (pos > list->length) {
-        fprintf(stderr, "`LinkedList` Index overshoot\n");
+    if (_linkedlist_is_exceed(list)) {
+        fprintf(stderr, "LinkedListOverFlowException: Exceed capacity limit\n");
+        return -1;
+    }
+
+    if (pos > list->length || pos <= 0) {
+        fprintf(stderr, "LinkedListInsertException: Index overshoot\n");
         return -1;
     } else {
         LinkedListNode* node = (LinkedListNode*)malloc(sizeof(LinkedListNode));
+        if (node == NULL) {
+            fprintf(stderr, "LinkedListNodeInitError: Failed to allocate memory\n");
+            return -1;
+        }
+
         node->data = data;
 
         LinkedListNode* current = list->head;
@@ -146,14 +174,14 @@ int linkedlist_remove(LinkdeList* list, size_t pos) {
     if (list == NULL) {
         fprintf(
             stderr, 
-            "Parameter is incorrect. Please check whether the `LinkedList` type parameter is passed\n"
+            "LinkedListAccessError: Please check whether the `LinkedList` type parameter is passed\n"
         );
 
         return -1;
     }
 
-    if (pos > list->length) {
-        fprintf(stderr, "`LinkedList` Index overshoot\n");
+    if (pos > list->length || pos <= 0) {
+        fprintf(stderr, "LinkedListInsertException: Index overshoot\n");
         return -1;
     } else {
 
@@ -178,13 +206,13 @@ int linkedlist_search(LinkdeList* list, EleType** data, size_t** pos) {
     if (list == NULL) {
         fprintf(
             stderr, 
-            "Parameter is incorrect. Please check whether the `LinkedList` type parameter is passed\n"
+            "LinkedListAccessError: Please check whether the `LinkedList` type parameter is passed\n"
         );
         return -1;
     }
 
     if (*pos != NULL && **pos > list->length) {
-        fprintf(stderr, "`LinkedList` Index overshoot\n");
+        fprintf(stderr, "LinkedListInsertException: Index overshoot\n");
         return -1;
     }
     else if (*pos != NULL && *data == NULL) {
@@ -220,7 +248,7 @@ int linkedlist_search(LinkdeList* list, EleType** data, size_t** pos) {
         }
     } 
     else {
-        fprintf(stderr, "`LinkedList` Search mode error\n");
+        fprintf(stderr, "LinkedListSearchException: Search mode error\n");
         return -1;
     }
 
@@ -229,8 +257,16 @@ int linkedlist_search(LinkdeList* list, EleType** data, size_t** pos) {
 
 
 int linkedlist_pop_front(LinkdeList* list, EleType* data) {
-    if (list == NULL || list->length == 0) {
-        fprintf(stderr, "`LinkedList` Exceed capacity limit\n");
+    if (list == NULL) {
+        fprintf(
+            stderr, 
+            "LinkedListAccessError: Please check whether the `LinkedList` type parameter is passed\n"
+        );
+        return -1;
+    }
+
+    if (list->length == 0) {
+        fprintf(stderr, "LinkedListOverFlowException: Exceed capacity limit\n");
         return -1;
     }
     LinkedListNode* node = list->head;
@@ -243,8 +279,16 @@ int linkedlist_pop_front(LinkdeList* list, EleType* data) {
 
 
 int linkedlist_pop_back(LinkdeList* list, EleType* data) {
-    if (list == NULL || list->length == 0) {
-        fprintf(stderr, "Exceed capacity limit\n");
+    if (list == NULL) {
+        fprintf(
+            stderr, 
+            "LinkedListAccessError: Please check whether the `LinkedList` type parameter is passed\n"
+        );
+        return -1;
+    }
+
+    if (list->length == 0) {
+        fprintf(stderr, "LinkedListOverFlowException: Exceed capacity limit\n");
         return -1;
     }
 
@@ -267,7 +311,9 @@ int linkedlist_pop_back(LinkdeList* list, EleType* data) {
 
 int linkedlist_front(LinkdeList* list, EleType* data) {
     if (list == NULL || list->length == 0) {
-        fprintf(stderr, "The parameter is incorrect or the data in `LinkedList` is empty\n");
+        fprintf(stderr, 
+            "LinkedListCheckError: The parameter is incorrect or the data in `LinkedList` is empty\n"
+        );
         return -1;
     }
     *data = list->head->data;
@@ -277,9 +323,12 @@ int linkedlist_front(LinkdeList* list, EleType* data) {
 
 int linkedlist_back(LinkdeList* list, EleType* data) {
     if (list == NULL || list->length == 0) {
-        fprintf(stderr, "The parameter is incorrect or the data in `LinkedList` is empty\n");
+        fprintf(stderr, 
+            "LinkedListCheckError: The parameter is incorrect or the data in `LinkedList` is empty\n"
+        );
         return -1;
     }
+    
     LinkedListNode* current = list->head;
 
     while (current->next != NULL) {
@@ -294,13 +343,13 @@ int linkedlist_display(LinkdeList* list) {
     if (list == NULL) {
         fprintf(
             stderr, 
-            "Parameter is incorrect. Please check whether the `LinkedList*` type parameter is passed\n"
+            "LinkedListAccessError: Please check whether the `LinkedList` type parameter is passed\n"
         );
-
         return -1;
     }
+
     LinkedListNode* current = list->head;
-    printf("LinkedList elements: {  ");
+    printf("LinkedList: {  ");
     while (current != NULL) {
         printf("%d  ", current->data);
         current = current->next;
@@ -312,10 +361,10 @@ int linkedlist_display(LinkdeList* list) {
 
 
 int linkedlist_clean(LinkdeList** list) {
-    if (list == NULL) {
+if (list == NULL) {
         fprintf(
             stderr, 
-            "Parameter is incorrect. Please check whether the `LinkedList` type parameter is passed\n"
+            "LinkedListAccessError: Please check whether the `LinkedList` type parameter is passed\n"
         );
         return -1;
     }
