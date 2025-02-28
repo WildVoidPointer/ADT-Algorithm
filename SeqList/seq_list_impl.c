@@ -52,7 +52,7 @@ int seqlist_is_empty(SeqList* seqlist) {
 }
 
 
-int seqlist_insert(SeqList* seqlist, size_t pos, EleType ele) {
+int seqlist_insert(SeqList* seqlist, size_t pos, EleType buf) {
     if (seqlist == NULL) {
             fprintf(stderr, 
                 "SeqListAccessError: Check whether parameter `SeqList*` is valid\n"
@@ -61,9 +61,9 @@ int seqlist_insert(SeqList* seqlist, size_t pos, EleType ele) {
     }
 
     if (seqlist->length == 0) {
-        seqlist->elements[seqlist->length] = ele;
+        seqlist->elements[seqlist->length] = buf;
     } else {
-        if (pos <= 0 || pos > seqlist->length || seqlist->length >= seqlist->size) {
+        if (pos <= 0 || pos > seqlist->length + 1 || seqlist->length >= seqlist->size) {
             fprintf(stderr, 
                 "SeqListInsertException: Index access is out of bounds\n"
             );
@@ -74,7 +74,7 @@ int seqlist_insert(SeqList* seqlist, size_t pos, EleType ele) {
             seqlist->elements[i] = seqlist->elements[i - 1];
         }
     
-        seqlist->elements[pos - 1] = ele;
+        seqlist->elements[pos - 1] = buf;
     }
 
     seqlist->length++;
@@ -83,7 +83,7 @@ int seqlist_insert(SeqList* seqlist, size_t pos, EleType ele) {
 
 
 
-int seqlist_remove(SeqList* seqlist, size_t pos, EleType* ele) {
+int seqlist_remove(SeqList* seqlist, size_t pos, EleType* buf) {
     if (seqlist == NULL) {
             fprintf(stderr, 
                 "SeqListAccessError: Check whether parameter `SeqList*` is valid\n"
@@ -98,7 +98,7 @@ int seqlist_remove(SeqList* seqlist, size_t pos, EleType* ele) {
         return -1;
     }
 
-    *ele = seqlist->elements[pos - 1];
+    *buf = seqlist->elements[pos - 1];
 
     for (size_t i = pos - 1; i < seqlist->length - 1; i++) {
         seqlist->elements[i] = seqlist->elements[i + 1];
@@ -107,6 +107,57 @@ int seqlist_remove(SeqList* seqlist, size_t pos, EleType* ele) {
     seqlist->elements[seqlist->length - 1] = INIT_DATA;
 
     seqlist->length--;
+    return 0;
+}
+
+
+int seqlist_search(SeqList* seqlist, size_t* pos, EleType* buf, int flag) {
+    if (seqlist == NULL) {
+        fprintf(stderr, 
+            "SeqListAccessError: Check whether parameter `SeqList*` is valid\n"
+        );
+        return -1;
+    }
+
+    if (pos == NULL || buf == NULL) {
+        fprintf(stderr, 
+            "SeqListSearchAccessError: Check whether parameter buffer is valid\n"
+        );
+        return -1;
+    }
+
+    if (flag == 0) {
+        if (seqlist->length == 0 || *pos > seqlist->length || *pos <= 0) {
+            fprintf(stderr, 
+                "SeqListSearchException: Index access is out of bounds\n"
+            );
+            return -1;
+        }
+        *buf = seqlist->elements[*pos - 1];
+
+    }
+    else if (flag == -1) {
+        int found_state = 0;
+        for (size_t i = 0; i < seqlist->length; i++) {
+            if (seqlist->elements[i] == *buf) {
+                found_state = 1;
+                *pos = i + 1;
+                break;
+            }
+        }
+        if (!found_state) {
+            fprintf(stderr, 
+                "SeqListSearchException: Specific element not found\n"
+            );
+            return -1;
+        }
+    }
+    else {
+        fprintf(stderr, 
+            "SeqListSearchException: Index access is out of bounds\n"
+        );
+        return -1;
+    }
     return 0;
 }
 
@@ -145,24 +196,23 @@ int seqlist_display(SeqList* seqlist) {
 }
 
 
-int main(int argc, char const *argv[])
-{
-    SeqList* seqlist = seqlist_create(5);
+int main(int argc, char const *argv[]) {
 
-    seqlist_insert(seqlist, 1, 1);
-    seqlist_display(seqlist);
+    SeqList* seqlist = seqlist_create(5);
 
     seqlist_insert(seqlist, 1, 2);
     seqlist_display(seqlist);
 
-    seqlist_insert(seqlist, 2, 3);
+    seqlist_insert(seqlist, 1, 1);
     seqlist_display(seqlist);
 
-    seqlist_insert(seqlist, 4, 5);
+    seqlist_insert(seqlist, 3, 3);
     seqlist_display(seqlist);
 
-    putc('\n', stdout);
-    seqlist_insert(seqlist, 3, 6);
+    seqlist_insert(seqlist, 4, 4);
+    seqlist_display(seqlist);
+
+    seqlist_insert(seqlist, 5, 5);
     seqlist_display(seqlist);
 
     seqlist_insert(seqlist, 4, 5);
@@ -172,9 +222,25 @@ int main(int argc, char const *argv[])
     seqlist_insert(seqlist, 4, 7);
     seqlist_display(seqlist);
 
-    EleType buf;
-    seqlist_remove(seqlist, 0, &buf);
+    EleType delete_buf;
+    size_t pos = 0;
+    seqlist_remove(seqlist, 5, &delete_buf);
     seqlist_display(seqlist);
+
+    seqlist_remove(seqlist, 1, &delete_buf);
+    seqlist_display(seqlist);
+
+    EleType search_buf = 3;
+    size_t search_pos = 1;
+
+    if (0) {
+        seqlist_search(seqlist, &search_pos, &search_buf, 0);
+        printf("search_pos: %zu    search_buf: %d\n", search_pos, search_buf);  
+    } else {
+        seqlist_search(seqlist, &search_pos, &search_buf, -1);
+        printf("search_pos: %zu    search_buf: %d\n", search_pos, search_buf);
+    
+    }
 
     seqlist_clean(&seqlist);
     return 0;

@@ -202,7 +202,7 @@ int linkedlist_remove(LinkdeList* list, size_t pos) {
 }
 
 
-int linkedlist_search(LinkdeList* list, EleType** data, size_t** pos) {
+int linkedlist_search(LinkdeList* list, EleType* data, size_t* pos, int flag) {
     if (list == NULL) {
         fprintf(
             stderr, 
@@ -211,32 +211,31 @@ int linkedlist_search(LinkdeList* list, EleType** data, size_t** pos) {
         return -1;
     }
 
-    if (*pos != NULL && **pos > list->length) {
-        fprintf(stderr, "LinkedListInsertException: Index overshoot\n");
+    if (flag == 0 && (*pos > list->length || *pos <= 0)) {
+        fprintf(stderr, "LinkedListSearchException: Index overshoot\n");
         return -1;
     }
-    else if (*pos != NULL && *data == NULL) {
+
+    if (flag == 0) {
 
         LinkedListNode* current = list->head;
         size_t count = 1;
 
-        while ((current != NULL) && (count < **pos)) {
+        while ((current != NULL) && (count < *pos)) {
             current = current->next;
             count++;
         }
-        *data = (EleType*)malloc(sizeof(EleType));
-        **data = current->data;
+        *data = current->data;
     }
-    else if (*pos == NULL && *data != NULL) {
+    else if (flag == -1) {
         LinkedListNode* current = list->head;
         size_t count = 1;
         int search_state = 0;
 
         while (current != NULL) {
-            if (current->data == **data) {
+            if (current->data == *data) {
                 search_state = 1;
-                *pos = (size_t*)malloc(sizeof(size_t));
-                **pos = count;
+                *pos = count;
                 break;
             }
             current = current->next;
@@ -244,9 +243,11 @@ int linkedlist_search(LinkdeList* list, EleType** data, size_t** pos) {
         }
 
         if (search_state == 0) {
+            fprintf(stderr, "LinkedListSearchException: Specific element not found\n");
             return -1;
         }
-    } 
+    }
+
     else {
         fprintf(stderr, "LinkedListSearchException: Search mode error\n");
         return -1;
@@ -413,19 +414,15 @@ int main(int argc, char const *argv[]) {
     linkedlist_back(list, &ele);
     linkedlist_display(list);
 
-    size_t seq = 2;
-    size_t* pos = &seq;
-    EleType* res = NULL;
-    if (linkedlist_search(list, &res, &pos) == 0) {
-        free(res);
-    }
-    
+    EleType search_buf = 233;
+    size_t search_pos = 3;
 
-    size_t* target = NULL;
-    ele = 2333;
-    res = &ele;
-    if (linkedlist_search(list, &res, &target) == 0) {
-        free(target);
+    if (0) {
+        linkedlist_search(list, &search_buf, &search_pos, 0);
+        printf("search_pos: %zu    search_buf: %d\n", search_pos, search_buf);  
+    } else {
+        linkedlist_search(list, &search_buf, &search_pos, -1);
+        printf("search_pos: %zu    search_buf: %d\n", search_pos, search_buf);  
     }
 
     linkedlist_clean(&list);
