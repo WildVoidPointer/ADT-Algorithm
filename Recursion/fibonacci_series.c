@@ -12,8 +12,12 @@ int gernerate_fibonacci_first_terms_by_loop(int* buf, int n) {
 
 
 int gernerate_fibonacci_first_terms_by_recursion(int* buf, int n) {
+
+    if (buf[n - 1] != -1) {
+        return buf[n - 1];
+    }
     if (n == 1) {
-        return buf[n -1] = 0;
+        return buf[n - 1] = 0;
     }
     if (n == 2) {
         return buf[n - 1] = 1;
@@ -31,6 +35,9 @@ int main(int argc, char const *argv[])
 {
     int length = 10;
     int fibonacci[10];
+    for (int i = 0; i < length; i++) {
+        fibonacci[i] = -1;
+    }
     gernerate_fibonacci_first_terms_by_recursion(fibonacci, length);
     gernerate_fibonacci_first_terms_by_loop(fibonacci, length);
     for (int i = 0; i < length; i++) {
