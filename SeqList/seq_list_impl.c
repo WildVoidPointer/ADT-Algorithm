@@ -8,11 +8,11 @@
 #define INIT_DATA 0
 
 
-typedef int EleType;
+typedef int SeqListEleType;
 
 
 typedef struct SeqList {
-    EleType* elements;
+    SeqListEleType* elements;
     size_t length;
     size_t size;
 } SeqList;
@@ -25,7 +25,7 @@ SeqList* seqlist_create(size_t size) {
         return NULL;
     }
     
-    seqlist->elements = (EleType*)malloc(size * sizeof(EleType));
+    seqlist->elements = (SeqListEleType*)malloc(size * sizeof(SeqListEleType));
     if (seqlist->elements == NULL) {
         fprintf(stderr, "ElementsInitError: Failed to allocate memory\n");
         free(seqlist);
@@ -52,7 +52,7 @@ int seqlist_is_empty(SeqList* seqlist) {
 }
 
 
-int seqlist_insert(SeqList* seqlist, size_t pos, EleType buf) {
+int seqlist_insert(SeqList* seqlist, size_t pos, SeqListEleType buf) {
     if (seqlist == NULL) {
             fprintf(stderr, 
                 "SeqListAccessError: Check whether parameter `SeqList*` is valid\n"
@@ -83,7 +83,7 @@ int seqlist_insert(SeqList* seqlist, size_t pos, EleType buf) {
 
 
 
-int seqlist_remove(SeqList* seqlist, size_t pos, EleType* buf) {
+int seqlist_remove(SeqList* seqlist, size_t pos, SeqListEleType* buf) {
     if (seqlist == NULL) {
             fprintf(stderr, 
                 "SeqListAccessError: Check whether parameter `SeqList*` is valid\n"
@@ -111,7 +111,7 @@ int seqlist_remove(SeqList* seqlist, size_t pos, EleType* buf) {
 }
 
 
-int seqlist_search(SeqList* seqlist, size_t* pos, EleType* buf, int flag) {
+int seqlist_search(SeqList* seqlist, size_t* pos, SeqListEleType* buf, int flag) {
     if (seqlist == NULL) {
         fprintf(stderr, 
             "SeqListAccessError: Check whether parameter `SeqList*` is valid\n"
@@ -163,7 +163,7 @@ int seqlist_search(SeqList* seqlist, size_t* pos, EleType* buf, int flag) {
 
 
 int seqlist_clean(SeqList** seqlist) {
-    if (seqlist == NULL) {
+    if (seqlist == NULL || (*seqlist) == NULL) {
         fprintf(stderr, 
             "SeqListAccessError: Check whether parameter `SeqList*` is valid\n"
         );
@@ -222,7 +222,7 @@ int main(int argc, char const *argv[]) {
     seqlist_insert(seqlist, 4, 7);
     seqlist_display(seqlist);
 
-    EleType delete_buf;
+    SeqListEleType delete_buf;
     size_t pos = 0;
     seqlist_remove(seqlist, 5, &delete_buf);
     seqlist_display(seqlist);
@@ -230,7 +230,7 @@ int main(int argc, char const *argv[]) {
     seqlist_remove(seqlist, 1, &delete_buf);
     seqlist_display(seqlist);
 
-    EleType search_buf = 3;
+    SeqListEleType search_buf = 3;
     size_t search_pos = 1;
 
     if (0) {
