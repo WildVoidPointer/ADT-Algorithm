@@ -24,13 +24,13 @@ Deque* deque_create(size_t size) {
     
     Deque* deque = (Deque*)malloc(sizeof(Deque));
     if (deque == NULL) {
-        fprintf(stderr, "Failed to allocate memory for the `Deque`\n");
+        fprintf(stderr, "DequeInitError: Failed to allocate memory for the `Deque`\n");
         return NULL;
     }
 
     deque->elements = (EleType*)malloc((size + 1) * sizeof(EleType));
     if (deque->elements == NULL) {
-        fprintf(stderr, "Failed to allocate memory for the `elements` of `Deque`\n");
+        fprintf(stderr, "DequeInitError: Failed to allocate memory for the `elements` of `Deque`\n");
         free(deque);
         return NULL;
     }
@@ -65,8 +65,16 @@ ssize_t deque_length(Deque* deque) {
 
 
 int deque_front_enqueue(Deque* deque, EleType ele) {
+    if (deque == NULL) {
+        fprintf(
+            stderr, 
+            "DequeAccessException: Please check whether the `Deque*` type parameter is passed\n"
+        );
+        return -1;
+    }
+    
     if (deque_is_full(deque)) {
-        fprintf(stderr, "Queue is full, enqueue failed\n");
+        fprintf(stderr, "DequeEnqueueException: Queue is full, enqueue failed\n");
         return -1;
     }
 
@@ -77,8 +85,16 @@ int deque_front_enqueue(Deque* deque, EleType ele) {
 
 
 int deque_back_enqueue(Deque *deque, EleType ele) {
+    if (deque == NULL) {
+        fprintf(
+            stderr, 
+            "DequeAccessException: Please check whether the `Deque*` type parameter is passed\n"
+        );
+        return -1;
+    }
+
     if (deque_is_full(deque)) {
-        fprintf(stderr, "Queue is full, enqueue failed\n");
+        fprintf(stderr, "DequeEnqueueException: Queue is full, enqueue failed\n");
         return -1;
     }
 
@@ -89,8 +105,16 @@ int deque_back_enqueue(Deque *deque, EleType ele) {
 
 
 int deque_front_dequeue(Deque *deque, EleType* ele) {
+    if (deque == NULL) {
+        fprintf(
+            stderr, 
+            "DequeAccessException: Please check whether the `Deque*` type parameter is passed\n"
+        );
+        return -1;
+    }
+
     if (deque_is_empty(*deque)) {
-        fprintf(stderr, "Queue is empty, queue failed\n");
+        fprintf(stderr, "DequeDequeueException: Queue is empty, queue failed\n");
         return -1;
     }
     
@@ -102,8 +126,16 @@ int deque_front_dequeue(Deque *deque, EleType* ele) {
 
 
 int deque_back_dequeue(Deque *deque, EleType* ele) {
+    if (deque == NULL) {
+        fprintf(
+            stderr, 
+            "DequeAccessException: Please check whether the `Deque*` type parameter is passed\n"
+        );
+        return -1;
+    }
+
     if (deque_is_empty(*deque)) {
-        fprintf(stderr, "Queue is empty, queue failed\n");
+        fprintf(stderr, "DequeDequeueException: Queue is empty, queue failed\n");
         return -1;
     }
 
@@ -117,7 +149,7 @@ int deque_display(Deque* deque) {
     if (deque == NULL) {
         fprintf(
             stderr, 
-            "Parameter is incorrect. Please check whether the `Deque*` type parameter is passed\n"
+            "DequeAccessException: Please check whether the `Deque*` type parameter is passed\n"
         );
         return -1;
     }
@@ -139,7 +171,7 @@ int deque_clean(Deque** deque) {
     if (*deque == NULL) {
         fprintf(
             stderr, 
-            "Parameter is incorrect. Please check whether the `Deque*` type parameter is passed\n"
+            "DequeAccessException: Please check whether the `Deque*` type parameter is passed\n"
         );
         return -1;
     }
