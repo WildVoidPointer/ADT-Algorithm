@@ -46,7 +46,9 @@ symmetric_matrix_rows_uncompress(SymmetricMatrixCompressBean* origin, int compre
         return NULL;
     }
 
-    SymmetricMatrixCompressBean** bean = (SymmetricMatrixCompressBean**) malloc(sizeof(SymmetricMatrixCompressBean*) * side);
+    SymmetricMatrixCompressBean** bean = 
+        (SymmetricMatrixCompressBean**) malloc(sizeof(SymmetricMatrixCompressBean*) * side);
+        
     if (bean == NULL) {
         fprintf(stderr, "Error: Memory allocation failed.\n");
         return NULL;
