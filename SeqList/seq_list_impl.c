@@ -5,20 +5,19 @@
     #include <sys/types.h>
 #endif
 
-#define INIT_DATA 0
-
 
 typedef int SeqListEleType;
 
 
 typedef struct SeqList {
     SeqListEleType* elements;
+    SeqListEleType init_data;
     size_t length;
     size_t size;
 } SeqList;
 
 
-SeqList* seqlist_create(size_t size) {
+SeqList* seqlist_create(size_t size, SeqListEleType init_data) {
     SeqList* seqlist = (SeqList*)malloc(sizeof(SeqList));
     if (seqlist == NULL) {
         fprintf(stderr, "SeqListInitError: Failed to allocate memory\n");
@@ -33,10 +32,11 @@ SeqList* seqlist_create(size_t size) {
     }
 
     for (size_t i = 0; i < size; i++) {
-        seqlist->elements[i] = INIT_DATA;
+        seqlist->elements[i] = init_data;
     }
 
     seqlist->size = size;
+    seqlist->init_data = init_data;
     seqlist->length = 0;
     return seqlist;
 } 
@@ -104,7 +104,7 @@ int seqlist_remove(SeqList* seqlist, size_t pos, SeqListEleType* buf) {
         seqlist->elements[i] = seqlist->elements[i + 1];
     }
 
-    seqlist->elements[seqlist->length - 1] = INIT_DATA;
+    seqlist->elements[seqlist->length - 1] = seqlist->init_data;
 
     seqlist->length--;
     return 0;
@@ -198,7 +198,7 @@ int seqlist_display(SeqList* seqlist) {
 
 int main(int argc, char const *argv[]) {
 
-    SeqList* seqlist = seqlist_create(5);
+    SeqList* seqlist = seqlist_create(5, 0);
 
     seqlist_insert(seqlist, 1, 2);
     seqlist_display(seqlist);
