@@ -2,6 +2,10 @@
 #include <limits.h>
 #include <stdlib.h>
 
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+
+
 void quick_sort(int array[], int left_ptr, int right_ptr);
 
 
@@ -89,4 +93,13 @@ void quick_sort(int array[], int left_ptr, int right_ptr) {
     }
     quick_sort(array, left_ptr, _right_ptr);
     quick_sort(array, _left_ptr, right_ptr);
+}
+
+
+int main() {
+    int sl1[] = {-1, 0, 9};
+    int sl2[] = {-25, -10, 10, 11};
+    int sl3[] = {2, 9, 17, 30, 41};
+
+    printf("%d\n", get_minimum_distance_point(3, sl1, 4, sl2, 4, sl3));
 }
