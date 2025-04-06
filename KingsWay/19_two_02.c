@@ -1,22 +1,22 @@
 #include <stdio.h>
 
 
-void seqlist_reverse_in_o1(int length, int seqlist[length]) {
-    int mid = length / 2;
+void seqlist_reverse_in_o1(int len, int sl[len]) {
+    int mid = len / 2;
     for (int i = 0; i < mid; i++) {
-        int tmp = seqlist[i];
-        seqlist[i] = seqlist[length - 1 - i];
-        seqlist[length - 1 - i] = tmp;
+        int tmp = sl[i];
+        sl[i] = sl[len - 1 - i];
+        sl[len - 1 - i] = tmp;
     }
 }
 
 
 int main() {
-    int arr[] = {1, 2, 3, 4, 5, 6};
+    int arr[] = {1, 2, 3, 4, 5, 6, 7};
 
-    seqlist_reverse_in_o1(6, arr);
+    seqlist_reverse_in_o1(7, arr);
 
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 7; i++) {
         printf("%d  ", arr[i]);
     }
     puts("");
