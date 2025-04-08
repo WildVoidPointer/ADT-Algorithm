@@ -1,6 +1,6 @@
 #include "singlelinkedlist.h"
 
-int _singlelinkedlist_is_exceed(SingleLinkedList* list) {
+int _singlelinkedlist_is_exceed_size(SingleLinkedList* list) {
     return ((list->size != -1)
         && (list->length + 1 > list->size)) ? 1 : 0;
 }
@@ -30,7 +30,7 @@ int singlelinkedlist_push_front(SingleLinkedList* list, SingleLinkedListEleType 
         return -1;
     }
 
-    if (_singlelinkedlist_is_exceed(list)) {
+    if (_singlelinkedlist_is_exceed_size(list)) {
         fprintf(stderr, SINGLELINKEDLIST_OVERFLOW_EXCEPTION);
         return -1;
     }
@@ -61,7 +61,7 @@ int singlelinkedlist_push_back(SingleLinkedList* list, SingleLinkedListEleType d
         return -1;
     }
 
-    if (_singlelinkedlist_is_exceed(list)) {
+    if (_singlelinkedlist_is_exceed_size(list)) {
         fprintf(stderr, SINGLELINKEDLIST_OVERFLOW_EXCEPTION);
         return -1;
     }
@@ -94,7 +94,7 @@ int singlelinkedlist_insert(SingleLinkedList* list, SingleLinkedListEleType data
         return -1;
     }
 
-    if (_singlelinkedlist_is_exceed(list)) {
+    if (_singlelinkedlist_is_exceed_size(list)) {
         fprintf(stderr, SINGLELINKEDLIST_OVERFLOW_EXCEPTION);
         return -1;
     }
@@ -102,6 +102,35 @@ int singlelinkedlist_insert(SingleLinkedList* list, SingleLinkedListEleType data
     if (pos > list->length || pos <= 0) {
         fprintf(stderr, SINGLELINKEDLIST_INSERT_EXCEPTION);
         return -1;
+    } 
+
+    if (pos == 1) {
+        SingleLinkedListNode* node = (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+        if (node == NULL) {
+            fprintf(stderr, SINGLELINKEDLIST_NODE_INIT_ERROR);
+            return -1;
+        }
+
+        node->data = data;
+        node->next = list->head;
+        list->head = node;
+        list->length++;
+
+    } else if (pos == list->length){
+        SingleLinkedListNode* current = list->head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+
+        SingleLinkedListNode* node = (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+        if (node == NULL) {
+            fprintf(stderr, SINGLELINKEDLIST_NODE_INIT_ERROR);
+            return -1;
+        }
+        current->next = node;
+        node->data = data;
+        list->length++;
+
     } else {
         SingleLinkedListNode* node = (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
         if (node == NULL) {
@@ -122,8 +151,8 @@ int singlelinkedlist_insert(SingleLinkedList* list, SingleLinkedListEleType data
         node->next = current->next;
         current->next = node;
         list->length++;
-        return 0;
     }
+    return 0;
 }
 
 int singlelinkedlist_remove(SingleLinkedList* list, size_t pos) {

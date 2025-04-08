@@ -4,7 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// 定义异常消息
+#ifdef __linux__
+    #include <sys/types.h>
+#endif
+
 #define SINGLELINKEDLIST_INIT_ERROR "SingleLinkedListInitError: Failed to allocate memory\n"
 #define SINGLELINKEDLIST_ACCESS_ERROR "SingleLinkedListAccessError: Please check whether the `SingleLinkedList` type parameter is passed\n"
 #define SINGLELINKEDLIST_OVERFLOW_EXCEPTION "SingleLinkedListOverFlowException: Exceed capacity limit\n"
@@ -41,5 +44,7 @@ int singlelinkedlist_clean(SingleLinkedList** list);
 SingleLinkedList* singlelinkedlist_create(ssize_t size);
 size_t singlelinkedlist_length(SingleLinkedList* list);
 ssize_t singlelinkedlist_size(SingleLinkedList* list);
+
+int _singlelinkedlist_is_exceed_size(SingleLinkedList* list);
 
 #endif // SINGLELINKEDLIST_H

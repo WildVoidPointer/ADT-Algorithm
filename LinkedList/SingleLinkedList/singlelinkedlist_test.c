@@ -3,7 +3,7 @@
 
 int main(int argc, char const *argv[]) {
 
-    SingleLinkedList* list = singlelinkedlist_create(3);
+    SingleLinkedList* list = singlelinkedlist_create(10);
 
     singlelinkedlist_push_back(list, 2333);
     singlelinkedlist_push_back(list, 23333);
@@ -14,7 +14,13 @@ int main(int argc, char const *argv[]) {
     singlelinkedlist_display(list); 
 
 
-    singlelinkedlist_insert(list, 233, 2);
+    singlelinkedlist_insert(list, 233, 1);
+    singlelinkedlist_display(list); 
+
+    singlelinkedlist_insert(list, 233, list->length);
+    singlelinkedlist_display(list); 
+
+    singlelinkedlist_insert(list, 233, 3);
     singlelinkedlist_display(list); 
 
 
