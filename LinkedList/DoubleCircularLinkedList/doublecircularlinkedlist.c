@@ -39,10 +39,45 @@ int
 doublecircularlinkedlist_insert(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data, size_t pos);
 
 
-int doublecircularlinkedlist_pop_front(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
+int doublecircularlinkedlist_pop_front(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data) {
+    if (list == NULL) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_ACCESS_ERROR);
+        return -1;
+    }
+
+    if (list->length == 0) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_OVERFLOW_EXCEPTION);
+        return -1;
+    }
+
+    DoubleCircularLinkedListNode* node = list->head;
+    *data = list->head->data;
+    list->head = list->head->next;
+    list->length--;
+    free(node);
+    return 0;
+}
 
 
-int doublecircularlinkedlist_pop_back(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
+int doublecircularlinkedlist_pop_back(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data) {
+    if (list == NULL) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_ACCESS_ERROR);
+        return -1;
+    }
+
+    if (list->length == 0) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_OVERFLOW_EXCEPTION);
+        return -1;
+    }
+
+    DoubleCircularLinkedListNode* current = list->head;
+    while (current->next->next != NULL) {
+        current = current->next;
+    }
+    *data = current->next->data;
+    free(current->next);
+    current->next = NULL;
+}
 
 
 int doublecircularlinkedlist_remove(DoubleCircularLinkedList* list, size_t pos);
