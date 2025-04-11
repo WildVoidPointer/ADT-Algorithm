@@ -12,32 +12,72 @@ DoubleCircularLinkedList* doublecircularlinkedlist_create(ssize_t size){
     return list;
 }
 
+
 size_t doublecircularlinkedlist_length(DoubleCircularLinkedList* list){
     return list->length;
 }
 
+
 ssize_t doublecircularlinkedlist_size(DoubleCircularLinkedList* list){
     return list->size;
 }
+
 
 int _doublecircularlinkedlist_is_exceed_size(DoubleCircularLinkedList* list){
     return ((list->size != -1)
         && (list->length + 1 > list->size)) ? 1 : 0;
 }
 
+
 int doublecircularlinkedlist_push_front(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data);
+
+
 int doublecircularlinkedlist_push_back(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data);
-int doublecircularlinkedlist_insert(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data, size_t pos);
+
+
+int
+doublecircularlinkedlist_insert(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data, size_t pos);
+
 
 int doublecircularlinkedlist_pop_front(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
+
+
 int doublecircularlinkedlist_pop_back(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
+
 
 int doublecircularlinkedlist_remove(DoubleCircularLinkedList* list, size_t pos);
 
-int doublecircularlinkedlist_front(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
-int doublecircularlinkedlist_back(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
 
-int doublecircularlinkedlist_search(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data, size_t* pos, int flag){
+int doublecircularlinkedlist_front(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data) {
+    if (list == NULL || list->length == 0) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_CHECK_ERROR);
+        return -1;
+    }
+    *data = list->head->data;
+    return 0;
+}
+
+
+int doublecircularlinkedlist_back(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data) {
+    if (list == NULL || list->length == 0) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_CHECK_ERROR);
+        return -1;
+    }
+    
+    DoubleCircularLinkedListNode* current = list->head;
+
+    while (current->next != NULL) {
+        current = current->next;
+    }
+    *data = current->data;
+    return 0;
+}
+
+
+int 
+doublecircularlinkedlist_search(
+    DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data, size_t* pos, int flag) {
+
     if (list == NULL) {
         fprintf(stderr, DOUBLECIRCULARLINKEDLIST_ACCESS_ERROR);
         return -1;
@@ -87,6 +127,7 @@ int doublecircularlinkedlist_search(DoubleCircularLinkedList* list, DoubleCircul
     return 0;
 }
 
+
 int doublecircularlinkedlist_display(DoubleCircularLinkedList* list){
     if (list == NULL) {
         fprintf(stderr, DOUBLECIRCULARLINKEDLIST_ACCESS_ERROR);
@@ -102,6 +143,7 @@ int doublecircularlinkedlist_display(DoubleCircularLinkedList* list){
     printf("}  length: %zu  size: %zd\n", list->length, list->size);
     return 0;
 }
+
 
 int doublecircularlinkedlist_clean(DoubleCircularLinkedList** list){
     if (list == NULL) {
