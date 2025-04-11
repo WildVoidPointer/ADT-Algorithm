@@ -2,7 +2,8 @@
 
 
 DoubleCircularLinkedList* doublecircularlinkedlist_create(ssize_t size){
-    DoubleCircularLinkedList* list = (DoubleCircularLinkedList*)malloc(sizeof(DoubleCircularLinkedList));
+    DoubleCircularLinkedList* list = (DoubleCircularLinkedList*) 
+                                    malloc(sizeof(DoubleCircularLinkedList));
     if (list == NULL) {
         fprintf(stderr, DOUBLECIRCULARLINKEDLIST_INIT_ERROR);
         return NULL;
@@ -29,17 +30,78 @@ int _doublecircularlinkedlist_is_exceed_size(DoubleCircularLinkedList* list){
 }
 
 
-int doublecircularlinkedlist_push_front(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data);
+int
+doublecircularlinkedlist_push_front(
+    DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data) {
+
+    if (list == NULL) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_ACCESS_ERROR);
+        return -1;
+    }
+
+    if (_doublecircularlinkedlist_is_exceed_size(list)) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_OVERFLOW_EXCEPTION);
+        return -1;
+    }
+
+    DoubleCircularLinkedListNode* node = 
+        (DoubleCircularLinkedListNode*) malloc (sizeof(DoubleCircularLinkedListNode));
+
+    if (node == NULL) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_NODE_INIT_ERROR);
+        return -1;
+    }
+
+    node->data = data;
+    node->next = list->head;
+    list->head->prev = node;
+    list->head = node;
+    return 0;
+}
 
 
-int doublecircularlinkedlist_push_back(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data);
+int doublecircularlinkedlist_push_back(
+    DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data) {
+    
+    if (list == NULL) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_ACCESS_ERROR);
+        return -1;
+    }
+
+    if (_doublecircularlinkedlist_is_exceed_size(list)) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_OVERFLOW_EXCEPTION);
+        return -1;
+    }
+
+    DoubleCircularLinkedListNode* node = 
+        (DoubleCircularLinkedListNode*) malloc (sizeof(DoubleCircularLinkedListNode));
+
+    if (node == NULL) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_NODE_INIT_ERROR);
+        return -1;
+    }
+
+    DoubleCircularLinkedListNode* current = list->head;
+
+    while (current->next != NULL) {
+        current = current->next;
+    }
+
+    
+    
+
+}
 
 
 int
-doublecircularlinkedlist_insert(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data, size_t pos);
+doublecircularlinkedlist_insert(
+    DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data, size_t pos);
 
 
-int doublecircularlinkedlist_pop_front(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data) {
+int
+doublecircularlinkedlist_pop_front(
+    DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data) {
+
     if (list == NULL) {
         fprintf(stderr, DOUBLECIRCULARLINKEDLIST_ACCESS_ERROR);
         return -1;
@@ -59,7 +121,10 @@ int doublecircularlinkedlist_pop_front(DoubleCircularLinkedList* list, DoubleCir
 }
 
 
-int doublecircularlinkedlist_pop_back(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data) {
+int
+doublecircularlinkedlist_pop_back(
+    DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data) {
+
     if (list == NULL) {
         fprintf(stderr, DOUBLECIRCULARLINKEDLIST_ACCESS_ERROR);
         return -1;
@@ -80,10 +145,14 @@ int doublecircularlinkedlist_pop_back(DoubleCircularLinkedList* list, DoubleCirc
 }
 
 
-int doublecircularlinkedlist_remove(DoubleCircularLinkedList* list, size_t pos);
+int 
+doublecircularlinkedlist_remove(DoubleCircularLinkedList* list, size_t pos);
 
 
-int doublecircularlinkedlist_front(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data) {
+int
+doublecircularlinkedlist_front(
+    DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data) {
+
     if (list == NULL || list->length == 0) {
         fprintf(stderr, DOUBLECIRCULARLINKEDLIST_CHECK_ERROR);
         return -1;
@@ -93,7 +162,10 @@ int doublecircularlinkedlist_front(DoubleCircularLinkedList* list, DoubleCircula
 }
 
 
-int doublecircularlinkedlist_back(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data) {
+int 
+doublecircularlinkedlist_back(
+    DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data) {
+
     if (list == NULL || list->length == 0) {
         fprintf(stderr, DOUBLECIRCULARLINKEDLIST_CHECK_ERROR);
         return -1;
@@ -111,7 +183,8 @@ int doublecircularlinkedlist_back(DoubleCircularLinkedList* list, DoubleCircular
 
 int 
 doublecircularlinkedlist_search(
-    DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data, size_t* pos, int flag) {
+    DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data,
+    size_t* pos, int flag) {
 
     if (list == NULL) {
         fprintf(stderr, DOUBLECIRCULARLINKEDLIST_ACCESS_ERROR);

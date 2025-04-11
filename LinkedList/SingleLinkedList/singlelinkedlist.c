@@ -193,7 +193,9 @@ int singlelinkedlist_remove(SingleLinkedList* list, size_t pos) {
 
 
 int
-singlelinkedlist_search(SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int flag) {
+singlelinkedlist_search(
+    SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int flag) {
+        
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
         return -1;
