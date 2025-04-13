@@ -1,12 +1,6 @@
 #include "singlelinkedlist.h"
 
 
-int _singlelinkedlist_is_exceed_size(SingleLinkedList* list) {
-    return ((list->size != -1)
-        && (list->length + 1 > list->size)) ? 1 : 0;
-}
-
-
 SingleLinkedList* singlelinkedlist_create(ssize_t size) {
     SingleLinkedList* list = (SingleLinkedList*)malloc(sizeof(SingleLinkedList));
     if (list == NULL) {
@@ -19,13 +13,19 @@ SingleLinkedList* singlelinkedlist_create(ssize_t size) {
 }
 
 
+int _singlelinkedlist_is_exceed_size(SingleLinkedList* list) {
+    return ((list != NULL) && (list->size != -1)
+        && (list->length + 1 > list->size)) ? 1 : 0;
+}
+
+
 size_t singlelinkedlist_length(SingleLinkedList* list) {
-    return list->length;
+    return (list != NULL) ? list->length : 0;
 }
 
 
 ssize_t singlelinkedlist_size(SingleLinkedList* list) {
-    return list->size;
+    return (list != NULL) ? list->size : -1;
 }
 
 

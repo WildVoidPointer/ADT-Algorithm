@@ -1,32 +1,53 @@
 #include "doublecircularlinkedlist.h"
 
 
-DoubleCircularLinkedList* doublecircularlinkedlist_create(ssize_t size){
+DoubleCircularLinkedList* doublecircularlinkedlist_create(ssize_t size, DoubleCircularLinkedListEleType init) {
     DoubleCircularLinkedList* list = (DoubleCircularLinkedList*) 
                                     malloc(sizeof(DoubleCircularLinkedList));
     if (list == NULL) {
         fprintf(stderr, DOUBLECIRCULARLINKEDLIST_INIT_ERROR);
         return NULL;
     }
+
+    DoubleCircularLinkedListNode* node = 
+        (DoubleCircularLinkedListNode*) malloc (sizeof(DoubleCircularLinkedListNode));
+
+    if (node == NULL) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_NODE_INIT_ERROR);
+        return -1;
+    }
+
+    node->data = init;
+    node->next = node;
+    node->prev = node;
+    list->head = node;
     list->length = 0;
     list->size = size;
     return list;
 }
 
 
-size_t doublecircularlinkedlist_length(DoubleCircularLinkedList* list){
-    return list->length;
+size_t doublecircularlinkedlist_length(DoubleCircularLinkedList* list) {
+    return (list != NULL) ? list->length : 0;
 }
 
 
-ssize_t doublecircularlinkedlist_size(DoubleCircularLinkedList* list){
-    return list->size;
+ssize_t doublecircularlinkedlist_size(DoubleCircularLinkedList* list) {
+    return (list != NULL) ? list->size : -1;
 }
 
 
-int _doublecircularlinkedlist_is_exceed_size(DoubleCircularLinkedList* list){
-    return ((list->size != -1)
+int _doublecircularlinkedlist_is_exceed_size(DoubleCircularLinkedList* list) {
+    return ((list != NULL) && (list->size != -1)
         && (list->length + 1 > list->size)) ? 1 : 0;
+}
+
+
+int _doublecircularlinkedlist_is_empty(DoubleCircularLinkedList* list){
+    return (
+        (list != NULL) && 
+        (list->head->next = list->head || list->head->prev == list->head)
+    ) ? 1 : 0;
 }
 
 
@@ -53,9 +74,11 @@ doublecircularlinkedlist_push_front(
     }
 
     node->data = data;
-    node->next = list->head;
-    list->head->prev = node;
-    list->head = node;
+
+    if (_doublecircularlinkedlist_is_empty(list)) {
+        
+    }
+
     return 0;
 }
 
@@ -87,9 +110,10 @@ int doublecircularlinkedlist_push_back(
         current = current->next;
     }
 
-    
-    
-
+    node->data = data;
+    current->next = node;
+    node->prev = current;
+    return 0;
 }
 
 

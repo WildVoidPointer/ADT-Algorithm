@@ -42,10 +42,11 @@ int doublecircularlinkedlist_front(DoubleCircularLinkedList* list, DoubleCircula
 int doublecircularlinkedlist_back(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
 int doublecircularlinkedlist_display(DoubleCircularLinkedList* list);
 int doublecircularlinkedlist_clean(DoubleCircularLinkedList** list);
-DoubleCircularLinkedList* doublecircularlinkedlist_create(ssize_t size);
+DoubleCircularLinkedList* doublecircularlinkedlist_create(ssize_t size, DoubleCircularLinkedListEleType init);
 size_t doublecircularlinkedlist_length(DoubleCircularLinkedList* list);
 ssize_t doublecircularlinkedlist_size(DoubleCircularLinkedList* list);
 
 int _doublecircularlinkedlist_is_exceed_size(DoubleCircularLinkedList* list);
+int _doublecircularlinkedlist_is_empty(DoubleCircularLinkedList* list);
 
 #endif // DOUBLECIRCULARLINKEDLIST_H
