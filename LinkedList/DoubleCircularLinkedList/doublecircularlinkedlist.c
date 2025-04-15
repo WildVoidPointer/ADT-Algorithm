@@ -15,7 +15,8 @@ doublecircularlinkedlist_create(ssize_t size, DoubleCircularLinkedListEleType in
 
     if (node == NULL) {
         fprintf(stderr, DOUBLECIRCULARLINKEDLIST_NODE_INIT_ERROR);
-        return -1;
+        free(list);
+        return NULL;
     }
 
     node->data = init;
@@ -129,7 +130,9 @@ doublecircularlinkedlist_insert(
         return -1;
     }
 
-    if (pos == 0 || pos > list->length + 1 || _doublecircularlinkedlist_is_exceed_size(list)) {
+    if (pos == 0 || pos > list->length + 1 ||
+         _doublecircularlinkedlist_is_exceed_size(list)) {
+
         fprintf(stderr, DOUBLECIRCULARLINKEDLIST_OVERFLOW_EXCEPTION);
         return -1;
     }
@@ -209,7 +212,10 @@ doublecircularlinkedlist_pop_back(
 
 
 int 
-doublecircularlinkedlist_remove(DoubleCircularLinkedList* list, size_t pos) {
+doublecircularlinkedlist_remove(
+    DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data,
+        size_t* pos, int mode) {
+
     if (list == NULL) {
         fprintf(stderr, DOUBLECIRCULARLINKEDLIST_ACCESS_ERROR);
         return -1;
@@ -220,7 +226,47 @@ doublecircularlinkedlist_remove(DoubleCircularLinkedList* list, size_t pos) {
         return -1;
     }
 
+    if (data == NULL) {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_SEARCH_EXCEPTION);
+        return -1;
+    }
 
+    if (mode == DOUBLECIRCULARLINKEDLIST_SEARCH_BY_POS && pos != NULL && *pos != 0 && *pos < list->length) {
+        DoubleCircularLinkedListNode* current = list->head->next;
+        size_t count = 1;
+
+        while ((current != list->head) && (count < *pos)) {
+            current = current->next;
+            count++;
+        }
+        *data = current->data;
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+        list->length--;
+        free(current);
+    } 
+    else if (mode == DOUBLECIRCULARLINKEDLIST_SEARCH_BY_VALUE) {
+        DoubleCircularLinkedListNode* current = list->head->next;
+
+        while ((current != list->head)) {
+            if (current->data == (*data)) {
+                DoubleCircularLinkedListNode* t = current;
+                current->prev->next = current->next;
+                current->next->prev = current->prev;
+                list->length--;
+                current = current->next;
+                free(t);
+            } else {
+                current = current->next;
+            }
+        }
+    }
+    else {
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_REMOVE_EXCEPTION);
+        return -1;
+    }
+
+    return 0;
 }
 
 
@@ -339,7 +385,7 @@ int doublecircularlinkedlist_clean(DoubleCircularLinkedList** list){
 
     DoubleCircularLinkedListNode* current = (*list)->head->next;
     while (current != (*list)->head) {
-        DoubleCircularLinkedList* old = current;
+        DoubleCircularLinkedListNode* old = current;
         current = current->next;
         free(old);
     }
