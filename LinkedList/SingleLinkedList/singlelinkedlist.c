@@ -29,6 +29,11 @@ ssize_t singlelinkedlist_size(SingleLinkedList* list) {
 }
 
 
+int singlelinkedlist_is_empty(SingleLinkedList* list) {
+    return ((list == NULL) || (list->length == 0)) ? 1 : 0;
+}
+
+
 int singlelinkedlist_push_front(SingleLinkedList* list, SingleLinkedListEleType data) {
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
@@ -95,6 +100,7 @@ int singlelinkedlist_push_back(SingleLinkedList* list, SingleLinkedListEleType d
 }
 
 
+// TODO: It cannot deals with the emptily linked_list
 int
 singlelinkedlist_insert(SingleLinkedList* list, SingleLinkedListEleType data, size_t pos) {
     if (list == NULL) {
@@ -164,49 +170,80 @@ singlelinkedlist_insert(SingleLinkedList* list, SingleLinkedListEleType data, si
 }
 
 
-int singlelinkedlist_remove(SingleLinkedList* list, size_t pos) {
+// TODO: It has a lot of logical problems
+int singlelinkedlist_remove(SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int mode) {
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
         return -1;
     }
-
-    if (pos > list->length || pos <= 0) {
-        fprintf(stderr, SINGLELINKEDLIST_INSERT_EXCEPTION);
+    if (data == NULL) {
+        fprintf(stderr, SINGLELINKEDLIST_REMOVE_EXCEPTION);
         return -1;
-    } else {
+    }
 
+    if (mode == SINGLELINKEDLIST_SEARCH_BY_POS && pos != NULL && (*pos) != 0 && (*pos) < list->length) {
         SingleLinkedListNode* current = list->head;
         size_t count = 1;
 
-        while ((current->next != NULL) && (count < pos - 1)) {
+        if (*pos == 1) {
+            list->head = current->next;
+            *data = current->data;
+            free(current);
+            list->length--;
+            return 0;
+        }
+
+        while (current != NULL && count < (*pos) - 1) {
             current = current->next;
             count++;
         }
 
-        SingleLinkedListNode* old = current->next;
-        current->next = current->next->next;
-        free(old);
+        SingleLinkedListNode* target = current->next;
+        current->next = target->next;
+        *data = target->data;
+        free(target);
         list->length--;
-        return 0;
     }
+    else if (mode == SINGLELINKEDLIST_SEARCH_BY_VALUE) {
+        SingleLinkedListNode* current = list->head;
+        SingleLinkedListNode* prev = NULL;
+
+        if (current != NULL && current->data == *data) {
+            list->head = current->next;
+            *data = current->data;
+            free(current);
+            list->length--;
+            return 0;
+        }
+
+        while (current != NULL) {
+            if (current->data == *data) {
+                prev->next = current->next;
+                *data = current->data;
+                free(current);
+                list->length--;
+                return 0;
+            }
+            prev = current;
+            current = current->next;
+        }
+    }
+
+    return 0;
 }
 
 
+// TODO: need fix the bugs
 int
 singlelinkedlist_search(
-    SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int flag) {
+    SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int mode) {
         
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
         return -1;
     }
 
-    if (flag == 0 && (*pos > list->length || *pos <= 0)) {
-        fprintf(stderr, SINGLELINKEDLIST_SEARCH_EXCEPTION);
-        return -1;
-    }
-
-    if (flag == 0) {
+    if (mode == SINGLELINKEDLIST_SEARCH_BY_POS && (*pos > list->length || *pos == 0)) {
         SingleLinkedListNode* current = list->head;
         size_t count = 1;
 
@@ -216,7 +253,7 @@ singlelinkedlist_search(
         }
         *data = current->data;
     }
-    else if (flag == -1) {
+    else if (mode == SINGLELINKEDLIST_SEARCH_BY_VALUE) {
         SingleLinkedListNode* current = list->head;
         size_t count = 1;
         int search_state = 0;

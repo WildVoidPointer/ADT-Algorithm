@@ -16,6 +16,10 @@
 #define SINGLELINKEDLIST_SEARCH_EXCEPTION "SingleLinkedListSearchException: Specific element not found\n"
 #define SINGLELINKEDLIST_SEARCH_MODE_ERROR "SingleLinkedListSearchException: Search mode error\n"
 #define SINGLELINKEDLIST_CHECK_ERROR "SingleLinkedListCheckError: The parameter is incorrect or the data in `SingleLinkedList` is empty\n"
+#define SINGLELINKEDLIST_REMOVE_EXCEPTION "SingleLinkedListRemoveException: Search mode error or invalid parameter\n"
+#define SINGLELINKEDLIST_SEARCH_BY_POS 0
+#define SINGLELINKEDLIST_SEARCH_BY_VALUE 1
+
 
 typedef int SingleLinkedListEleType;
 
@@ -33,8 +37,8 @@ typedef struct SingleLinkedList {
 int singlelinkedlist_push_front(SingleLinkedList* list, SingleLinkedListEleType data);
 int singlelinkedlist_push_back(SingleLinkedList* list, SingleLinkedListEleType data);
 int singlelinkedlist_insert(SingleLinkedList* list, SingleLinkedListEleType data, size_t pos);
-int singlelinkedlist_remove(SingleLinkedList* list, size_t pos);
-int singlelinkedlist_search(SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int flag);
+int singlelinkedlist_remove(SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int mode);
+int singlelinkedlist_search(SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int mode);
 int singlelinkedlist_pop_front(SingleLinkedList* list, SingleLinkedListEleType* data);
 int singlelinkedlist_pop_back(SingleLinkedList* list, SingleLinkedListEleType* data);
 int singlelinkedlist_front(SingleLinkedList* list, SingleLinkedListEleType* data);
@@ -44,6 +48,7 @@ int singlelinkedlist_clean(SingleLinkedList** list);
 SingleLinkedList* singlelinkedlist_create(ssize_t size);
 size_t singlelinkedlist_length(SingleLinkedList* list);
 ssize_t singlelinkedlist_size(SingleLinkedList* list);
+int singlelinkedlist_is_empty(SingleLinkedList* list);
 
 int _singlelinkedlist_is_exceed_size(SingleLinkedList* list);
 

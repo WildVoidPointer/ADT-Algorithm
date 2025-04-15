@@ -227,11 +227,13 @@ doublecircularlinkedlist_remove(
     }
 
     if (data == NULL) {
-        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_SEARCH_EXCEPTION);
+        fprintf(stderr, DOUBLECIRCULARLINKEDLIST_REMOVE_EXCEPTION);
         return -1;
     }
 
-    if (mode == DOUBLECIRCULARLINKEDLIST_SEARCH_BY_POS && pos != NULL && *pos != 0 && *pos < list->length) {
+    if (mode == DOUBLECIRCULARLINKEDLIST_SEARCH_BY_POS 
+            && pos != NULL && *pos != 0 && *pos < list->length) {
+
         DoubleCircularLinkedListNode* current = list->head->next;
         size_t count = 1;
 
