@@ -16,6 +16,10 @@
 #define DOUBLECIRCULARLINKEDLIST_SEARCH_EXCEPTION "DoubleCircularLinkedListSearchException: Specific element not found\n"
 #define DOUBLECIRCULARLINKEDLIST_SEARCH_MODE_ERROR "DoubleCircularLinkedListSearchException: Search mode error\n"
 #define DOUBLECIRCULARLINKEDLIST_CHECK_ERROR "DoubleCircularLinkedListCheckError: The parameter is incorrect or the data in `DoubleCircularLinkedList` is empty\n"
+#define DOUBLECIRCULARLINKEDLIST_SEARCH_BY_POS 0
+#define DOUBLECIRCULARLINKEDLIST_SEARCH_BY_VALUE 1
+
+
 
 typedef int DoubleCircularLinkedListEleType;
 
@@ -35,7 +39,7 @@ int doublecircularlinkedlist_push_front(DoubleCircularLinkedList* list, DoubleCi
 int doublecircularlinkedlist_push_back(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data);
 int doublecircularlinkedlist_insert(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data, size_t pos);
 int doublecircularlinkedlist_remove(DoubleCircularLinkedList* list, size_t pos);
-int doublecircularlinkedlist_search(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data, size_t* pos, int flag);
+int doublecircularlinkedlist_search(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data, size_t* pos, int mode);
 int doublecircularlinkedlist_pop_front(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
 int doublecircularlinkedlist_pop_back(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
 int doublecircularlinkedlist_front(DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
@@ -47,6 +51,6 @@ size_t doublecircularlinkedlist_length(DoubleCircularLinkedList* list);
 ssize_t doublecircularlinkedlist_size(DoubleCircularLinkedList* list);
 
 int _doublecircularlinkedlist_is_exceed_size(DoubleCircularLinkedList* list);
-int _doublecircularlinkedlist_is_empty(DoubleCircularLinkedList* list);
+int doublecircularlinkedlist_is_empty(DoubleCircularLinkedList* list);
 
 #endif // DOUBLECIRCULARLINKEDLIST_H

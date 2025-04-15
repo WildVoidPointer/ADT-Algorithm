@@ -20,7 +20,7 @@ int _singlelinkedlist_is_exceed_size(SingleLinkedList* list) {
 
 
 size_t singlelinkedlist_length(SingleLinkedList* list) {
-    return (list != NULL) ? list->length : 0;
+    return (list != NULL) ? list->length : -1;
 }
 
 
