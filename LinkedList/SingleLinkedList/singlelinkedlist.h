@@ -37,7 +37,7 @@ typedef struct SingleLinkedList {
 int singlelinkedlist_push_front(SingleLinkedList* list, SingleLinkedListEleType data);
 int singlelinkedlist_push_back(SingleLinkedList* list, SingleLinkedListEleType data);
 int singlelinkedlist_insert(SingleLinkedList* list, SingleLinkedListEleType data, size_t pos);
-int singlelinkedlist_remove(SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int mode);
+int singlelinkedlist_remove(SingleLinkedList* list, SingleLinkedListEleType* data, size_t pos, int mode);
 int singlelinkedlist_search(SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int mode);
 int singlelinkedlist_pop_front(SingleLinkedList* list, SingleLinkedListEleType* data);
 int singlelinkedlist_pop_back(SingleLinkedList* list, SingleLinkedListEleType* data);

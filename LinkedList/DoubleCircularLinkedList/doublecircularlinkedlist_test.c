@@ -10,27 +10,27 @@ int main(int argc, char const *argv[]) {
     }
 
     // 测试尾插法
-    doublecircularlinkedlist_push_back(list, 2333);
-    doublecircularlinkedlist_push_back(list, 23333);
-    doublecircularlinkedlist_push_back(list, 233333);
+    doublecircularlinkedlist_push_back(list, 123);
+    doublecircularlinkedlist_push_back(list, 223);
+    doublecircularlinkedlist_push_back(list, 3233);
     printf("After push_back:\n");
     doublecircularlinkedlist_display(list);
 
     // 测试头插法
-    doublecircularlinkedlist_push_front(list, 23);
+    doublecircularlinkedlist_push_front(list, 2330);
     printf("\nAfter push_front:\n");
     doublecircularlinkedlist_display(list);
 
     // 测试插入
-    doublecircularlinkedlist_insert(list, 233, 1);  // 插入到第一个位置
+    doublecircularlinkedlist_insert(list, 2331, 1);  // 插入到第一个位置
     printf("\nAfter insert at position 1:\n");
     doublecircularlinkedlist_display(list);
 
-    doublecircularlinkedlist_insert(list, 233, list->length);  // 插入到末尾
+    doublecircularlinkedlist_insert(list, 233200, list->length);  // 插入到末尾
     printf("\nAfter insert at last position:\n");
     doublecircularlinkedlist_display(list);
 
-    doublecircularlinkedlist_insert(list, 233, 3);  // 插入到中间位置
+    doublecircularlinkedlist_insert(list, 233400, 3);  // 插入到中间位置
     printf("\nAfter insert at position 3:\n");
     doublecircularlinkedlist_display(list);
 

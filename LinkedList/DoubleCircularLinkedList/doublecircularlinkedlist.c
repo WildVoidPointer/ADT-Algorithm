@@ -258,6 +258,7 @@ doublecircularlinkedlist_remove(
                 list->length--;
                 current = current->next;
                 free(t);
+                break;
             } else {
                 current = current->next;
             }
