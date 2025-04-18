@@ -8,15 +8,33 @@
     #include <sys/types.h>
 #endif
 
-#define DOUBLECIRCULARLINKEDLIST_INIT_ERROR "DoubleCircularLinkedListInitError: Failed to allocate memory\n"
-#define DOUBLECIRCULARLINKEDLIST_ACCESS_ERROR "DoubleCircularLinkedListAccessError: Please check whether the `DoubleCircularLinkedList` type parameter is passed\n"
-#define DOUBLECIRCULARLINKEDLIST_OVERFLOW_EXCEPTION "DoubleCircularLinkedListOverFlowException: Exceed capacity limit\n"
-#define DOUBLECIRCULARLINKEDLIST_NODE_INIT_ERROR "DoubleCircularLinkedListNodeInitError: Failed to allocate memory\n"
-#define DOUBLECIRCULARLINKEDLIST_INSERT_EXCEPTION "DoubleCircularLinkedListInsertException: Index overshoot\n"
-#define DOUBLECIRCULARLINKEDLIST_SEARCH_EXCEPTION "DoubleCircularLinkedListSearchException: Specific element not found\n"
-#define DOUBLECIRCULARLINKEDLIST_SEARCH_MODE_ERROR "DoubleCircularLinkedListSearchException: Search mode error\n"
-#define DOUBLECIRCULARLINKEDLIST_CHECK_ERROR "DoubleCircularLinkedListCheckError: The parameter is incorrect or the data in `DoubleCircularLinkedList` is empty\n"
-#define DOUBLECIRCULARLINKEDLIST_REMOVE_EXCEPTION "DoubleCircularLinkedListRemoveException: Search mode error or invalid parameter\n"
+#define DOUBLECIRCULARLINKEDLIST_INIT_ERROR \
+    "DoubleCircularLinkedListInitError: Failed to allocate memory\n"
+
+#define DOUBLECIRCULARLINKEDLIST_ACCESS_ERROR \
+    "DoubleCircularLinkedListAccessError: Please check whether the `DoubleCircularLinkedList` type parameter is passed\n"
+
+#define DOUBLECIRCULARLINKEDLIST_OVERFLOW_EXCEPTION \
+    "DoubleCircularLinkedListOverFlowException: Exceed capacity limit\n"
+
+#define DOUBLECIRCULARLINKEDLIST_NODE_INIT_ERROR \
+    "DoubleCircularLinkedListNodeInitError: Failed to allocate memory\n"
+
+#define DOUBLECIRCULARLINKEDLIST_INSERT_EXCEPTION \
+    "DoubleCircularLinkedListInsertException: Index overshoot\n"
+
+#define DOUBLECIRCULARLINKEDLIST_SEARCH_EXCEPTION \
+    "DoubleCircularLinkedListSearchException: Specific element not found\n"
+
+#define DOUBLECIRCULARLINKEDLIST_SEARCH_MODE_ERROR \
+    "DoubleCircularLinkedListSearchException: Search mode error\n"
+
+#define DOUBLECIRCULARLINKEDLIST_CHECK_ERROR \
+    "DoubleCircularLinkedListCheckError: The parameter is incorrect or the data in `DoubleCircularLinkedList` is empty\n"
+    
+#define DOUBLECIRCULARLINKEDLIST_REMOVE_EXCEPTION \
+    "DoubleCircularLinkedListRemoveException: Search mode error or invalid parameter\n"
+
 #define DOUBLECIRCULARLINKEDLIST_SEARCH_BY_POS 0
 #define DOUBLECIRCULARLINKEDLIST_SEARCH_BY_VALUE 1
 
