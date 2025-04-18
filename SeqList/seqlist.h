@@ -10,7 +10,6 @@
 
 #define INIT_DATA 0
 
-// 异常消息定义
 #define SEQLIST_INIT_ERROR "SeqListInitError: Failed to allocate memory\n"
 #define ELEMENTS_INIT_ERROR "ElementsInitError: Failed to allocate memory\n"
 #define SEQLIST_ACCESS_ERROR "SeqListAccessError: Check whether parameter `SeqList*` is valid\n"
