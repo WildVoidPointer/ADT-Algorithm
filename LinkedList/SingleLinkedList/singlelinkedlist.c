@@ -14,8 +14,8 @@ SingleLinkedList* singlelinkedlist_create(ssize_t size) {
 
 
 int _singlelinkedlist_is_exceed_size(SingleLinkedList* list) {
-    return ((list != NULL) && (list->size != -1)
-        && (list->length + 1 > list->size)) ? 1 : 0;
+    return (list != NULL) ? 
+        (list->size != -1) && (list->length + 1 > list->size) : -1;
 }
 
 
@@ -30,7 +30,7 @@ ssize_t singlelinkedlist_size(SingleLinkedList* list) {
 
 
 int singlelinkedlist_is_empty(SingleLinkedList* list) {
-    return ((list == NULL) || (list->length == 0)) ? 1 : 0;
+    return (list == NULL) ? list->length == 0 : -1;
 }
 
 

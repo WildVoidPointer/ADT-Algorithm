@@ -9,15 +9,28 @@
 #endif
 
 #define SINGLELINKEDLIST_INIT_ERROR "SingleLinkedListInitError: Failed to allocate memory\n"
-#define SINGLELINKEDLIST_ACCESS_ERROR "SingleLinkedListAccessError: Please check whether the `SingleLinkedList` type parameter is passed\n"
+
+#define SINGLELINKEDLIST_ACCESS_ERROR \
+    "SingleLinkedListAccessError: Please check whether the `SingleLinkedList` type parameter is passed\n"
+
 #define SINGLELINKEDLIST_OVERFLOW_EXCEPTION "SingleLinkedListOverFlowException: Exceed capacity limit\n"
+
 #define SINGLELINKEDLIST_NODE_INIT_ERROR "SingleLinkedListNodeInitError: Failed to allocate memory\n"
+
 #define SINGLELINKEDLIST_INSERT_EXCEPTION "SingleLinkedListInsertException: Index overshoot\n"
+
 #define SINGLELINKEDLIST_SEARCH_EXCEPTION "SingleLinkedListSearchException: Specific element not found\n"
+
 #define SINGLELINKEDLIST_SEARCH_MODE_ERROR "SingleLinkedListSearchException: Search mode error\n"
-#define SINGLELINKEDLIST_CHECK_ERROR "SingleLinkedListCheckError: The parameter is incorrect or the data in `SingleLinkedList` is empty\n"
-#define SINGLELINKEDLIST_REMOVE_EXCEPTION "SingleLinkedListRemoveException: Search mode error or invalid parameter\n"
+
+#define SINGLELINKEDLIST_CHECK_ERROR \
+    "SingleLinkedListCheckError: The parameter is incorrect or the data in `SingleLinkedList` is empty\n"
+
+#define SINGLELINKEDLIST_REMOVE_EXCEPTION \
+    "SingleLinkedListRemoveException: Search mode error or invalid parameter\n"
+
 #define SINGLELINKEDLIST_SEARCH_BY_POS 0
+
 #define SINGLELINKEDLIST_SEARCH_BY_VALUE 1
 
 

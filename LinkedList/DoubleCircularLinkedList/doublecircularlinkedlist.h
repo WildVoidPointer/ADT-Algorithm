@@ -36,6 +36,7 @@
     "DoubleCircularLinkedListRemoveException: Search mode error or invalid parameter\n"
 
 #define DOUBLECIRCULARLINKEDLIST_SEARCH_BY_POS 0
+
 #define DOUBLECIRCULARLINKEDLIST_SEARCH_BY_VALUE 1
 
 

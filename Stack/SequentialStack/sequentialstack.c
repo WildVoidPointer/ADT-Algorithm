@@ -2,16 +2,16 @@
 
 
 SequentialStack* 
-sequential_stack_create(size_t size, int is_init, SequentialStackEleType init) {
+sequential_stack_create(size_t size, int is_init, SequentialStackEleType* init) {
 
     SequentialStack* stack = (SequentialStack*) malloc (sizeof(SequentialStack));
     if (stack == NULL) {
-        fprintf(stderr, SEQUENTIAL_STACK_INIT_ERROR_MEMORY);
+        fprintf(stderr, SEQUENTIAL_STACK_CREATE_ERROR);
         return NULL;
     }
     stack->data = (SequentialStackEleType*) malloc (size * sizeof(SequentialStackEleType));
     if (stack->data == NULL) {
-        fprintf(stderr, SEQUENTIAL_STACK_INIT_ERROR_ELEMENTS);
+        fprintf(stderr, SEQUENTIAL_STACK_ELEMENTS_INIT_ERROR);
         free(stack);
         return NULL;
     }
@@ -20,13 +20,13 @@ sequential_stack_create(size_t size, int is_init, SequentialStackEleType init) {
     stack->length = 0;
 
     if (is_init) {
-        stack->init = init;
-        stack->init_state = 1;
+        stack->init = *init;
+        stack->is_init = 1;
         for (int i = 0; i < size; i++) {
-            stack->data[i] = init;
+            stack->data[i] = *init;
         }
     } else {
-        stack->init_state = 0;
+        stack->is_init = 0;
     }
 
     return stack;
@@ -34,12 +34,12 @@ sequential_stack_create(size_t size, int is_init, SequentialStackEleType init) {
 
 
 int sequential_stack_is_full(SequentialStack* stack) {
-    return (stack != NULL && stack->length < stack->length) ? 0 : 1;
+    return stack != NULL ? stack->length + 1 > stack->size : -1;
 }
 
 
 int sequential_stack_is_empty(SequentialStack* stack) {
-    return stack->length == 0;
+    return stack != NULL ? stack->length == 0 : -1;
 }
 
 
@@ -61,19 +61,19 @@ int sequential_stack_push(SequentialStack* stack, SequentialStackEleType ele) {
 
 
 int sequential_stack_pop(SequentialStack* stack, SequentialStackEleType* buf) {
-    if (stack == NULL || buf == NULL) {
-        fprintf(stderr, SEQUENTIAL_STACK_ACCESS_ERROR_BUF);
+    if (stack == NULL) {
+        fprintf(stderr, SEQUENTIAL_STACK_ACCESS_ERROR);
         return -1;
     }
 
-    if (sequential_stack_is_empty(stack)) {
+    if (sequential_stack_is_empty(stack) || buf == NULL) {
         fprintf(stderr, SEQUENTIAL_STACK_POP_ERROR);
         return -1;
     }
 
     *buf = stack->data[--stack->length];
 
-    if (stack->init_state) {
+    if (stack->is_init) {
         stack->data[stack->length] = stack->init;
     }
     return 0;
@@ -82,7 +82,7 @@ int sequential_stack_pop(SequentialStack* stack, SequentialStackEleType* buf) {
 
 int sequential_stack_clean(SequentialStack** stack) {
     if (stack == NULL || (*stack) == NULL) {
-        fprintf(stderr, SEQUENTIAL_STACK_ACCESS_ERROR_DOUBLE_PTR);
+        fprintf(stderr, SEQUENTIAL_STACK_ACCESS_ERROR);
         return -1;
     }
     free((*stack)->data);

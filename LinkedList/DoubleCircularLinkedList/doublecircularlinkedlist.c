@@ -40,16 +40,13 @@ ssize_t doublecircularlinkedlist_size(DoubleCircularLinkedList* list) {
 
 
 int _doublecircularlinkedlist_is_exceed_size(DoubleCircularLinkedList* list) {
-    return ((list != NULL) && (list->size != -1)
-        && (list->length + 1 > list->size)) ? 1 : 0;
+    return (list != NULL) ? (list->size != -1) && (list->length + 1 > list->size) : -1;
 }
 
 
-int doublecircularlinkedlist_is_empty(DoubleCircularLinkedList* list){
-    return (
-        (list == NULL) ||
-        (list->head->next = list->head) || (list->head->prev == list->head)
-    ) ? 1 : 0;
+int doublecircularlinkedlist_is_empty(DoubleCircularLinkedList* list) {
+    return (list == NULL) ?
+        (list->head->next = list->head) || (list->head->prev == list->head) : -1;
 }
 
 
