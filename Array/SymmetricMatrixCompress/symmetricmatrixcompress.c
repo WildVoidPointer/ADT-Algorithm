@@ -1,15 +1,8 @@
+#include "symmetricmatrixcompress.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
-typedef int SymmetricMatrixCompressBean;
-
-SymmetricMatrixCompressBean ORIGIN_MATRIX[4][4] = {
-    {1, 3, 4, 5},
-    {3, 2, 6, 7},
-    {4, 6, 3, 8},
-    {5, 7, 8, 4}
-};
 
 
 SymmetricMatrixCompressBean* 
@@ -21,11 +14,7 @@ symmetric_matrix_compress(
             (sizeof(SymmetricMatrixCompressBean) * (rows + 1) * (rows) / 2);
 
     if (compressed == NULL) {
-        fprintf(
-            stderr, 
-            "Error: Failed to allocate memory for compression.\n"
-        );
-
+        fprintf(stderr, SYMMETRIC_MATRIX_BEAN_INIT_ERROR);
         return NULL;
     }
 
@@ -59,10 +48,7 @@ symmetric_matrix_uncompress(
             (sizeof(SymmetricMatrixCompressBean*) * rows);
 
     if (uncompressed == NULL) {
-        fprintf(
-            stderr, 
-            "Error: Failed to allocate memory for compression.\n"
-        );
+        fprintf(stderr, SYMMETRIC_MATRIX_BEAN_INIT_ERROR);
         return NULL;
     }
 
@@ -71,10 +57,9 @@ symmetric_matrix_uncompress(
             (sizeof(SymmetricMatrixCompressBean) * rows);
             
         if (uncompressed[i] == NULL) {
-            fprintf(
-                stderr, 
-                "Error: Failed to allocate memory for compression.\n"
-            );
+
+            fprintf(stderr, SYMMETRIC_MATRIX_BEAN_INIT_ERROR);
+
             for (int j = 0; j < i; j++) {
                 free(uncompressed[j]);
             }
@@ -99,10 +84,8 @@ symmetric_matrix_flat_uncompress(
         (sizeof(SymmetricMatrixCompressBean) * rows * rows);
 
     if (uncompressed == NULL) {
-        fprintf(
-            stderr, 
-            "Error: Failed to allocate memory for compression.\n"
-        );
+        fprintf(stderr, SYMMETRIC_MATRIX_BEAN_INIT_ERROR);
+
         return NULL;
     }
 
@@ -119,9 +102,14 @@ symmetric_matrix_flat_uncompress(
 }
 
 
-void 
+int
 symmetric_matrix_flat_display(
     SymmetricMatrixCompressBean* flat_matrix, int raws) {
+
+    if (flat_matrix == NULL) {
+        fprintf(stderr, SYMMETRIC_MATRIX_BEAN_ACCESS_ERROR);
+        return -1;
+    }
 
     printf("SymmetricMatrix:  {\n");
     for (int i = 0; i < raws; i++) {
@@ -132,34 +120,35 @@ symmetric_matrix_flat_display(
         printf("}\n");
     }
     printf("}\n");
-}
-
-
-void free_matrix(SymmetricMatrixCompressBean** matrix, int size) {
-    for (int i = 0; i < size; i++) {
-        free(matrix[i]);
-    }
-    free(matrix);
-}
-
-
-int main() {
-    int size = 4;
-    SymmetricMatrixCompressBean* compressed = 
-        symmetric_matrix_compress(size, ORIGIN_MATRIX);
-
-    if (!compressed) return -1;
-
-    printf("Compressed Matrix:\n");
-    for (int i = 0; i < 10; i++) {
-        printf("%d ", compressed[i]);
-    }
-    printf("\n");
-
-    SymmetricMatrixCompressBean* flat_uncompressed = 
-        symmetric_matrix_flat_uncompress(compressed, 10);
-
-    symmetric_matrix_flat_display(flat_uncompressed, size);
-
     return 0;
 }
+
+
+int symmetric_matrix_uncompressed_bean_clean(
+    SymmetricMatrixCompressBean*** bean, int size) {
+    
+    if (bean == NULL || *bean == NULL) {
+        fprintf(stderr, SYMMETRIC_MATRIX_BEAN_ACCESS_ERROR);
+        return -1;
+    }
+
+    for (int i = 0; i < size; i++) {
+        free(*bean[i]);
+    }
+
+    free(*bean);
+    *bean = NULL;
+    return 0;
+}
+
+
+int symmetric_matrix_compress_bean_clean(SymmetricMatrixCompressBean** bean) {
+    if (bean == NULL || *bean == NULL) {
+        fprintf(stderr, SYMMETRIC_MATRIX_BEAN_ACCESS_ERROR);
+        return -1;
+    }
+    free(*bean);
+    *bean = NULL;
+    return 0;
+}
+

@@ -380,7 +380,7 @@ int singlelinkedlist_display(SingleLinkedList* list) {
 
 
 int singlelinkedlist_clean(SingleLinkedList** list) {
-    if (list == NULL) {
+    if (list == NULL || *list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
         return -1;
     }

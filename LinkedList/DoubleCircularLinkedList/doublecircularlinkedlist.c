@@ -378,7 +378,7 @@ int doublecircularlinkedlist_display(DoubleCircularLinkedList* list){
 
 
 int doublecircularlinkedlist_clean(DoubleCircularLinkedList** list){
-    if (list == NULL) {
+    if (list == NULL || *list == NULL) {
         fprintf(stderr, DOUBLECIRCULARLINKEDLIST_ACCESS_ERROR);
         return -1;
     }

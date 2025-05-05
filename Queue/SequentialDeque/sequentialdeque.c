@@ -141,7 +141,7 @@ int deque_display(SequentialDeque* deque) {
 
 
 int deque_clean(SequentialDeque** deque) {
-    if (*deque == NULL) {
+    if (deque == NULL || *deque == NULL) {
         fprintf(stderr, SEQUENTIAL_DEQUE_ACCESS_ERROR);
         return -1;
     }
