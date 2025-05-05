@@ -32,6 +32,7 @@
 
 typedef int SequentialStackEleType;
 
+
 typedef struct SequentialStack {
     SequentialStackEleType* data;
     SequentialStackEleType init;
@@ -40,12 +41,19 @@ typedef struct SequentialStack {
     int is_init;
 } SequentialStack;
 
+
 SequentialStack* sequential_stack_create(size_t size, int is_init, SequentialStackEleType* init);
+
 int sequential_stack_is_full(SequentialStack* stack);
+
 int sequential_stack_is_empty(SequentialStack* stack);
+
 int sequential_stack_push(SequentialStack* stack, SequentialStackEleType ele);
+
 int sequential_stack_pop(SequentialStack* stack, SequentialStackEleType* buf);
+
 int sequential_stack_clean(SequentialStack** stack);
+
 int sequential_stack_display(SequentialStack* stack);
 
 #endif

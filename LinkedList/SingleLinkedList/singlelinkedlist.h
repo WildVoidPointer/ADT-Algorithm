@@ -36,10 +36,12 @@
 
 typedef int SingleLinkedListEleType;
 
+
 typedef struct SingleLinkedListNode {
     SingleLinkedListEleType data;
     struct SingleLinkedListNode* next;
 } SingleLinkedListNode;
+
 
 typedef struct SingleLinkedList {
     SingleLinkedListNode* head;
@@ -47,20 +49,35 @@ typedef struct SingleLinkedList {
     ssize_t size;
 } SingleLinkedList;
 
+
 int singlelinkedlist_push_front(SingleLinkedList* list, SingleLinkedListEleType data);
+
 int singlelinkedlist_push_back(SingleLinkedList* list, SingleLinkedListEleType data);
+
 int singlelinkedlist_insert(SingleLinkedList* list, SingleLinkedListEleType data, size_t pos);
+
 int singlelinkedlist_remove(SingleLinkedList* list, SingleLinkedListEleType* data, size_t pos, int mode);
+
 int singlelinkedlist_search(SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int mode);
+
 int singlelinkedlist_pop_front(SingleLinkedList* list, SingleLinkedListEleType* data);
+
 int singlelinkedlist_pop_back(SingleLinkedList* list, SingleLinkedListEleType* data);
+
 int singlelinkedlist_front(SingleLinkedList* list, SingleLinkedListEleType* data);
+
 int singlelinkedlist_back(SingleLinkedList* list, SingleLinkedListEleType* data);
+
 int singlelinkedlist_display(SingleLinkedList* list);
+
 int singlelinkedlist_clean(SingleLinkedList** list);
+
 SingleLinkedList* singlelinkedlist_create(ssize_t size);
+
 size_t singlelinkedlist_length(SingleLinkedList* list);
+
 ssize_t singlelinkedlist_size(SingleLinkedList* list);
+
 int singlelinkedlist_is_empty(SingleLinkedList* list);
 
 int _singlelinkedlist_is_exceed_size(SingleLinkedList* list);

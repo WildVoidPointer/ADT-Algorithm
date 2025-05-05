@@ -29,6 +29,7 @@
 
 typedef int SequentialDequeEleType;
 
+
 typedef struct SequentialDeque {
     SequentialDequeEleType* elements;
     SequentialDequeEleType init;
@@ -41,14 +42,25 @@ typedef struct SequentialDeque {
 
 
 SequentialDeque* deque_create(size_t size, int is_init, SequentialDequeEleType* init);
-int deque_is_empty(SequentialDeque* deque);
-int deque_is_full(SequentialDeque *deque);
-ssize_t deque_length(SequentialDeque* deque);
+
 int deque_front_enqueue(SequentialDeque* deque, SequentialDequeEleType ele);
+
 int deque_back_enqueue(SequentialDeque *deque, SequentialDequeEleType ele);
+
 int deque_front_dequeue(SequentialDeque *deque, SequentialDequeEleType* ele);
+
 int deque_back_dequeue(SequentialDeque *deque, SequentialDequeEleType* ele);
+
 int deque_display(SequentialDeque* deque);
+
 int deque_clean(SequentialDeque** deque);
+
+
+int deque_is_empty(SequentialDeque* deque);
+
+int deque_is_full(SequentialDeque *deque);
+
+ssize_t deque_length(SequentialDeque* deque);
+
 
 #endif // SEQUENTIAL_DEQUE_H

@@ -31,17 +31,21 @@ SequentialDeque* deque_create(size_t size, int is_init, SequentialDequeEleType* 
     return deque;
 }
 
+
 int deque_is_empty(SequentialDeque* deque) {
     return deque != NULL ? deque->front == deque->rear : -1;
 }
+
 
 int deque_is_full(SequentialDeque *deque) {
     return deque != NULL ? (deque->rear + 1) % deque->_range == deque->front: -1;
 }
 
+
 ssize_t deque_length(SequentialDeque* deque) {
     return ((deque->rear + deque->_range) - deque->front) % deque->_range;
 }
+
 
 int deque_front_enqueue(SequentialDeque* deque, SequentialDequeEleType ele) {
     if (deque == NULL) {
@@ -59,6 +63,7 @@ int deque_front_enqueue(SequentialDeque* deque, SequentialDequeEleType ele) {
     return 0;
 }
 
+
 int deque_back_enqueue(SequentialDeque *deque, SequentialDequeEleType ele) {
     if (deque == NULL) {
         fprintf(stderr, SEQUENTIAL_DEQUE_ACCESS_ERROR);
@@ -74,6 +79,7 @@ int deque_back_enqueue(SequentialDeque *deque, SequentialDequeEleType ele) {
     deque->rear = (deque->rear + 1) % deque->_range;
     return 0;
 }
+
 
 int deque_front_dequeue(SequentialDeque *deque, SequentialDequeEleType* ele) {
     if (deque == NULL) {
@@ -94,6 +100,7 @@ int deque_front_dequeue(SequentialDeque *deque, SequentialDequeEleType* ele) {
     return 0;
 }
 
+
 int deque_back_dequeue(SequentialDeque *deque, SequentialDequeEleType* ele) {
     if (deque == NULL) {
         fprintf(stderr, SEQUENTIAL_DEQUE_ACCESS_ERROR);
@@ -113,6 +120,7 @@ int deque_back_dequeue(SequentialDeque *deque, SequentialDequeEleType* ele) {
     return 0;
 }
 
+
 int deque_display(SequentialDeque* deque) {
     if (deque == NULL) {
         fprintf(stderr, SEQUENTIAL_DEQUE_ACCESS_ERROR);
@@ -130,6 +138,7 @@ int deque_display(SequentialDeque* deque) {
     printf("}  length: %zu  size: %zu\n", deque_length(deque), deque->size);
     return 0;
 }
+
 
 int deque_clean(SequentialDeque** deque) {
     if (*deque == NULL) {
