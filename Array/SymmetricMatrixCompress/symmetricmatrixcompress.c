@@ -5,13 +5,13 @@
 
 
 
-SymmetricMatrixCompressBean* 
+SymmetricMatrixBean* 
 symmetric_matrix_compress(
-    int rows, SymmetricMatrixCompressBean uncompressed[rows][rows]) {
+    int rows, SymmetricMatrixBean (*uncompressed)[rows]) {
         
-    SymmetricMatrixCompressBean* compressed = 
-        (SymmetricMatrixCompressBean*) malloc 
-            (sizeof(SymmetricMatrixCompressBean) * (rows + 1) * (rows) / 2);
+    SymmetricMatrixBean* compressed = 
+        (SymmetricMatrixBean*) malloc 
+            (sizeof(SymmetricMatrixBean) * (rows + 1) * (rows) / 2);
 
     if (compressed == NULL) {
         fprintf(stderr, SYMMETRIC_MATRIX_BEAN_INIT_ERROR);
@@ -34,18 +34,18 @@ int calculate_uncompressed_matrix_size(int compressed_size) {
 }
 
 
-SymmetricMatrixCompressBean*
+SymmetricMatrixBean*
 symmetric_matrix_uncompress(
-    SymmetricMatrixCompressBean* compressed, int compressed_size) {
+    SymmetricMatrixBean* compressed, int compressed_size) {
 
     int rows = calculate_uncompressed_matrix_size(compressed_size);
     if (rows == -1) {
         return NULL;
     }
 
-    SymmetricMatrixCompressBean** uncompressed =
-        (SymmetricMatrixCompressBean**) malloc
-            (sizeof(SymmetricMatrixCompressBean*) * rows);
+    SymmetricMatrixBean** uncompressed =
+        (SymmetricMatrixBean**) malloc
+            (sizeof(SymmetricMatrixBean*) * rows);
 
     if (uncompressed == NULL) {
         fprintf(stderr, SYMMETRIC_MATRIX_BEAN_INIT_ERROR);
@@ -53,8 +53,8 @@ symmetric_matrix_uncompress(
     }
 
     for (int i = 0; i < rows; i++) {
-        uncompressed[i] = (SymmetricMatrixCompressBean*) malloc
-            (sizeof(SymmetricMatrixCompressBean) * rows);
+        uncompressed[i] = (SymmetricMatrixBean*) malloc
+            (sizeof(SymmetricMatrixBean) * rows);
             
         if (uncompressed[i] == NULL) {
 
@@ -70,18 +70,18 @@ symmetric_matrix_uncompress(
 }
 
 
-SymmetricMatrixCompressBean*
+SymmetricMatrixBean*
 symmetric_matrix_flat_uncompress(
-    SymmetricMatrixCompressBean* compressed, int compressed_size) {
+    SymmetricMatrixBean* compressed, int compressed_size) {
 
     int rows = calculate_uncompressed_matrix_size(compressed_size);
     if (rows == -1) {
         return NULL;
     }
 
-    SymmetricMatrixCompressBean* uncompressed = 
-        (SymmetricMatrixCompressBean*) malloc 
-        (sizeof(SymmetricMatrixCompressBean) * rows * rows);
+    SymmetricMatrixBean* uncompressed = 
+        (SymmetricMatrixBean*) malloc 
+        (sizeof(SymmetricMatrixBean) * rows * rows);
 
     if (uncompressed == NULL) {
         fprintf(stderr, SYMMETRIC_MATRIX_BEAN_INIT_ERROR);
@@ -104,7 +104,7 @@ symmetric_matrix_flat_uncompress(
 
 int
 symmetric_matrix_flat_display(
-    SymmetricMatrixCompressBean* flat_matrix, int raws) {
+    SymmetricMatrixBean* flat_matrix, int raws) {
 
     if (flat_matrix == NULL) {
         fprintf(stderr, SYMMETRIC_MATRIX_BEAN_ACCESS_ERROR);
@@ -125,7 +125,7 @@ symmetric_matrix_flat_display(
 
 
 int symmetric_matrix_uncompressed_bean_clean(
-    SymmetricMatrixCompressBean*** bean, int size) {
+    SymmetricMatrixBean*** bean, int size) {
     
     if (bean == NULL || *bean == NULL) {
         fprintf(stderr, SYMMETRIC_MATRIX_BEAN_ACCESS_ERROR);
@@ -142,7 +142,7 @@ int symmetric_matrix_uncompressed_bean_clean(
 }
 
 
-int symmetric_matrix_compress_bean_clean(SymmetricMatrixCompressBean** bean) {
+int symmetric_matrix_flat_bean_clean(SymmetricMatrixBean** bean) {
     if (bean == NULL || *bean == NULL) {
         fprintf(stderr, SYMMETRIC_MATRIX_BEAN_ACCESS_ERROR);
         return -1;
