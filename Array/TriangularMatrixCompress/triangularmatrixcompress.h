@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 
 #define TRIANGULAR_MATRIX_BEAN_INIT_ERROR \
@@ -15,9 +16,26 @@
 typedef int TriangularMatrixBean;
 
 
+int calculate_uncompressed_matrix_size(int compressed_size);
+
 TriangularMatrixBean*
     lower_triangular_matrix_compress(int rows, TriangularMatrixBean (*uncompressed)[rows]);
 
-int triangular_matrix_flat_bean_clean(TriangularMatrixBean** compressed);
+TriangularMatrixBean**
+    lower_triangular_matrix_uncompress(int compressed_size, TriangularMatrixBean* compressed);
+
+TriangularMatrixBean*
+    upper_triangular_matrix_compress(int rows, TriangularMatrixBean (*uncompressed)[rows]);
+
+TriangularMatrixBean**
+    upper_triangular_matrix_uncompressed(int copressed_size, TriangularMatrixBean* compressed);
+
+int triangular_matrix_uncompressed_bean_display(int rows, TriangularMatrixBean** uncompressed);
+
+int triangular_matrix_compressed_bean_display(int compressed_size, TriangularMatrixBean* uncompressed);
+
+int triangular_matrix_uncompressed_bean_clean(int rows, TriangularMatrixBean*** uncompressed);
+
+int triangular_matrix_compressed_bean_clean(TriangularMatrixBean** compressed);
 
 #endif

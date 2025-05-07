@@ -16,23 +16,23 @@
 typedef int SymmetricMatrixBean;
 
 
+int calculate_uncompressed_matrix_size(int compressed_size);
+
 SymmetricMatrixBean* symmetric_matrix_compress(
     int rows, SymmetricMatrixBean (*uncompressed)[rows]);
 
-int calculate_uncompressed_matrix_size(int compressed_size);
+SymmetricMatrixBean** symmetric_matrix_uncompress(
+    int compressed_size, SymmetricMatrixBean* compressed);
 
-SymmetricMatrixBean* symmetric_matrix_uncompress(
-    SymmetricMatrixBean* compressed, int compressed_size);
+int symmetric_matrix_uncompressed_bean_display(
+    int rows, SymmetricMatrixBean** uncompressed);
 
-SymmetricMatrixBean* symmetric_matrix_flat_uncompress(
-    SymmetricMatrixBean* compressed, int compressed_size);
-
-int symmetric_matrix_flat_display(
-    SymmetricMatrixBean* flat_matrix, int raws);
+int symmetric_matrix_compressed_bean_display(
+    int compressed_size, SymmetricMatrixBean* compressed);
 
 int symmetric_matrix_uncompressed_bean_clean(
-    SymmetricMatrixBean*** bean, int size);
+    int rows, SymmetricMatrixBean*** uncompressed);
 
-int symmetric_matrix_flat_bean_clean(SymmetricMatrixBean** bean);
+int symmetric_matrix_compressed_bean_clean(SymmetricMatrixBean** compressed);
 
 #endif

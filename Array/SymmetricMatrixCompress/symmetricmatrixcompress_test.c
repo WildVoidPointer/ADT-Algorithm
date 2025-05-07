@@ -10,25 +10,23 @@ SymmetricMatrixBean ORIGIN_MATRIX[4][4] = {
 
 
 int main() {
-    int size = 4;
+    int rows = 4;
+    int compressed_size = 10;
+
     SymmetricMatrixBean* compressed = 
-        symmetric_matrix_compress(size, ORIGIN_MATRIX);
+        symmetric_matrix_compress(rows, ORIGIN_MATRIX);
+
+    SymmetricMatrixBean** uncompressed =
+        symmetric_matrix_uncompress(compressed_size, compressed);
 
     if (!compressed) return -1;
+    if (!uncompressed) return -1;
 
-    printf("Compressed Matrix:\n");
-    for (int i = 0; i < 10; i++) {
-        printf("%d ", compressed[i]);
-    }
-    printf("\n");
+    symmetric_matrix_compressed_bean_display(compressed_size, compressed);
+    symmetric_matrix_uncompressed_bean_display(rows, uncompressed);
 
-    SymmetricMatrixBean* flat_uncompressed = 
-        symmetric_matrix_flat_uncompress(compressed, 10);
-
-    symmetric_matrix_flat_display(flat_uncompressed, size);
-
-    symmetric_matrix_flat_bean_clean(&compressed);
-    symmetric_matrix_flat_bean_clean(&flat_uncompressed);
+    symmetric_matrix_compressed_bean_clean(&compressed);
+    symmetric_matrix_uncompressed_bean_clean(rows, &uncompressed);
 
     return 0;
 }
