@@ -1,4 +1,4 @@
-#include "sequentialstack.h"
+#include "sequential_stack.h"
 
 
 SequentialStack* 
