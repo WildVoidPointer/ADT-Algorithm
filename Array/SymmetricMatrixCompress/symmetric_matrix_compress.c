@@ -1,4 +1,4 @@
-#include "symmetricmatrixcompress.h"
+#include "symmetric_matrix_compress.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

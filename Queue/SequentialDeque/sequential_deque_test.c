@@ -1,4 +1,4 @@
-#include "sequentialdeque.h"
+#include "sequential_deque.h"
 #include <stdio.h>
 
 int main(int argc, char const *argv[]) {

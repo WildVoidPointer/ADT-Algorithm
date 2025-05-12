@@ -1,4 +1,4 @@
-#include "triangularmatrixcompress.h"
+#include "triangular_matrix_compress.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

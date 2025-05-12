@@ -1,4 +1,4 @@
-#include "doublecircularlinkedlist.h"
+#include "double_circular_linked_list.h"
 #include <stdio.h>
 
 int main(int argc, char const *argv[]) {

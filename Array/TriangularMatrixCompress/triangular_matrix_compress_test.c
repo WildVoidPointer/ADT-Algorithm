@@ -1,4 +1,4 @@
-#include "triangularmatrixcompress.h"
+#include "triangular_matrix_compress.h"
 
 
 TriangularMatrixBean LOWER_TRIANGULAR_MATRIX[4][4] = {

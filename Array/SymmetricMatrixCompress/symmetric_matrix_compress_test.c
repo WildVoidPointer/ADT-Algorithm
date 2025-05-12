@@ -1,4 +1,4 @@
-#include "symmetricmatrixcompress.h"
+#include "symmetric_matrix_compress.h"
 
 
 SymmetricMatrixBean ORIGIN_MATRIX[4][4] = {

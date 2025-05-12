@@ -1,4 +1,4 @@
-#include "sequentialdeque.h"
+#include "sequential_deque.h"
 
 SequentialDeque* deque_create(size_t size, int is_init, SequentialDequeEleType* init) {
     SequentialDeque* deque = (SequentialDeque*)malloc(sizeof(SequentialDeque));
