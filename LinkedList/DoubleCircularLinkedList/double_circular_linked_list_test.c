@@ -40,7 +40,7 @@ int main(int argc, char const *argv[]) {
     DoubleCircularLinkedListEleType remove_data;
     size_t remove_pos = 2;
     doublecircularlinkedlist_remove(
-        list, &remove_data, &remove_pos, DOUBLECIRCULARLINKEDLIST_SEARCH_BY_POS);
+        list, &remove_data, &remove_pos, DOUBLE_CIRCULAR_LINKED_LIST_SEARCH_BY_POS);
 
     printf("\nAfter remove position 2 (removed data: %d):\n", remove_data);
     doublecircularlinkedlist_display(list);
@@ -66,7 +66,7 @@ int main(int argc, char const *argv[]) {
     DoubleCircularLinkedListEleType search_buf = 233;
     size_t search_pos = 0;
     int result = doublecircularlinkedlist_search(
-        list, &search_buf, &search_pos, DOUBLECIRCULARLINKEDLIST_SEARCH_BY_VALUE);
+        list, &search_buf, &search_pos, DOUBLE_CIRCULAR_LINKED_LIST_SEARCH_BY_VALUE);
 
     if (result == 0) {
         printf("\nFound element %d at position %zu\n", search_buf, search_pos);
@@ -77,7 +77,7 @@ int main(int argc, char const *argv[]) {
     // 测试按位置搜索
     search_pos = 2;
     result = doublecircularlinkedlist_search(
-        list, &search_buf, &search_pos, DOUBLECIRCULARLINKEDLIST_SEARCH_BY_POS);
+        list, &search_buf, &search_pos, DOUBLE_CIRCULAR_LINKED_LIST_SEARCH_BY_POS);
 
     if (result == 0) {
         printf("Element at position %zu: %d\n", search_pos, search_buf);
