@@ -1,15 +1,15 @@
 #include "stack.h"
 
 
-SequentialStack* 
-stack_create(size_t size, int is_init, SequentialStackEleType* init) {
+Stack* 
+stack_create(size_t size, int is_init, StackEleType* init) {
 
-    SequentialStack* stack = (SequentialStack*) malloc (sizeof(SequentialStack));
+    Stack* stack = (Stack*) malloc (sizeof(Stack));
     if (stack == NULL) {
         fprintf(stderr, STACK_INIT_ERROR);
         return NULL;
     }
-    stack->data = (SequentialStackEleType*) malloc (size * sizeof(SequentialStackEleType));
+    stack->data = (StackEleType*) malloc (size * sizeof(StackEleType));
     if (stack->data == NULL) {
         fprintf(stderr, STACK_ELEMENTS_INIT_ERROR);
         free(stack);
@@ -33,17 +33,17 @@ stack_create(size_t size, int is_init, SequentialStackEleType* init) {
 }
 
 
-int stack_is_full(SequentialStack* stack) {
+int stack_is_full(Stack* stack) {
     return stack != NULL ? stack->length + 1 > stack->size : -1;
 }
 
 
-int stack_is_empty(SequentialStack* stack) {
+int stack_is_empty(Stack* stack) {
     return stack != NULL ? stack->length == 0 : -1;
 }
 
 
-int stack_push(SequentialStack* stack, SequentialStackEleType ele) {
+int stack_push(Stack* stack, StackEleType ele) {
     if (stack == NULL) {
         fprintf(stderr, STACK_ACCESS_ERROR);
         return -1;
@@ -60,7 +60,7 @@ int stack_push(SequentialStack* stack, SequentialStackEleType ele) {
 }
 
 
-int stack_pop(SequentialStack* stack, SequentialStackEleType* buf) {
+int stack_pop(Stack* stack, StackEleType* buf) {
     if (stack == NULL) {
         fprintf(stderr, STACK_ACCESS_ERROR);
         return -1;
@@ -80,7 +80,7 @@ int stack_pop(SequentialStack* stack, SequentialStackEleType* buf) {
 }
 
 
-int stack_clean(SequentialStack** stack) {
+int stack_clean(Stack** stack) {
     if (stack == NULL || (*stack) == NULL) {
         fprintf(stderr, STACK_ACCESS_ERROR);
         return -1;
@@ -92,7 +92,7 @@ int stack_clean(SequentialStack** stack) {
 }
 
 
-int stack_display(SequentialStack* stack) {
+int stack_display(Stack* stack) {
     if (stack == NULL) {
         fprintf(stderr, STACK_ACCESS_ERROR);
         return -1;

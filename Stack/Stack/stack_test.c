@@ -3,9 +3,9 @@
 
 int main(int argc, char const *argv[]) {
 
-    SequentialStackEleType init = -1;
+    StackEleType init = -1;
 
-    SequentialStack* stack = stack_create(
+    Stack* stack = stack_create(
         5, STACK_INIT_ENABLE, &init);
 
     stack_display(stack);
@@ -19,7 +19,7 @@ int main(int argc, char const *argv[]) {
     stack_push(stack, 2333333);
     stack_display(stack);
 
-    SequentialStackEleType buf;
+    StackEleType buf;
 
     stack_pop(stack, &buf);
     stack_pop(stack, &buf);
