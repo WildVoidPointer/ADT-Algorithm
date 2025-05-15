@@ -19,15 +19,20 @@ TridiagonalMatrixBean*
 tridiagonal_matrix_compress();
 
 TridiagonalMatrixBean*
-tridiagnaol_matrix_compressed_of_stack(int rows, TridiagonalMatrixBean (*uncompressed)[rows]);
+tridiagnaol_matrix_compress_of_stack(int rows, TridiagonalMatrixBean (*uncompressed)[rows]);
 
 TridiagonalMatrixBean**
-tridiagnaol_matrix_uncompress();
+tridiagnaol_matrix_uncompress(int compressed_szie, TridiagonalMatrixBean* compressed);
+
+int calculate_uncompressed_matrix_size(int compressed_size);
 
 int tridiagnaol_matrix_compressed_bean_display(
     int compressed_size, TridiagonalMatrixBean* compressed);
 
 int tridiagnaol_matrix_uncompressed_bean_display(
     int rows, TridiagonalMatrixBean** uncompressed);
+
+int
+tridiagnaol_matrix_compressed_bean_clean(TridiagonalMatrixBean** compressed);
 
 #endif
