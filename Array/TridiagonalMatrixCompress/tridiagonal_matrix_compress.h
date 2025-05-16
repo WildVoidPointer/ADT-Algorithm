@@ -6,7 +6,7 @@
 
 
 #define TRIDIAGONAL_MATRIX_ACCESS_ERROR \
-    "TridiagonalMatrixAccessError: The data address of thecTridiagonalMatrixBean cannot be accessed\n"
+    "TridiagonalMatrixAccessError: The data address of the TridiagonalMatrixBean cannot be accessed\n"
 
 #define TRIDIAGONAL_MATRIX_BEAN_INIT_ERROR \
     "TridiagonalMatrixBeanInitError: Memory initialization of TridiagonalMatrixBean failed\n"
