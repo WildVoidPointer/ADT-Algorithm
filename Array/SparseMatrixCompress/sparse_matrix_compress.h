@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 
-#define SPARSE_MATRIX_ACCESS_ERROR \
+#define SPARSE_MATRIX_BEAN_ACCESS_ERROR \
     "SparseMatrixAccessError: The data address of the SparseMatrixBean cannot be accessed\n"
 
 #define SPARSE_MATRIX_BEAN_INIT_ERROR \
@@ -39,12 +39,15 @@ SparseMatrixBean*
 sparse_matrix_compress_of_stack(
     SparseMatrixEleType* fiducial, int rows, SparseMatrixEleType (*uncompressed)[rows]);
 
-SparseMatrixBean*
-sparse_matrix_uncompress(int compressed_size, SparseMatrixBean* compressed);
+SparseMatrixEleType**
+sparse_matrix_uncompress(SparseMatrixEleType* fiducial, SparseMatrixBean* compressed);
 
 int sparse_matrix_compressed_bean_display(SparseMatrixBean* commpressed);
 
+int sparse_matrix_uncompressed_bean_display(int rows, SparseMatrixEleType** uncompressed);
+
 int sparse_matrix_compressed_bean_clean(SparseMatrixBean** compressed);
 
+int sparse_matrix_uncompressed_bean_clean(int rows, SparseMatrixEleType*** uncompressed);
 
 #endif

@@ -17,10 +17,16 @@ int main() {
 
     SparseMatrixBean* compressed = 
         sparse_matrix_compress_of_stack(&fiducial, origin_rows, ORIGIN_SPARSE_MATRIX);
+
+    SparseMatrixEleType** uncompressed = sparse_matrix_uncompress(&fiducial, compressed);
+
+    sparse_matrix_uncompressed_bean_display(origin_rows, uncompressed);
     
     sparse_matrix_compressed_bean_display(compressed);
 
     sparse_matrix_compressed_bean_clean(&compressed);
 
-    printf("%p\n", compressed);
+    sparse_matrix_uncompressed_bean_clean(origin_rows, &uncompressed);
+
+    printf("%p\n", uncompressed);
 }
