@@ -88,3 +88,16 @@ int sparse_matrix_compressed_bean_display(SparseMatrixBean* commpressed) {
     printf("}\n");
     return 0;
 }
+
+
+int sparse_matrix_compressed_bean_clean(SparseMatrixBean** compressed) {
+    if (compressed == NULL || *compressed == NULL) {
+        fprintf(stderr, SPARSE_MATRIX_ACCESS_ERROR);
+        return -1;
+    }
+
+    free((*compressed)->units);
+    free(*compressed);
+    *compressed = NULL;
+    return 0;
+}

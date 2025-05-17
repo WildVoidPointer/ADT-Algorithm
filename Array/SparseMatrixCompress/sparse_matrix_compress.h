@@ -44,7 +44,7 @@ sparse_matrix_uncompress(int compressed_size, SparseMatrixBean* compressed);
 
 int sparse_matrix_compressed_bean_display(SparseMatrixBean* commpressed);
 
-int sparse_matrix_compressed_bean_clean(SparseMatrixBean* compressed);
+int sparse_matrix_compressed_bean_clean(SparseMatrixBean** compressed);
 
 
 #endif

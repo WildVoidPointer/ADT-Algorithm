@@ -19,5 +19,8 @@ int main() {
         sparse_matrix_compress_of_stack(&fiducial, origin_rows, ORIGIN_SPARSE_MATRIX);
     
     sparse_matrix_compressed_bean_display(compressed);
-    printf("%d\n", compressed->size);
+
+    sparse_matrix_compressed_bean_clean(&compressed);
+
+    printf("%p\n", compressed);
 }
