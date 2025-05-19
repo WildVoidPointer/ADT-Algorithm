@@ -9,6 +9,19 @@
 #include <stdlib.h> 
 
 
+#define CSTRING_ACCESS_ERROR \
+    "CStringAccessError: The data address of the CString cannot be accessed\n"
+
+#define CSTRING_UNITS_ACCESS_ERROR \
+    "CStringUnitsAccessError: The data address of the CStringUnits cannot be accessed\n"
+
+#define CSTRING_INIT_ERROR \
+    "CStringInitError: Memory initialization of CString failed\n"
+
+#define CSTRING_UNITS_INIT_ERROR \
+    "CStringUnitsInitError: Memory initialization of CStringUnits failed\n"
+
+
 typedef int (*CStringComparator)(CString* cstring1, CString* cstring2);
 
 typedef char CStringUnitType;
@@ -22,11 +35,11 @@ typedef struct CString {
 
 int cstring_is_empty(CString* cstring);
 
-int cstring_length(CString* cstring);
-
-int cstring_compare(CString* cstring1, CString* cstring2, CStringComparator* comparator);
+size_t cstring_length(CString* cstring);
 
 CString* cstring_create(CStringUnitType* units, size_t length);
+
+int cstring_compare(CString* cstring1, CString* cstring2, CStringComparator comparator);
 
 CString* cstring_deepcopy(CString* cstring);
 
