@@ -21,6 +21,9 @@
 #define CSTRING_UNITS_INIT_ERROR \
     "CStringUnitsInitError: Memory initialization of CStringUnits failed\n"
 
+#define CSTRING_DEEPCOPY_ERROR \
+    "CStringDeepCopyError: The copy of the cstring object failed\n"
+
 
 typedef int (*CStringComparator)(CString* cstring1, CString* cstring2);
 
@@ -34,6 +37,8 @@ typedef struct CString {
 
 
 int cstring_is_empty(CString* cstring);
+
+int cstring_is_valid(CString* cstring);
 
 size_t cstring_length(CString* cstring);
 
