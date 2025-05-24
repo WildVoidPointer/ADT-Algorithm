@@ -79,7 +79,7 @@ int cstring_clear(CString* cstring);
 
 int cstring_display(CString* cstring);
 
-int cstring_unit_clean(CStringUnitType** unit);
+int _cstring_unit_clean(CStringUnitType** unit);
 
 int cstring_clean(CString** cstring);
 

@@ -9,7 +9,7 @@
 
 
 int cstring_is_valid(CString* cstring) {
-    return (cstring == NULL || cstring->data == NULL) ? 0 : 1;
+    return (cstring == NULL) ? 0 : 1;
 }
 
 
@@ -219,18 +219,9 @@ int cstring_clear(CString* cstring) {
         return -1;
     }
 
-
-    CStringUnitType* buf = (CStringUnitType*) malloc (sizeof(CStringUnitType));
-    if (buf == NULL) {
-        fprintf(stderr, CSTRING_UNITS_INIT_ERROR);
-        return -1;
-    }
-
     free(cstring->data);
 
-    cstring->data = buf;
-
-    cstring->data = '\0';
+    cstring->data = NULL;
 
     cstring->length = 0;
 
@@ -254,7 +245,7 @@ int cstring_display(CString* cstring) {
 }
 
 
-int cstring_unit_clean(CStringUnitType** unit) {
+int _cstring_unit_clean(CStringUnitType** unit) {
     if (unit == NULL || *unit == NULL) {
         fprintf(stderr, CSTRING_UNIT_ACCESS_ERROR);
         return -1;

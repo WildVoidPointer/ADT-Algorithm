@@ -54,9 +54,19 @@ int main() {
     cstring_search(ectype, &unit, &index, CSTRING_INDEX_SEARCH_MODE);
 
     cstring_clear(cstring1);
-
-    if (cstring1->data == NULL) {
-        printf("1\n");
-    }
     cstring_display(cstring1);
+
+    cstring_clean(&cstring1);
+    cstring_clean(&cstring2);
+    cstring_clean(&ectype);
+    cstring_clean(&substring);
+    cstring_clean(&concated);
+
+    printf("After free, the pointer state: %p\n", cstring1);
+    printf("After free, the pointer state: %p\n", cstring2);
+    printf("After free, the pointer state: %p\n", ectype);
+    printf("After free, the pointer state: %p\n", substring);
+    printf("After free, the pointer state: %p\n", concated);
+
+    return 0;
 }
