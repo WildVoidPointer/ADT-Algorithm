@@ -132,6 +132,8 @@ CString* cstring_substring_split(CString* cstring, size_t start, size_t offset) 
         subcstring->data[i] = cstring->data[start + i];
     }
 
+    subcstring->length = offset;
+
     return subcstring;
 }
 
@@ -150,7 +152,8 @@ CString* cstring_concat(CString* cstring1, CString* cstring2) {
         return NULL;
     }
 
-    concated->data = (CStringUnitType*) malloc (sizeof(CStringUnitType) * cstring1->length + cstring2->length);
+    concated->data = (CStringUnitType*) malloc 
+            (sizeof(CStringUnitType) * cstring1->length + cstring2->length);
 
     if (concated->data == NULL) {
         fprintf(stderr, CSTRING_UNITS_INIT_ERROR);
@@ -166,4 +169,115 @@ CString* cstring_concat(CString* cstring1, CString* cstring2) {
     for (size_t i = 0; i < cstring2->length; i++) {
         concated->data[concated_offset++] = cstring2->data[i];
     }
+
+    concated->length = concated_offset;
+
+    return concated;
+}
+
+
+int cstring_search(
+    CString* cstring, CStringUnitType* unit, size_t* index, CStringSearchMode mode) {
+
+    if (!cstring_is_valid(cstring)) {
+        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        return -1;
+    }
+
+    if (index == NULL || unit == NULL) {
+        fprintf(stderr, CSTRING_SEARCH_BUFFER_ERROR);
+        return -1;
+    }
+
+    if (mode == CSTRING_UNIT_SEARCH_MODE) {
+        for (size_t i = 0; i < cstring->length; i++) {
+            if (cstring->data[i] == *unit) {
+                *index = i;
+                break;
+            }
+        }
+
+    } else if (mode == CSTRING_INDEX_SEARCH_MODE) {
+        if ((*index) > cstring->length) {
+            fprintf(stderr, CSTRING_SEARCH_INDEX_ERROR);
+            return -1;
+        }
+
+        *unit = cstring->data[(*index)];
+    } else {
+        fprintf(stderr, CSTRING_SEARCH_MODE_ERROR);
+        return -1;
+    }
+
+    return 0;
+}
+
+
+int cstring_clear(CString* cstring) {
+    if (!cstring_is_valid(cstring)) {
+        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        return -1;
+    }
+
+
+    CStringUnitType* buf = (CStringUnitType*) malloc (sizeof(CStringUnitType));
+    if (buf == NULL) {
+        fprintf(stderr, CSTRING_UNITS_INIT_ERROR);
+        return -1;
+    }
+
+    free(cstring->data);
+
+    cstring->data = buf;
+
+    cstring->data = '\0';
+
+    cstring->length = 0;
+
+    return 0;
+}
+
+
+int cstring_display(CString* cstring) {
+    if (!cstring_is_valid(cstring)) {
+        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        return -1;
+    }
+
+    printf("CStringObject.{ data : \"");
+    for (size_t i = 0; i < cstring->length; i++) {
+        printf("%c", cstring->data[i]);
+    }
+    printf("\", length: %lu }\n", cstring->length);
+
+    return 0;
+}
+
+
+int cstring_unit_clean(CStringUnitType** unit) {
+    if (unit == NULL || *unit == NULL) {
+        fprintf(stderr, CSTRING_UNIT_ACCESS_ERROR);
+        return -1;
+    }
+
+    free((*unit));
+
+    *unit = NULL;
+
+    return 0;
+}
+
+
+int cstring_clean(CString** cstring) {
+    if (cstring == NULL || !cstring_is_valid(*cstring)) {
+        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        return -1;
+    }
+
+    free((*cstring)->data);
+    free(*cstring);
+
+    *cstring = NULL;
+
+    return 0;
 }
