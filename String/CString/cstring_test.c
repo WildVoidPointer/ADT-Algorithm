@@ -53,6 +53,9 @@ int main() {
     index = 100;
     cstring_search(ectype, &unit, &index, CSTRING_INDEX_SEARCH_MODE);
 
+    cstring_violent_pattern_matching(concated, cstring2, &index);
+    printf("The Unit index: %lu\n", index);
+
     cstring_clear(cstring1);
     cstring_display(cstring1);
 

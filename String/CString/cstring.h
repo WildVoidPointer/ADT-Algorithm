@@ -75,6 +75,8 @@ CString* cstring_concat(CString* cstring1, CString* cstring2);
 int cstring_search(
     CString* cstring, CStringUnitType* unit, size_t* index, CStringSearchMode mode);
 
+int cstring_violent_pattern_matching(CString* cstring1, CString* cstring2, size_t* pos);
+
 int cstring_clear(CString* cstring);
 
 int cstring_display(CString* cstring);

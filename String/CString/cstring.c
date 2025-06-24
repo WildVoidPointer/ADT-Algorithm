@@ -176,6 +176,39 @@ CString* cstring_concat(CString* cstring1, CString* cstring2) {
 }
 
 
+int cstring_violent_pattern_matching(CString* cstring1, CString* cstring2, size_t* pos) {
+    if (! cstring_is_valid(cstring1) || ! cstring_is_valid(cstring2)) {
+        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        return -1;
+    }
+
+    if (pos == NULL) {
+        fprintf(stderr, CSTRING_SEARCH_BUFFER_ERROR);
+        return -1;
+    }
+
+    size_t cstring1_offset = 0;
+    size_t cstring2_offset = 0;
+
+    while (cstring1_offset < cstring1->length && cstring2_offset < cstring2->length) {
+        if (cstring1->data[cstring1_offset] == cstring2->data[cstring2_offset]) {
+            cstring1_offset++;
+            cstring2_offset++;
+        } else {
+            cstring1_offset = cstring1_offset - cstring2_offset + 1;
+            cstring2_offset = 0;
+        }
+    }
+
+    if (cstring2_offset == cstring2->length) {
+        *pos = cstring1_offset - cstring2->length;
+        return 0;
+    } else {
+        return -1;
+    }
+}
+
+
 int cstring_search(
     CString* cstring, CStringUnitType* unit, size_t* index, CStringSearchMode mode) {
 
