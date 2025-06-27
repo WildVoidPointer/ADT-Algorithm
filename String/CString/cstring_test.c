@@ -71,5 +71,23 @@ int main() {
     printf("After free, the pointer state: %p\n", substring);
     printf("After free, the pointer state: %p\n", concated);
 
+    CStringUnitType* pattern_cs = "ABABCABAB";
+    CStringUnitType* matching_cs = "ABABDABACDABABCABAB";
+
+    CString* pattern_s = cstring_create(pattern_cs, 9);
+
+    CString* wait_matching = cstring_create(matching_cs, 19);
+
+    cstring_display(wait_matching);
+
+    size_t res;
+
+    cstring_kmp_matching(wait_matching, pattern_s, &res);
+
+    printf("%lu \n", res);
+
+    cstring_clean(&pattern_s);
+    cstring_clean(&wait_matching);
+
     return 0;
 }

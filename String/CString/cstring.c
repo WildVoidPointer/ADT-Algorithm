@@ -246,6 +246,86 @@ int cstring_search(
 }
 
 
+PMT* cstring_build_partial_match_table(CString* s) {
+    PMT* pmt = (PMT*) malloc (sizeof(PMT));
+    if (pmt == NULL) {
+        fprintf(stderr, PMT_INIT_ERROR);
+        return NULL;
+    }
+
+    pmt->table = (PMTunitType*) malloc(s->length * sizeof(PMTunitType));
+
+    if (pmt->table == NULL) {
+        fprintf(stderr, PMT_UNIT_INIT_ERROR);
+        return NULL;
+    }
+
+    pmt->length = s->length;
+
+    pmt->table[0] = 0;
+
+    int prev_pmt_v = 0;
+
+    size_t i = 1;
+
+    while (i < s->length) {
+        if (s->data[i] == s->data[prev_pmt_v]) {
+            prev_pmt_v++;
+            pmt->table[i] = prev_pmt_v;
+            i++;
+        } else {
+            if (prev_pmt_v != 0) {
+                prev_pmt_v = pmt->table[prev_pmt_v - 1];
+            } else {
+                pmt->table[i] = 0;
+                i++;
+            }
+        }
+    }
+
+    return pmt;
+}
+
+
+int cstring_kmp_matching(CString* cstring, CString* pattern, size_t* res) {
+    if (cstring == NULL || pattern == NULL) {
+        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        return -1;
+    }
+
+    if (res == NULL) {
+        fprintf(stderr, CSTRING_SEARCH_BUFFER_ERROR);
+        return -1;
+    }
+
+    PMT* pmt = cstring_build_partial_match_table(pattern);
+
+    size_t cstring_offset = 0;
+    size_t pattern_i = 0;
+
+    while (cstring_offset < cstring->length) {
+        if (cstring->data[cstring_offset] == pattern->data[pattern_i]) {
+            cstring_offset++;
+            pattern_i++;
+
+            if (pattern_i == pattern->length){
+                *res = cstring_offset - pattern_i;
+                break;
+            }
+        } else {
+            if (pattern_i != 0) {
+                pattern_i = pmt->table[pattern_i - 1];
+            } else {
+                cstring_offset++;
+            }
+        }
+    }
+
+    pmt_clean(&pmt);
+    return 0;
+}
+
+
 int cstring_clear(CString* cstring) {
     if (!cstring_is_valid(cstring)) {
         fprintf(stderr, CSTRING_ACCESS_ERROR);
@@ -303,5 +383,18 @@ int cstring_clean(CString** cstring) {
 
     *cstring = NULL;
 
+    return 0;
+}
+
+
+int pmt_clean(PMT** pmt) {
+    if (pmt == NULL || *pmt == NULL) {
+        fprintf(stderr, PMT_ACCESS_ERROR);
+        return -1;
+    }
+
+    free((*pmt)->table);
+    free((*pmt));
+    *pmt = NULL;
     return 0;
 }
