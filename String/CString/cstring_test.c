@@ -9,61 +9,61 @@ int main() {
     CStringUnitType* units2 = "Hello, C";
     size_t units2_len = 8;
 
-    CString* cstring1 = cstring_create(units1, units1_len);
-    CString* cstring2 = cstring_create(units2, units2_len);
+    CString* cstring1 = CString_create(units1, units1_len);
+    CString* cstring2 = CString_create(units2, units2_len);
 
-    cstring_display(cstring1);
-    cstring_display(cstring2);
+    CString_display(cstring1);
+    CString_display(cstring2);
 
-    printf("Length of cstring1: %lu\n", cstring_length(cstring1));
+    printf("Length of cstring1: %lu\n", CString_length(cstring1));
 
-    CString* ectype = cstring_deepcopy(cstring1);
+    CString* ectype = CString_deepcopy(cstring1);
 
-    cstring_display(ectype);
+    CString_display(ectype);
 
-    printf("CString Compare Result: %d\n", cstring_compare(cstring1, cstring2, NULL));
-    printf("CString Compare Result: %d\n", cstring_compare(cstring1, ectype, NULL));
+    printf("CString Compare Result: %d\n", CString_compare(cstring1, cstring2, NULL));
+    printf("CString Compare Result: %d\n", CString_compare(cstring1, ectype, NULL));
 
-    CString* substring = cstring_substring_split(cstring1, 0, 5);
-    cstring_display(substring);
+    CString* substring = CString_substring_split(cstring1, 0, 5);
+    CString_display(substring);
 
-    CString* concated = cstring_concat(cstring1, cstring2);
-    cstring_display(concated);
+    CString* concated = CString_concat(cstring1, cstring2);
+    CString_display(concated);
 
 
     CStringUnitType unit = 'C';
     size_t index = 0;
 
-    cstring_search(cstring1, NULL, NULL, CSTRING_UNIT_SEARCH_MODE);
+    CString_search(cstring1, NULL, NULL, CSTRING_UNIT_SEARCH_MODE);
 
-    cstring_search(cstring1, &unit, &index, CSTRING_UNIT_SEARCH_MODE);
+    CString_search(cstring1, &unit, &index, CSTRING_UNIT_SEARCH_MODE);
     printf("The Unit index: %lu\n", index);
 
-    cstring_search(cstring2, &unit, &index, CSTRING_UNIT_SEARCH_MODE);
+    CString_search(cstring2, &unit, &index, CSTRING_UNIT_SEARCH_MODE);
     printf("The Unit index: %lu\n", index);
 
     index = 7;
 
-    cstring_search(cstring1, &unit, &index, CSTRING_INDEX_SEARCH_MODE);
+    CString_search(cstring1, &unit, &index, CSTRING_INDEX_SEARCH_MODE);
     printf("The Index unit: %c\n", unit);
 
-    cstring_search(cstring2, &unit, &index, CSTRING_INDEX_SEARCH_MODE);
+    CString_search(cstring2, &unit, &index, CSTRING_INDEX_SEARCH_MODE);
     printf("The Index unit: %c\n", unit);
     
     index = 100;
-    cstring_search(ectype, &unit, &index, CSTRING_INDEX_SEARCH_MODE);
+    CString_search(ectype, &unit, &index, CSTRING_INDEX_SEARCH_MODE);
 
-    cstring_violent_pattern_matching(concated, cstring2, &index);
+    CString_violent_matching(concated, cstring2, &index);
     printf("The Unit index: %lu\n", index);
 
-    cstring_clear(cstring1);
-    cstring_display(cstring1);
+    CString_clear(cstring1);
+    CString_display(cstring1);
 
-    cstring_clean(&cstring1);
-    cstring_clean(&cstring2);
-    cstring_clean(&ectype);
-    cstring_clean(&substring);
-    cstring_clean(&concated);
+    CString_clean(&cstring1);
+    CString_clean(&cstring2);
+    CString_clean(&ectype);
+    CString_clean(&substring);
+    CString_clean(&concated);
 
     printf("After free, the pointer state: %p\n", cstring1);
     printf("After free, the pointer state: %p\n", cstring2);
@@ -74,20 +74,20 @@ int main() {
     CStringUnitType* pattern_cs = "ABABCABAB";
     CStringUnitType* matching_cs = "ABABDABACDABABCABAB";
 
-    CString* pattern_s = cstring_create(pattern_cs, 9);
+    CString* pattern_s = CString_create(pattern_cs, 9);
 
-    CString* wait_matching = cstring_create(matching_cs, 19);
+    CString* wait_matching = CString_create(matching_cs, 19);
 
-    cstring_display(wait_matching);
+    CString_display(wait_matching);
 
     size_t res;
 
-    cstring_kmp_matching(wait_matching, pattern_s, &res);
+    CString_kmp_matching(wait_matching, pattern_s, &res);
 
     printf("%lu \n", res);
 
-    cstring_clean(&pattern_s);
-    cstring_clean(&wait_matching);
+    CString_clean(&pattern_s);
+    CString_clean(&wait_matching);
 
     return 0;
 }

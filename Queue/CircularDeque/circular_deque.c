@@ -1,6 +1,8 @@
 #include "circular_deque.h"
 
-CircularDeque* circular_deque_create(size_t size, int is_init, CircularDequeEleType* init) {
+
+CircularDeque* 
+CircularDeque_create(size_t size, CircularDequeInitModeEnum is_init, CircularDequeEleType* init) {
     CircularDeque* deque = (CircularDeque*)malloc(sizeof(CircularDeque));
     if (deque == NULL) {
         fprintf(stderr, CIRCULAR_DEQUE_INIT_ERROR);
@@ -15,15 +17,16 @@ CircularDeque* circular_deque_create(size_t size, int is_init, CircularDequeEleT
     }
 
     deque->_range = size + 1;
-    if (is_init) {
+    if (is_init == (CircularDequeInitModeEnum)CIRCULAR_DEQUE_INIT_ENABLE) {
         deque->init = *init;
-        deque->is_init = is_init;
+        deque->is_init = 1;
 
         for (size_t i = 0; i < deque->_range; i++) {
             deque->elements[i] = *init;
         }
     }
 
+    deque->is_init = 0;
     deque->size = size;
     deque->front = 0;
     deque->rear = 0;
@@ -32,28 +35,28 @@ CircularDeque* circular_deque_create(size_t size, int is_init, CircularDequeEleT
 }
 
 
-int circular_deque_is_empty(CircularDeque* deque) {
+int CircularDeque_is_empty(CircularDeque* deque) {
     return deque != NULL ? deque->front == deque->rear : -1;
 }
 
 
-int circular_deque_is_full(CircularDeque *deque) {
+int CircularDeque_is_full(CircularDeque *deque) {
     return deque != NULL ? (deque->rear + 1) % deque->_range == deque->front: -1;
 }
 
 
-ssize_t circular_deque_length(CircularDeque* deque) {
+ssize_t CircularDeque_length(CircularDeque* deque) {
     return ((deque->rear + deque->_range) - deque->front) % deque->_range;
 }
 
 
-int circular_deque_front_enqueue(CircularDeque* deque, CircularDequeEleType ele) {
+int CircularDeque_front_enqueue(CircularDeque* deque, CircularDequeEleType ele) {
     if (deque == NULL) {
         fprintf(stderr, CIRCULAR_DEQUE_ACCESS_ERROR);
         return -1;
     }
     
-    if (circular_deque_is_full(deque)) {
+    if (CircularDeque_is_full(deque)) {
         fprintf(stderr, CIRCULAR_DEQUE_ENQUEUE_ERROR);
         return -1;
     }
@@ -64,13 +67,13 @@ int circular_deque_front_enqueue(CircularDeque* deque, CircularDequeEleType ele)
 }
 
 
-int circular_deque_back_enqueue(CircularDeque *deque, CircularDequeEleType ele) {
+int CircularDeque_back_enqueue(CircularDeque *deque, CircularDequeEleType ele) {
     if (deque == NULL) {
         fprintf(stderr, CIRCULAR_DEQUE_ACCESS_ERROR);
         return -1;
     }
 
-    if (circular_deque_is_full(deque)) {
+    if (CircularDeque_is_full(deque)) {
         fprintf(stderr, CIRCULAR_DEQUE_ENQUEUE_ERROR);
         return -1;
     }
@@ -81,13 +84,13 @@ int circular_deque_back_enqueue(CircularDeque *deque, CircularDequeEleType ele) 
 }
 
 
-int circular_deque_front_dequeue(CircularDeque *deque, CircularDequeEleType* ele) {
+int CircularDeque_front_dequeue(CircularDeque *deque, CircularDequeEleType* ele) {
     if (deque == NULL) {
         fprintf(stderr, CIRCULAR_DEQUE_ACCESS_ERROR);
         return -1;
     }
 
-    if (circular_deque_is_empty(deque)) {
+    if (CircularDeque_is_empty(deque)) {
         fprintf(stderr, CIRCULAR_DEQUE_DEQUEUE_ERROR);
         return -1;
     }
@@ -101,13 +104,13 @@ int circular_deque_front_dequeue(CircularDeque *deque, CircularDequeEleType* ele
 }
 
 
-int circular_deque_back_dequeue(CircularDeque *deque, CircularDequeEleType* ele) {
+int CircularDeque_back_dequeue(CircularDeque *deque, CircularDequeEleType* ele) {
     if (deque == NULL) {
         fprintf(stderr, CIRCULAR_DEQUE_ACCESS_ERROR);
         return -1;
     }
 
-    if (circular_deque_is_empty(deque)) {
+    if (CircularDeque_is_empty(deque)) {
         fprintf(stderr, CIRCULAR_DEQUE_DEQUEUE_ERROR);
         return -1;
     }
@@ -121,7 +124,7 @@ int circular_deque_back_dequeue(CircularDeque *deque, CircularDequeEleType* ele)
 }
 
 
-int circular_deque_display(CircularDeque* deque) {
+int CircularDeque_display(CircularDeque* deque) {
     if (deque == NULL) {
         fprintf(stderr, CIRCULAR_DEQUE_ACCESS_ERROR);
         return -1;
@@ -135,12 +138,12 @@ int circular_deque_display(CircularDeque* deque) {
         printf("%d  ", deque->elements[start]);
         start = ((start + deque->_range) + 1) % deque->_range;
     }
-    printf("}  length: %zu  size: %zu\n", circular_deque_length(deque), deque->size);
+    printf("}  length: %zu  size: %zu\n", CircularDeque_length(deque), deque->size);
     return 0;
 }
 
 
-int circular_deque_clean(CircularDeque** deque) {
+int CircularDeque_clean(CircularDeque** deque) {
     if (deque == NULL || *deque == NULL) {
         fprintf(stderr, CIRCULAR_DEQUE_ACCESS_ERROR);
         return -1;

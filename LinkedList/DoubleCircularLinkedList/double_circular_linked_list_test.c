@@ -3,69 +3,69 @@
 
 int main(int argc, char const *argv[]) {
     // 创建容量为10的链表
-    DoubleCircularLinkedList* list = doublecircularlinkedlist_create(10, 0);
+    DoubleCircularLinkedList* list = DoubleCircularLinkedList_create(10, 0);
     if (list == NULL) {
         fprintf(stderr, "Failed to create list\n");
         return -1;
     }
 
-    doublecircularlinkedlist_push_back(NULL, 123);
+    DoubleCircularLinkedList_push_back(NULL, 123);
 
     // 测试尾插法
-    doublecircularlinkedlist_push_back(list, 123);
-    doublecircularlinkedlist_push_back(list, 223);
-    doublecircularlinkedlist_push_back(list, 3233);
+    DoubleCircularLinkedList_push_back(list, 123);
+    DoubleCircularLinkedList_push_back(list, 223);
+    DoubleCircularLinkedList_push_back(list, 3233);
     printf("After push_back:\n");
-    doublecircularlinkedlist_display(list);
+    DoubleCircularLinkedList_display(list);
 
     // 测试头插法
-    doublecircularlinkedlist_push_front(list, 2330);
+    DoubleCircularLinkedList_push_front(list, 2330);
     printf("\nAfter push_front:\n");
-    doublecircularlinkedlist_display(list);
+    DoubleCircularLinkedList_display(list);
 
     // 测试插入
-    doublecircularlinkedlist_insert(list, 2331, 1);  // 插入到第一个位置
+    DoubleCircularLinkedList_insert(list, 2331, 1);  // 插入到第一个位置
     printf("\nAfter insert at position 1:\n");
-    doublecircularlinkedlist_display(list);
+    DoubleCircularLinkedList_display(list);
 
-    doublecircularlinkedlist_insert(list, 233200, list->length);  // 插入到末尾
+    DoubleCircularLinkedList_insert(list, 233200, list->length);  // 插入到末尾
     printf("\nAfter insert at last position:\n");
-    doublecircularlinkedlist_display(list);
+    DoubleCircularLinkedList_display(list);
 
-    doublecircularlinkedlist_insert(list, 233400, 3);  // 插入到中间位置
+    DoubleCircularLinkedList_insert(list, 233400, 3);  // 插入到中间位置
     printf("\nAfter insert at position 3:\n");
-    doublecircularlinkedlist_display(list);
+    DoubleCircularLinkedList_display(list);
 
     // 测试删除
     DoubleCircularLinkedListEleType remove_data;
     size_t remove_pos = 2;
-    doublecircularlinkedlist_remove(
+    DoubleCircularLinkedList_remove(
         list, &remove_data, &remove_pos, DOUBLE_CIRCULAR_LINKED_LIST_SEARCH_BY_POS);
 
     printf("\nAfter remove position 2 (removed data: %d):\n", remove_data);
-    doublecircularlinkedlist_display(list);
+    DoubleCircularLinkedList_display(list);
 
     // 测试弹出
     DoubleCircularLinkedListEleType ele;
-    doublecircularlinkedlist_pop_front(list, &ele);
+    DoubleCircularLinkedList_pop_front(list, &ele);
     printf("\nPopped from front: %d\n", ele);
-    doublecircularlinkedlist_display(list);
+    DoubleCircularLinkedList_display(list);
 
-    doublecircularlinkedlist_pop_back(list, &ele);
+    DoubleCircularLinkedList_pop_back(list, &ele);
     printf("\nPopped from back: %d\n", ele);
-    doublecircularlinkedlist_display(list);
+    DoubleCircularLinkedList_display(list);
 
     // 测试查看头尾元素
-    doublecircularlinkedlist_front(list, &ele);
+    DoubleCircularLinkedList_front(list, &ele);
     printf("\nFront element: %d\n", ele);
 
-    doublecircularlinkedlist_back(list, &ele);
+    DoubleCircularLinkedList_back(list, &ele);
     printf("Back element: %d\n", ele);
 
     // 测试搜索
     DoubleCircularLinkedListEleType search_buf = 233;
     size_t search_pos = 0;
-    int result = doublecircularlinkedlist_search(
+    int result = DoubleCircularLinkedList_search(
         list, &search_buf, &search_pos, DOUBLE_CIRCULAR_LINKED_LIST_SEARCH_BY_VALUE);
 
     if (result == 0) {
@@ -76,7 +76,7 @@ int main(int argc, char const *argv[]) {
 
     // 测试按位置搜索
     search_pos = 2;
-    result = doublecircularlinkedlist_search(
+    result = DoubleCircularLinkedList_search(
         list, &search_buf, &search_pos, DOUBLE_CIRCULAR_LINKED_LIST_SEARCH_BY_POS);
 
     if (result == 0) {
@@ -86,11 +86,11 @@ int main(int argc, char const *argv[]) {
     }
 
     // 测试长度和容量
-    printf("\nCurrent length: %zu\n", doublecircularlinkedlist_length(list));
-    printf("Capacity: %zd\n", doublecircularlinkedlist_size(list));
+    printf("\nCurrent length: %zu\n", DoubleCircularLinkedList_length(list));
+    printf("Capacity: %zd\n", DoubleCircularLinkedList_size(list));
 
     // 清理链表
-    doublecircularlinkedlist_clean(&list);
+    DoubleCircularLinkedList_clean(&list);
     printf("\nAfter clean:\n");
     if (list == NULL) {
         printf("List is NULL (properly cleaned)\n");

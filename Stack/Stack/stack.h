@@ -16,7 +16,7 @@
     "StackInitError: Failed to allocate memory for the `elements` of `Stack`\n"
 
 #define STACK_ACCESS_ERROR \
-    "StackAccessException: Check whether parameter `Stack*` is valid\n"
+    "StackAccessException: Check whether parameter `Stack*` is valid ?\n"
 
 #define STACK_PUSH_ERROR \
     "StackPushException: The Stack structure is full\n"
@@ -24,9 +24,11 @@
 #define STACK_POP_ERROR \
     "StackPopException: The Stack structure is empty or buffer is NULL\n"
 
-#define STACK_INIT_ENABLE 1
 
-#define STACK_INIT_DISABLE 0
+typedef enum StackInitModeEnum {
+    STACK_INIT_DISABLE,
+    STACK_INIT_ENABLE
+} StackInitModeEnum;
 
 
 typedef int StackEleType;
@@ -41,18 +43,18 @@ typedef struct Stack {
 } Stack;
 
 
-Stack* stack_create(size_t size, int is_init, StackEleType* init);
+Stack* Stack_create(size_t size, StackInitModeEnum is_init, StackEleType* init);
 
-int stack_is_full(Stack* stack);
+int Stack_is_full(Stack* stack);
 
-int stack_is_empty(Stack* stack);
+int Stack_is_empty(Stack* stack);
 
-int stack_push(Stack* stack, StackEleType ele);
+int Stack_push(Stack* stack, StackEleType ele);
 
-int stack_pop(Stack* stack, StackEleType* buf);
+int Stack_pop(Stack* stack, StackEleType* buf);
 
-int stack_clean(Stack** stack);
+int Stack_clean(Stack** stack);
 
-int stack_display(Stack* stack);
+int Stack_display(Stack* stack);
 
 #endif

@@ -1,7 +1,7 @@
 #include "single_linked_list.h"
 
 
-SingleLinkedList* singlelinkedlist_create(ssize_t size) {
+SingleLinkedList* SingleLinkedList_create(ssize_t size) {
     SingleLinkedList* list = (SingleLinkedList*)malloc(sizeof(SingleLinkedList));
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_INIT_ERROR);
@@ -13,34 +13,34 @@ SingleLinkedList* singlelinkedlist_create(ssize_t size) {
 }
 
 
-int _singlelinkedlist_is_exceed_size(SingleLinkedList* list) {
+int _SingleLinkedList_is_exceed_size(SingleLinkedList* list) {
     return (list != NULL) ? 
         (list->size != -1) && (list->length + 1 > list->size) : -1;
 }
 
 
-size_t singlelinkedlist_length(SingleLinkedList* list) {
+size_t SingleLinkedList_length(SingleLinkedList* list) {
     return (list != NULL) ? list->length : -1;
 }
 
 
-ssize_t singlelinkedlist_size(SingleLinkedList* list) {
+ssize_t SingleLinkedList_size(SingleLinkedList* list) {
     return (list != NULL) ? list->size : -1;
 }
 
 
-int singlelinkedlist_is_empty(SingleLinkedList* list) {
+int SingleLinkedList_is_empty(SingleLinkedList* list) {
     return (list == NULL) ? list->length == 0 : -1;
 }
 
 
-int singlelinkedlist_push_front(SingleLinkedList* list, SingleLinkedListEleType data) {
+int SingleLinkedList_push_front(SingleLinkedList* list, SingleLinkedListEleType data) {
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
         return -1;
     }
 
-    if (_singlelinkedlist_is_exceed_size(list)) {
+    if (_SingleLinkedList_is_exceed_size(list)) {
         fprintf(stderr, SINGLELINKEDLIST_OVERFLOW_EXCEPTION);
         return -1;
     }
@@ -66,13 +66,13 @@ int singlelinkedlist_push_front(SingleLinkedList* list, SingleLinkedListEleType 
 }
 
 
-int singlelinkedlist_push_back(SingleLinkedList* list, SingleLinkedListEleType data) {
+int SingleLinkedList_push_back(SingleLinkedList* list, SingleLinkedListEleType data) {
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
         return -1;
     }
 
-    if (_singlelinkedlist_is_exceed_size(list)) {
+    if (_SingleLinkedList_is_exceed_size(list)) {
         fprintf(stderr, SINGLELINKEDLIST_OVERFLOW_EXCEPTION);
         return -1;
     }
@@ -101,18 +101,18 @@ int singlelinkedlist_push_back(SingleLinkedList* list, SingleLinkedListEleType d
 
 
 int
-singlelinkedlist_insert(SingleLinkedList* list, SingleLinkedListEleType data, size_t pos) {
+SingleLinkedList_insert(SingleLinkedList* list, SingleLinkedListEleType data, size_t pos) {
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
         return -1;
     }
 
-    if (_singlelinkedlist_is_exceed_size(list)) {
+    if (_SingleLinkedList_is_exceed_size(list)) {
         fprintf(stderr, SINGLELINKEDLIST_OVERFLOW_EXCEPTION);
         return -1;
     }
 
-    if (pos > list->length || pos == 0 || singlelinkedlist_is_empty(list)) {
+    if (pos > list->length || pos == 0 || SingleLinkedList_is_empty(list)) {
         fprintf(stderr, SINGLELINKEDLIST_INSERT_EXCEPTION);
         return -1;
     } 
@@ -169,7 +169,7 @@ singlelinkedlist_insert(SingleLinkedList* list, SingleLinkedListEleType data, si
 }
 
 
-int singlelinkedlist_remove(
+int SingleLinkedList_remove(
     SingleLinkedList* list, SingleLinkedListEleType* data, size_t pos, int mode) {
 
     if (list == NULL) {
@@ -236,7 +236,7 @@ int singlelinkedlist_remove(
 
 
 int
-singlelinkedlist_search(
+SingleLinkedList_search(
     SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int mode) {
         
     if (list == NULL) {
@@ -289,7 +289,7 @@ singlelinkedlist_search(
 }
 
 
-int singlelinkedlist_pop_front(SingleLinkedList* list, SingleLinkedListEleType* data) {
+int SingleLinkedList_pop_front(SingleLinkedList* list, SingleLinkedListEleType* data) {
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
         return -1;
@@ -308,7 +308,7 @@ int singlelinkedlist_pop_front(SingleLinkedList* list, SingleLinkedListEleType* 
 }
 
 
-int singlelinkedlist_pop_back(SingleLinkedList* list, SingleLinkedListEleType* data) {
+int SingleLinkedList_pop_back(SingleLinkedList* list, SingleLinkedListEleType* data) {
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
         return -1;
@@ -336,7 +336,7 @@ int singlelinkedlist_pop_back(SingleLinkedList* list, SingleLinkedListEleType* d
 }
 
 
-int singlelinkedlist_front(SingleLinkedList* list, SingleLinkedListEleType* data) {
+int SingleLinkedList_front(SingleLinkedList* list, SingleLinkedListEleType* data) {
     if (list == NULL || list->length == 0) {
         fprintf(stderr, SINGLELINKEDLIST_CHECK_ERROR);
         return -1;
@@ -346,7 +346,7 @@ int singlelinkedlist_front(SingleLinkedList* list, SingleLinkedListEleType* data
 }
 
 
-int singlelinkedlist_back(SingleLinkedList* list, SingleLinkedListEleType* data) {
+int SingleLinkedList_back(SingleLinkedList* list, SingleLinkedListEleType* data) {
     if (list == NULL || list->length == 0) {
         fprintf(stderr, SINGLELINKEDLIST_CHECK_ERROR);
         return -1;
@@ -362,7 +362,7 @@ int singlelinkedlist_back(SingleLinkedList* list, SingleLinkedListEleType* data)
 }
 
 
-int singlelinkedlist_display(SingleLinkedList* list) {
+int SingleLinkedList_display(SingleLinkedList* list) {
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
         return -1;
@@ -379,7 +379,7 @@ int singlelinkedlist_display(SingleLinkedList* list) {
 }
 
 
-int singlelinkedlist_clean(SingleLinkedList** list) {
+int SingleLinkedList_clean(SingleLinkedList** list) {
     if (list == NULL || *list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
         return -1;

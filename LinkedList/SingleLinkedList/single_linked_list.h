@@ -50,36 +50,36 @@ typedef struct SingleLinkedList {
 } SingleLinkedList;
 
 
-int singlelinkedlist_push_front(SingleLinkedList* list, SingleLinkedListEleType data);
+int SingleLinkedList_push_front(SingleLinkedList* list, SingleLinkedListEleType data);
 
-int singlelinkedlist_push_back(SingleLinkedList* list, SingleLinkedListEleType data);
+int SingleLinkedList_push_back(SingleLinkedList* list, SingleLinkedListEleType data);
 
-int singlelinkedlist_insert(SingleLinkedList* list, SingleLinkedListEleType data, size_t pos);
+int SingleLinkedList_insert(SingleLinkedList* list, SingleLinkedListEleType data, size_t pos);
 
-int singlelinkedlist_remove(SingleLinkedList* list, SingleLinkedListEleType* data, size_t pos, int mode);
+int SingleLinkedList_remove(SingleLinkedList* list, SingleLinkedListEleType* data, size_t pos, int mode);
 
-int singlelinkedlist_search(SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int mode);
+int SingleLinkedList_search(SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int mode);
 
-int singlelinkedlist_pop_front(SingleLinkedList* list, SingleLinkedListEleType* data);
+int SingleLinkedList_pop_front(SingleLinkedList* list, SingleLinkedListEleType* data);
 
-int singlelinkedlist_pop_back(SingleLinkedList* list, SingleLinkedListEleType* data);
+int SingleLinkedList_pop_back(SingleLinkedList* list, SingleLinkedListEleType* data);
 
-int singlelinkedlist_front(SingleLinkedList* list, SingleLinkedListEleType* data);
+int SingleLinkedList_front(SingleLinkedList* list, SingleLinkedListEleType* data);
 
-int singlelinkedlist_back(SingleLinkedList* list, SingleLinkedListEleType* data);
+int SingleLinkedList_back(SingleLinkedList* list, SingleLinkedListEleType* data);
 
-int singlelinkedlist_display(SingleLinkedList* list);
+int SingleLinkedList_display(SingleLinkedList* list);
 
-int singlelinkedlist_clean(SingleLinkedList** list);
+int SingleLinkedList_clean(SingleLinkedList** list);
 
-SingleLinkedList* singlelinkedlist_create(ssize_t size);
+SingleLinkedList* SingleLinkedList_create(ssize_t size);
 
-size_t singlelinkedlist_length(SingleLinkedList* list);
+size_t SingleLinkedList_length(SingleLinkedList* list);
 
-ssize_t singlelinkedlist_size(SingleLinkedList* list);
+ssize_t SingleLinkedList_size(SingleLinkedList* list);
 
-int singlelinkedlist_is_empty(SingleLinkedList* list);
+int SingleLinkedList_is_empty(SingleLinkedList* list);
 
-int _singlelinkedlist_is_exceed_size(SingleLinkedList* list);
+int _SingleLinkedList_is_exceed_size(SingleLinkedList* list);
 
 #endif // SINGLELINKEDLIST_H

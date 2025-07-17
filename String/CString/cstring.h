@@ -36,25 +36,24 @@
 #define CSTRING_SEARCH_MODE_ERROR \
     "CStringSearchModeError: The CString search pattern is invalid\n"
 
-#define PMT_INIT_ERROR \
-    "PMTinitError: Memory initialization of PMT failed\n"
+#define CSTRING_PMT_INIT_ERROR \
+    "CStringPMTinitError: Memory initialization of CStringPMT failed\n"
 
-#define PMT_UNIT_INIT_ERROR \
-    "PMTunitInitError: Memory initialization of PMTunit failed\n"
+#define CSTRING_PMT_UNIT_INIT_ERROR \
+    "CStringPMTunitInitError: Memory initialization of CStringPMTunit failed\n"
 
-#define PMT_ACCESS_ERROR \
-    "PMTaccessError: The data address of the PMT cannot be accessed\n"
+#define CSTRING_PMT_ACCESS_ERROR \
+    "CStringPMTaccessError: The data address of the CStringPMT cannot be accessed\n"
 
 
-#define CSTRING_UNIT_SEARCH_MODE 0
 
-#define CSTRING_INDEX_SEARCH_MODE 1
+typedef enum CStringSearchModeEnum {
+    CSTRING_UNIT_SEARCH_MODE,
+    CSTRING_INDEX_SEARCH_MODE
+} CStringSearchModeEnum;
 
 
 typedef char CStringUnitType;
-
-
-typedef int CStringSearchMode;
 
 
 typedef struct CString {
@@ -65,48 +64,48 @@ typedef struct CString {
 
 typedef size_t PMTunitType;
 
-typedef struct PMT {
+typedef struct CStringPMT {
     PMTunitType* table;
     size_t length;
-} PMT;
+} CStringPMT;
 
 
 typedef int (*CStringComparator)(CString* cstring1, CString* cstring2);
 
 
-int cstring_is_empty(CString* cstring);
+int CString_is_empty(CString* cstring);
 
-int cstring_is_valid(CString* cstring);
+int CString_is_valid(CString* cstring);
 
-size_t cstring_length(CString* cstring);
+size_t CString_length(CString* cstring);
 
-CString* cstring_create(CStringUnitType* units, size_t length);
+CString* CString_create(CStringUnitType* units, size_t length);
 
-int cstring_compare(CString* cstring1, CString* cstring2, CStringComparator comparator);
+int CString_compare(CString* cstring1, CString* cstring2, CStringComparator comparator);
 
-CString* cstring_deepcopy(CString* cstring);
+CString* CString_deepcopy(CString* cstring);
 
-CString* cstring_substring_split(CString* cstring, size_t start, size_t offset);
+CString* CString_substring_split(CString* cstring, size_t start, size_t offset);
 
-CString* cstring_concat(CString* cstring1, CString* cstring2);
+CString* CString_concat(CString* cstring1, CString* cstring2);
 
-int cstring_search(
-    CString* cstring, CStringUnitType* unit, size_t* index, CStringSearchMode mode);
+int CString_search(
+    CString* cstring, CStringUnitType* unit, size_t* index, CStringSearchModeEnum mode);
 
-int cstring_violent_pattern_matching(CString* cstring1, CString* cstring2, size_t* pos);
+int CString_violent_matching(CString* cstring1, CString* cstring2, size_t* pos);
 
-PMT* cstring_build_partial_match_table(CString* s);
+CStringPMT* CStringPMT_build(CString* s);
 
-int cstring_kmp_matching(CString* cstring, CString* pattern, size_t* res);
+int CString_kmp_matching(CString* cstring, CString* pattern, size_t* res);
 
-int cstring_clear(CString* cstring);
+int CString_clear(CString* cstring);
 
-int cstring_display(CString* cstring);
+int CString_display(CString* cstring);
 
-int _cstring_unit_clean(CStringUnitType** unit);
+int _CString_unit_clean(CStringUnitType** unit);
 
-int cstring_clean(CString** cstring);
+int CString_clean(CString** cstring);
 
-int pmt_clean(PMT** pmt);
+int CStringPMT_clean(CStringPMT** pmt);
 
 #endif

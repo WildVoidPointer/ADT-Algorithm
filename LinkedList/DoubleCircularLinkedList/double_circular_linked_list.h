@@ -60,46 +60,46 @@ typedef struct DoubleCircularLinkedList {
 } DoubleCircularLinkedList;
 
 
-int doublecircularlinkedlist_push_front(
+int DoubleCircularLinkedList_push_front(
     DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data);
 
-int doublecircularlinkedlist_push_back(
+int DoubleCircularLinkedList_push_back(
     DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data);
 
-int doublecircularlinkedlist_insert(
+int DoubleCircularLinkedList_insert(
     DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType data, size_t pos);
 
-int doublecircularlinkedlist_remove(
+int DoubleCircularLinkedList_remove(
     DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data, size_t* pos, int mode);
 
-int doublecircularlinkedlist_search(
+int DoubleCircularLinkedList_search(
     DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data, size_t* pos, int mode);
 
-int doublecircularlinkedlist_pop_front(
+int DoubleCircularLinkedList_pop_front(
     DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
 
-int doublecircularlinkedlist_pop_back(
+int DoubleCircularLinkedList_pop_back(
     DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
 
-int doublecircularlinkedlist_front(
+int DoubleCircularLinkedList_front(
     DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
 
-int doublecircularlinkedlist_back(
+int DoubleCircularLinkedList_back(
     DoubleCircularLinkedList* list, DoubleCircularLinkedListEleType* data);
 
-int doublecircularlinkedlist_display(DoubleCircularLinkedList* list);
+int DoubleCircularLinkedList_display(DoubleCircularLinkedList* list);
 
-int doublecircularlinkedlist_clean(DoubleCircularLinkedList** list);
+int DoubleCircularLinkedList_clean(DoubleCircularLinkedList** list);
 
 DoubleCircularLinkedList* 
-doublecircularlinkedlist_create(ssize_t size, DoubleCircularLinkedListEleType init);
+DoubleCircularLinkedList_create(ssize_t size, DoubleCircularLinkedListEleType init);
 
-size_t doublecircularlinkedlist_length(DoubleCircularLinkedList* list);
+size_t DoubleCircularLinkedList_length(DoubleCircularLinkedList* list);
 
-ssize_t doublecircularlinkedlist_size(DoubleCircularLinkedList* list);
+ssize_t DoubleCircularLinkedList_size(DoubleCircularLinkedList* list);
 
-int _doublecircularlinkedlist_is_exceed_size(DoubleCircularLinkedList* list);
+int _DoubleCircularLinkedList_is_exceed_size(DoubleCircularLinkedList* list);
 
-int doublecircularlinkedlist_is_empty(DoubleCircularLinkedList* list);
+int DoubleCircularLinkedList_is_empty(DoubleCircularLinkedList* list);
 
 #endif // DOUBLECIRCULARLINKEDLIST_H

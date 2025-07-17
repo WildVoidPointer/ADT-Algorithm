@@ -2,7 +2,7 @@
 
 
 Stack* 
-stack_create(size_t size, int is_init, StackEleType* init) {
+Stack_create(size_t size, StackInitModeEnum is_init, StackEleType* init_data) {
 
     Stack* stack = (Stack*) malloc (sizeof(Stack));
     if (stack == NULL) {
@@ -19,11 +19,11 @@ stack_create(size_t size, int is_init, StackEleType* init) {
     stack->size = size;
     stack->length = 0;
 
-    if (is_init) {
-        stack->init = *init;
+    if (is_init == (StackInitModeEnum)STACK_INIT_ENABLE) {
+        stack->init = *init_data;
         stack->is_init = 1;
         for (int i = 0; i < size; i++) {
-            stack->data[i] = *init;
+            stack->data[i] = *init_data;
         }
     } else {
         stack->is_init = 0;
@@ -33,23 +33,23 @@ stack_create(size_t size, int is_init, StackEleType* init) {
 }
 
 
-int stack_is_full(Stack* stack) {
+int Stack_is_full(Stack* stack) {
     return stack != NULL ? stack->length + 1 > stack->size : -1;
 }
 
 
-int stack_is_empty(Stack* stack) {
+int Stack_is_empty(Stack* stack) {
     return stack != NULL ? stack->length == 0 : -1;
 }
 
 
-int stack_push(Stack* stack, StackEleType ele) {
+int Stack_push(Stack* stack, StackEleType ele) {
     if (stack == NULL) {
         fprintf(stderr, STACK_ACCESS_ERROR);
         return -1;
     }
 
-    if (stack_is_full(stack)) {
+    if (Stack_is_full(stack)) {
         fprintf(stderr, STACK_PUSH_ERROR);
         return -1;
     }
@@ -60,13 +60,13 @@ int stack_push(Stack* stack, StackEleType ele) {
 }
 
 
-int stack_pop(Stack* stack, StackEleType* buf) {
+int Stack_pop(Stack* stack, StackEleType* buf) {
     if (stack == NULL) {
         fprintf(stderr, STACK_ACCESS_ERROR);
         return -1;
     }
 
-    if (stack_is_empty(stack) || buf == NULL) {
+    if (Stack_is_empty(stack) || buf == NULL) {
         fprintf(stderr, STACK_POP_ERROR);
         return -1;
     }
@@ -80,7 +80,7 @@ int stack_pop(Stack* stack, StackEleType* buf) {
 }
 
 
-int stack_clean(Stack** stack) {
+int Stack_clean(Stack** stack) {
     if (stack == NULL || (*stack) == NULL) {
         fprintf(stderr, STACK_ACCESS_ERROR);
         return -1;
@@ -92,7 +92,7 @@ int stack_clean(Stack** stack) {
 }
 
 
-int stack_display(Stack* stack) {
+int Stack_display(Stack* stack) {
     if (stack == NULL) {
         fprintf(stderr, STACK_ACCESS_ERROR);
         return -1;

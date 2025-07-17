@@ -22,9 +22,11 @@
 
 #define CIRCULAR_DEQUE_DEQUEUE_ERROR "CircularDequeDequeueException: Queue is empty, dequeue failed\n"
 
-#define CIRCULAR_DEQUE_INIT_ENABLE 1
-#define CIRCULAR_DEQUE_INIT_DISABLE 0
 
+typedef enum CircularDequeInitModeEnum {
+    CIRCULAR_DEQUE_INIT_DISABLE,
+    CIRCULAR_DEQUE_INIT_ENABLE
+} CircularDequeInitModeEnum;
 
 typedef int CircularDequeEleType;
 
@@ -40,26 +42,27 @@ typedef struct CircularDeque {
 } CircularDeque;
 
 
-CircularDeque* circular_deque_create(size_t size, int is_init, CircularDequeEleType* init);
+CircularDeque* 
+CircularDeque_create(size_t size, CircularDequeInitModeEnum is_init, CircularDequeEleType* init);
 
-int circular_deque_front_enqueue(CircularDeque* deque, CircularDequeEleType ele);
+int CircularDeque_front_enqueue(CircularDeque* deque, CircularDequeEleType ele);
 
-int circular_deque_back_enqueue(CircularDeque *deque, CircularDequeEleType ele);
+int CircularDeque_back_enqueue(CircularDeque *deque, CircularDequeEleType ele);
 
-int circular_deque_front_dequeue(CircularDeque *deque, CircularDequeEleType* ele);
+int CircularDeque_front_dequeue(CircularDeque *deque, CircularDequeEleType* ele);
 
-int circular_deque_back_dequeue(CircularDeque *deque, CircularDequeEleType* ele);
+int CircularDeque_back_dequeue(CircularDeque *deque, CircularDequeEleType* ele);
 
-int circular_deque_display(CircularDeque* deque);
+int CircularDeque_display(CircularDeque* deque);
 
-int circular_deque_clean(CircularDeque** deque);
+int CircularDeque_clean(CircularDeque** deque);
 
 
-int circular_deque_is_empty(CircularDeque* deque);
+int CircularDeque_is_empty(CircularDeque* deque);
 
-int circular_deque_is_full(CircularDeque *deque);
+int CircularDeque_is_full(CircularDeque *deque);
 
-ssize_t circular_deque_length(CircularDeque* deque);
+ssize_t CircularDeque_length(CircularDeque* deque);
 
 
 #endif // CIRCULAR_DEQUE_H
