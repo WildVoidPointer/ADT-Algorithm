@@ -42,7 +42,7 @@ typedef enum SeqListInitModeEnum {
 
 typedef struct SeqList {
     SeqListEleType* elements;
-    SeqListEleType init;
+    SeqListEleType init_data;
     size_t length;
     size_t size;
     int is_init;

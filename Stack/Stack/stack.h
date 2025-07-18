@@ -36,7 +36,7 @@ typedef int StackEleType;
 
 typedef struct Stack {
     StackEleType* data;
-    StackEleType init;
+    StackEleType init_data;
     size_t length;
     size_t size;
     int is_init;

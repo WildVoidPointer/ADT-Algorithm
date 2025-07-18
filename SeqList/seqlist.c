@@ -18,13 +18,15 @@ SeqList_create(size_t size, SeqListInitModeEnum is_init, SeqListEleType *init_da
 
     if (is_init == (SeqListInitModeEnum)SEQLIST_INIT_ENABLE) {
         seqlist->is_init = 1;
-        seqlist->init = *init_data;
+        seqlist->init_data = *init_data;
         for (size_t i = 0; i < size; i++) {
             seqlist->elements[i] = *init_data;
         }
+    } else {
+        seqlist->is_init = 0;
     }
 
-    seqlist->is_init = 0;
+    
     seqlist->size = size;
     seqlist->length = 0;
     return seqlist;
@@ -85,7 +87,7 @@ int SeqList_remove(SeqList* seqlist, size_t pos, SeqListEleType* buf) {
     }
 
     if (seqlist->is_init) {
-        seqlist->elements[seqlist->length - 1] = seqlist->init;
+        seqlist->elements[seqlist->length - 1] = seqlist->init_data;
     }
 
     seqlist->length--;

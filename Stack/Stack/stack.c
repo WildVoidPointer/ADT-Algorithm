@@ -20,7 +20,7 @@ Stack_create(size_t size, StackInitModeEnum is_init, StackEleType* init_data) {
     stack->length = 0;
 
     if (is_init == (StackInitModeEnum)STACK_INIT_ENABLE) {
-        stack->init = *init_data;
+        stack->init_data = *init_data;
         stack->is_init = 1;
         for (int i = 0; i < size; i++) {
             stack->data[i] = *init_data;
@@ -74,7 +74,7 @@ int Stack_pop(Stack* stack, StackEleType* buf) {
     *buf = stack->data[--stack->length];
 
     if (stack->is_init) {
-        stack->data[stack->length] = stack->init;
+        stack->data[stack->length] = stack->init_data;
     }
     return 0;
 }

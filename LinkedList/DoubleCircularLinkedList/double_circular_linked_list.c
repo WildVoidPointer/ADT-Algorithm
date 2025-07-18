@@ -2,7 +2,7 @@
 
 
 DoubleCircularLinkedList* 
-DoubleCircularLinkedList_create(ssize_t size, DoubleCircularLinkedListEleType init) {
+DoubleCircularLinkedList_create(ssize_t size, DoubleCircularLinkedListEleType init_data) {
     DoubleCircularLinkedList* list = (DoubleCircularLinkedList*) 
                                     malloc(sizeof(DoubleCircularLinkedList));
     if (list == NULL) {
@@ -19,7 +19,7 @@ DoubleCircularLinkedList_create(ssize_t size, DoubleCircularLinkedListEleType in
         return NULL;
     }
 
-    node->data = init;
+    node->data = init_data;
     node->next = node;
     node->prev = node;
     list->head = node;

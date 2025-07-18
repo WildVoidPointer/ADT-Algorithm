@@ -33,7 +33,7 @@ typedef int CircularDequeEleType;
 
 typedef struct CircularDeque {
     CircularDequeEleType* elements;
-    CircularDequeEleType init;
+    CircularDequeEleType init_data;
     int is_init;
     size_t size;
     size_t front;

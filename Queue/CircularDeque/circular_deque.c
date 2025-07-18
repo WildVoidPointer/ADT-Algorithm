@@ -18,15 +18,16 @@ CircularDeque_create(size_t size, CircularDequeInitModeEnum is_init, CircularDeq
 
     deque->_range = size + 1;
     if (is_init == (CircularDequeInitModeEnum)CIRCULAR_DEQUE_INIT_ENABLE) {
-        deque->init = *init;
+        deque->init_data = *init;
         deque->is_init = 1;
 
         for (size_t i = 0; i < deque->_range; i++) {
             deque->elements[i] = *init;
         }
+    } else {
+        deque->is_init = 0;
     }
 
-    deque->is_init = 0;
     deque->size = size;
     deque->front = 0;
     deque->rear = 0;
@@ -97,7 +98,7 @@ int CircularDeque_front_dequeue(CircularDeque *deque, CircularDequeEleType* ele)
     
     *ele = deque->elements[deque->front];
     if (deque->is_init) {
-        deque->elements[deque->front] = deque->init;
+        deque->elements[deque->front] = deque->init_data;
     }
     deque->front = ((deque->front + deque->_range) + 1) % deque->_range;
     return 0;
@@ -118,7 +119,7 @@ int CircularDeque_back_dequeue(CircularDeque *deque, CircularDequeEleType* ele) 
     deque->rear = ((deque->rear + deque->_range) - 1) % deque->_range;
     *ele = deque->elements[deque->rear];
     if (deque->is_init) {
-        deque->elements[deque->rear] = deque->init;
+        deque->elements[deque->rear] = deque->init_data;
     }
     return 0;
 }
