@@ -386,6 +386,10 @@ int SingleLinkedList_reverse(SingleLinkedList* list) {
         return -1;
     }
 
+    if (list->head == NULL || list->head->next == NULL) {
+        return 0;
+    }
+
     SingleLinkedListNode* prev = NULL;
     SingleLinkedListNode* current = list->head;
     SingleLinkedListNode* next = NULL;
@@ -400,6 +404,33 @@ int SingleLinkedList_reverse(SingleLinkedList* list) {
     list->head = prev;
 
     return 0;
+}
+
+
+int
+SingleLinkedList_recursion_reverse(SingleLinkedList* list) {
+    if (list == NULL) {
+        fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
+        return -1;
+    }
+    
+    list->head = _SingleLinkedList_recursion_reverse_node(list->head);
+    return 0;
+}
+
+
+SingleLinkedListNode* 
+_SingleLinkedList_recursion_reverse_node(SingleLinkedListNode* node) {
+    if (node ==  NULL || node->next == NULL) {
+        return node;
+    }
+
+    SingleLinkedListNode* tmp = _SingleLinkedList_recursion_reverse_node(node->next);
+
+    node->next->next = node;
+    node->next =  NULL;
+
+    return tmp;
 }
 
 

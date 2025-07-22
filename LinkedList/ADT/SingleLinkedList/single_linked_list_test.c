@@ -28,6 +28,9 @@ int main(int argc, char const *argv[]) {
     SingleLinkedList_reverse(list);
     SingleLinkedList_display(list);
 
+    SingleLinkedList_recursion_reverse(list);
+    SingleLinkedList_display(list);
+
     SingleLinkedList_pop_back(list, &ele);
     printf("Popped from back: %d\n", ele);
     SingleLinkedList_display(list);
@@ -50,7 +53,10 @@ int main(int argc, char const *argv[]) {
     SingleLinkedListEleType search_buf = 3233;
     size_t search_pos = 3;
 
-    int result = SingleLinkedList_search(list, &search_buf, &search_pos, SINGLELINKEDLIST_SEARCH_BY_VALUE);
+    int result = SingleLinkedList_search(
+        list, &search_buf, &search_pos, SINGLELINKEDLIST_SEARCH_BY_VALUE
+    );
+
     if (result == 0) {
         printf("Found element %d at position %zu\n", search_buf, search_pos);
     } else {
@@ -58,7 +64,10 @@ int main(int argc, char const *argv[]) {
     }
 
 
-    result = SingleLinkedList_search(list, &search_buf, &search_pos, SINGLELINKEDLIST_SEARCH_BY_VALUE);
+    result = SingleLinkedList_search(
+        list, &search_buf, &search_pos, SINGLELINKEDLIST_SEARCH_BY_VALUE
+    );
+    
     if (result == 0) {
         printf("Found element %d at position %zu\n", search_buf, search_pos);
     } else {

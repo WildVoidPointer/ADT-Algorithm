@@ -78,6 +78,12 @@ int SingleLinkedList_back(SingleLinkedList* list, SingleLinkedListEleType* data)
 
 int SingleLinkedList_reverse(SingleLinkedList* list);
 
+int
+SingleLinkedList_recursion_reverse(SingleLinkedList* list);
+
+SingleLinkedListNode* 
+_SingleLinkedList_recursion_reverse_node(SingleLinkedListNode* node);
+
 int SingleLinkedList_display(SingleLinkedList* list);
 
 int SingleLinkedList_clean(SingleLinkedList** list);
