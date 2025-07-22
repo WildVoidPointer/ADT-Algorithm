@@ -25,6 +25,9 @@ int main(int argc, char const *argv[]) {
     printf("Popped from front: %d\n", ele);
     SingleLinkedList_display(list);
 
+    SingleLinkedList_reverse(list);
+    SingleLinkedList_display(list);
+
     SingleLinkedList_pop_back(list, &ele);
     printf("Popped from back: %d\n", ele);
     SingleLinkedList_display(list);

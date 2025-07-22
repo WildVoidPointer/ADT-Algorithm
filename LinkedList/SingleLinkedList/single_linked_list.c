@@ -2,6 +2,7 @@
 
 
 SingleLinkedList* SingleLinkedList_create(ssize_t size) {
+
     SingleLinkedList* list = (SingleLinkedList*)malloc(sizeof(SingleLinkedList));
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_INIT_ERROR);
@@ -66,7 +67,9 @@ int SingleLinkedList_push_front(SingleLinkedList* list, SingleLinkedListEleType 
 }
 
 
-int SingleLinkedList_push_back(SingleLinkedList* list, SingleLinkedListEleType data) {
+int 
+SingleLinkedList_push_back(SingleLinkedList* list, SingleLinkedListEleType data) {
+    
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
         return -1;
@@ -77,7 +80,9 @@ int SingleLinkedList_push_back(SingleLinkedList* list, SingleLinkedListEleType d
         return -1;
     }
 
-    SingleLinkedListNode* node = (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+    SingleLinkedListNode* node = 
+        (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+
     if (node == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_NODE_INIT_ERROR);
         return -1;
@@ -101,7 +106,9 @@ int SingleLinkedList_push_back(SingleLinkedList* list, SingleLinkedListEleType d
 
 
 int
-SingleLinkedList_insert(SingleLinkedList* list, SingleLinkedListEleType data, size_t pos) {
+SingleLinkedList_insert(
+    SingleLinkedList* list, SingleLinkedListEleType data, size_t pos) {
+
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
         return -1;
@@ -118,7 +125,10 @@ SingleLinkedList_insert(SingleLinkedList* list, SingleLinkedListEleType data, si
     } 
 
     if (pos == 1) {
-        SingleLinkedListNode* node = (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+
+        SingleLinkedListNode* node = 
+            (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+
         if (node == NULL) {
             fprintf(stderr, SINGLELINKEDLIST_NODE_INIT_ERROR);
             return -1;
@@ -135,7 +145,9 @@ SingleLinkedList_insert(SingleLinkedList* list, SingleLinkedListEleType data, si
             current = current->next;
         }
 
-        SingleLinkedListNode* node = (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+        SingleLinkedListNode* node = 
+            (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+
         if (node == NULL) {
             fprintf(stderr, SINGLELINKEDLIST_NODE_INIT_ERROR);
             return -1;
@@ -145,7 +157,10 @@ SingleLinkedList_insert(SingleLinkedList* list, SingleLinkedListEleType data, si
         list->length++;
 
     } else if (pos <= list->length) {
-        SingleLinkedListNode* node = (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+
+        SingleLinkedListNode* node = 
+            (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+
         if (node == NULL) {
             fprintf(stderr, SINGLELINKEDLIST_NODE_INIT_ERROR);
             return -1;
@@ -170,7 +185,8 @@ SingleLinkedList_insert(SingleLinkedList* list, SingleLinkedListEleType data, si
 
 
 int SingleLinkedList_remove(
-    SingleLinkedList* list, SingleLinkedListEleType* data, size_t pos, int mode) {
+    SingleLinkedList* list, SingleLinkedListEleType* data, 
+    size_t pos, SingleLinkedListSearchModeEnum mode) {
 
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
@@ -237,7 +253,8 @@ int SingleLinkedList_remove(
 
 int
 SingleLinkedList_search(
-    SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int mode) {
+    SingleLinkedList* list, SingleLinkedListEleType* data, 
+    size_t* pos, SingleLinkedListSearchModeEnum mode) {
         
     if (list == NULL) {
         fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
@@ -358,6 +375,30 @@ int SingleLinkedList_back(SingleLinkedList* list, SingleLinkedListEleType* data)
         current = current->next;
     }
     *data = current->data;
+    return 0;
+}
+
+
+int SingleLinkedList_reverse(SingleLinkedList* list) {
+    
+    if (list == NULL) {
+        fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
+        return -1;
+    }
+
+    SingleLinkedListNode* prev = NULL;
+    SingleLinkedListNode* current = list->head;
+    SingleLinkedListNode* next = NULL;
+
+    while (current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    list->head = prev;
+
     return 0;
 }
 

@@ -29,9 +29,11 @@
 #define SINGLELINKEDLIST_REMOVE_EXCEPTION \
     "SingleLinkedListRemoveException: Search mode error or invalid parameter\n"
 
-#define SINGLELINKEDLIST_SEARCH_BY_POS 0
 
-#define SINGLELINKEDLIST_SEARCH_BY_VALUE 1
+typedef enum SingleLinkedListSearchModeEnum {
+    SINGLELINKEDLIST_SEARCH_BY_POS,
+    SINGLELINKEDLIST_SEARCH_BY_VALUE
+} SingleLinkedListSearchModeEnum;
 
 
 typedef int SingleLinkedListEleType;
@@ -50,15 +52,21 @@ typedef struct SingleLinkedList {
 } SingleLinkedList;
 
 
+SingleLinkedList* SingleLinkedList_create(ssize_t size);
+
 int SingleLinkedList_push_front(SingleLinkedList* list, SingleLinkedListEleType data);
 
 int SingleLinkedList_push_back(SingleLinkedList* list, SingleLinkedListEleType data);
 
 int SingleLinkedList_insert(SingleLinkedList* list, SingleLinkedListEleType data, size_t pos);
 
-int SingleLinkedList_remove(SingleLinkedList* list, SingleLinkedListEleType* data, size_t pos, int mode);
+int SingleLinkedList_remove(
+    SingleLinkedList* list, SingleLinkedListEleType* data, 
+    size_t pos, SingleLinkedListSearchModeEnum mode);
 
-int SingleLinkedList_search(SingleLinkedList* list, SingleLinkedListEleType* data, size_t* pos, int mode);
+int SingleLinkedList_search(
+    SingleLinkedList* list, SingleLinkedListEleType* data, 
+    size_t* pos, SingleLinkedListSearchModeEnum mode);
 
 int SingleLinkedList_pop_front(SingleLinkedList* list, SingleLinkedListEleType* data);
 
@@ -68,11 +76,11 @@ int SingleLinkedList_front(SingleLinkedList* list, SingleLinkedListEleType* data
 
 int SingleLinkedList_back(SingleLinkedList* list, SingleLinkedListEleType* data);
 
+int SingleLinkedList_reverse(SingleLinkedList* list);
+
 int SingleLinkedList_display(SingleLinkedList* list);
 
 int SingleLinkedList_clean(SingleLinkedList** list);
-
-SingleLinkedList* SingleLinkedList_create(ssize_t size);
 
 size_t SingleLinkedList_length(SingleLinkedList* list);
 
