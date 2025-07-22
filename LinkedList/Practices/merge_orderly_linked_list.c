@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 typedef struct LinkedListNode {
     int data;
     struct LinkedListNode* next;
