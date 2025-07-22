@@ -1,11 +1,12 @@
 #include "seqlist.h"
 
+
 SeqList* 
 SeqList_create(size_t size, SeqListInitModeEnum is_init, SeqListEleType *init_data) {
 
     SeqList* seqlist = (SeqList*)malloc(sizeof(SeqList));
     if (seqlist == NULL) {
-        fprintf(stderr, SEQLIST_INIT_ERROR);
+        fprintf(stderr, SEQLIST_CREATE_ERROR);
         return NULL;
     }
 
@@ -30,6 +31,33 @@ SeqList_create(size_t size, SeqListInitModeEnum is_init, SeqListEleType *init_da
     seqlist->size = size;
     seqlist->length = 0;
     return seqlist;
+}
+
+
+int 
+SeqList_expand(SeqList* seqlist, size_t expand_size, SeqListInitModeEnum is_init) {
+    if (seqlist == NULL) {
+        fprintf(stderr, SEQLIST_ACCESS_ERROR);
+        return -1;
+    }
+
+    SeqListEleType* tmp = (SeqListEleType*) 
+        realloc (seqlist->elements, sizeof(SeqListEleType) * (seqlist->size + expand_size));
+
+    if (tmp == NULL) {
+        fprintf(stderr, SEQLIST_EXPAND_ERROR);
+        return -1;
+    } else {
+        seqlist->elements = tmp;
+    }
+
+    if (is_init == (SeqListInitModeEnum) SEQLIST_INIT_ENABLE || seqlist->is_init) {
+        for (size_t i = seqlist->size; i < (seqlist->size + expand_size); i++) {
+            seqlist->elements[i] = seqlist->init_data;
+        }
+    }
+    seqlist->size = seqlist->size + expand_size;
+    return 0;
 }
 
 

@@ -8,9 +8,11 @@
     #include <sys/types.h>
 #endif
 
-#define SEQLIST_INIT_ERROR "SeqListInitError: Failed to allocate memory\n"
+#define SEQLIST_CREATE_ERROR "SeqListCreateError: Failed to allocate memory\n"
 
 #define ELEMENTS_INIT_ERROR "ElementsInitError: Failed to allocate memory\n"
+
+#define SEQLIST_EXPAND_ERROR "SeqListExpandError: Failed to reallocate memory\n"
 
 #define SEQLIST_ACCESS_ERROR \
     "SeqListAccessError: Check whether parameter `SeqList*` is valid\n"
@@ -51,6 +53,9 @@ typedef struct SeqList {
 
 SeqList* 
 SeqList_create(size_t size, SeqListInitModeEnum is_init, SeqListEleType *init_data);
+
+int 
+SeqList_expand(SeqList* seqlist, size_t expand_size, SeqListInitModeEnum is_init);
 
 size_t SeqList_length(SeqList* seqlist);
 

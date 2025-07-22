@@ -23,7 +23,12 @@ int main(int argc, char const *argv[]) {
     SeqList_insert(seqlist, 4, 5);
     SeqList_display(seqlist);
 
+    SeqList_expand(seqlist, 1, SEQLIST_INIT_ENABLE);
+    SeqList_display(seqlist);
+
     SeqList_insert(seqlist, 4, 7);
+    SeqList_display(seqlist);
+    
     SeqList_insert(seqlist, 4, 7);
     SeqList_display(seqlist);
 
