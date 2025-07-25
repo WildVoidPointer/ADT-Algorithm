@@ -8,11 +8,13 @@ int main() {
     BinaryTree* tree = BinaryTree_build_of_array(arr, size);
     BinaryTree_display(tree, NULL);
 
+    BinaryTree_display(tree, BinaryTree_pre_order_traversal);
+
     BinaryTree_display(tree, BinaryTree_in_order_traversal);
 
     BinaryTree_display(tree, BinaryTree_post_order_traversal);
 
-    BinaryTree_display(tree, BinaryTree_level_order_traversal);
+    BinaryTree_clean(&tree);
 
     return 0;
 }

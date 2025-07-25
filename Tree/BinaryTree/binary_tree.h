@@ -106,6 +106,35 @@ int BinaryTree_level_order_traversal(
 );
 
 
+BinaryTree* BinaryTree_build_of_pre_order(
+    BinaryTreeEleType* in_order, BinaryTreeEleType* pre_order,
+    size_t in_len, size_t pre_len
+);
+
+
+BinaryTree* BinaryTree_build_of_post_order(
+    BinaryTreeEleType* in_order, BinaryTreeEleType* post_order,
+    size_t in_len, size_t post_len
+);
+
+
+BinaryTree* BinaryTree_build_of_level_order(
+    BinaryTreeEleType* in_order, BinaryTreeEleType* level_order
+);
+
+
+ssize_t BinaryTree_in_order_index_search(
+    BinaryTreeEleType* in_order, size_t start, size_t end, 
+    BinaryTreeEleType val
+);
+
+
+BinaryTreeNode* BinaryTreeNode_build_of_pre_order(
+    BinaryTreeEleType* in_order, BinaryTreeEleType* pre_order, 
+    size_t* pre_order_index, size_t in_order_start, size_t in_order_end
+);
+
+
 int BinaryTree_display(BinaryTree* tree, BinaryTreeTraversalOperator op);
 
 
