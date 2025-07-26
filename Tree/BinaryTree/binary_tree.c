@@ -34,50 +34,6 @@ BinaryTree* BinaryTree_create(
 }
 
 
-BinaryTree* 
-BinaryTree_build_of_array(BinaryTreeEleType* array, size_t array_len) {
-    if (array == NULL) {
-        fprintf(stderr, BINARY_TREE_SRC_ACCESS_EXCEPTION);
-        return NULL;
-    }
-
-    BinaryTree* tree = BinaryTree_create(BINARY_TREE_INIT_DISABLE, NULL);
-
-    if(tree == NULL) {
-        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
-        return NULL;
-    }
-
-    BinaryTreeNode* root = BinaryTreeNode_create(array[0]);
-    _BinaryTreeInnerQueue* q = _BinaryTreeInnerQueue_create();
-    _BinaryTreeInnerQueue_enqueue(q, root);
-    
-    int i = 1;
-    while (i < array_len && !_BinaryTreeInnerQueue_is_empty(q)) {
-        BinaryTreeNode* current = _BinaryTreeInnerQueue_dequeue(q);
-        
-        // 处理左子节点
-        if (i < array_len) {
-            current->left = BinaryTreeNode_create(array[i]);
-            _BinaryTreeInnerQueue_enqueue(q, current->left);
-        }
-        i++;
-        
-        // 处理右子节点
-        if (i < array_len) {
-            current->right = BinaryTreeNode_create(array[i]);
-            _BinaryTreeInnerQueue_enqueue(q, current->right);
-        }
-        i++;
-    }
-    
-    free(q);
-    tree->root = root;
-    tree->node_num = array_len;
-    return tree;
-}
-
-
 int BinaryTree_pre_order_traversal(
     BinaryTreeNode* node, BinaryTreeNodeOperator op) 
 {
@@ -189,6 +145,50 @@ int BinaryTree_display(BinaryTree* tree, BinaryTreeTraversalOperator op) {
 }
 
 
+BinaryTree* 
+BinaryTree_build_of_array(BinaryTreeEleType* array, size_t array_len) {
+    if (array == NULL) {
+        fprintf(stderr, BINARY_TREE_SRC_ACCESS_EXCEPTION);
+        return NULL;
+    }
+
+    BinaryTree* tree = BinaryTree_create(BINARY_TREE_INIT_DISABLE, NULL);
+
+    if(tree == NULL) {
+        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+        return NULL;
+    }
+
+    BinaryTreeNode* root = BinaryTreeNode_create(array[0]);
+    _BinaryTreeInnerQueue* q = _BinaryTreeInnerQueue_create();
+    _BinaryTreeInnerQueue_enqueue(q, root);
+    
+    int i = 1;
+    while (i < array_len && !_BinaryTreeInnerQueue_is_empty(q)) {
+        BinaryTreeNode* current = _BinaryTreeInnerQueue_dequeue(q);
+        
+        // 处理左子节点
+        if (i < array_len) {
+            current->left = BinaryTreeNode_create(array[i]);
+            _BinaryTreeInnerQueue_enqueue(q, current->left);
+        }
+        i++;
+        
+        // 处理右子节点
+        if (i < array_len) {
+            current->right = BinaryTreeNode_create(array[i]);
+            _BinaryTreeInnerQueue_enqueue(q, current->right);
+        }
+        i++;
+    }
+    
+    free(q);
+    tree->root = root;
+    tree->node_num = array_len;
+    return tree;
+}
+
+
 BinaryTree* BinaryTree_build_of_pre_order(
     BinaryTreeEleType* in_order, BinaryTreeEleType* pre_order,
     size_t in_len, size_t pre_len
@@ -206,8 +206,9 @@ BinaryTree* BinaryTree_build_of_pre_order(
 
     size_t pre_order_index = 0;
 
-    BinaryTreeNode* node = BinaryTreeNode_build_of_pre_order(
-        in_order, pre_order, &pre_order_index, 0, in_len - 1
+    BinaryTreeNode* node = _BinaryTreeNode_recursion_build_helper(
+        in_order, pre_order, &pre_order_index, 0, in_len - 1,
+        BINARY_TREE_BUILD_ORDER_INDEX_INCREASE
     );
 
     if (node == NULL) {
@@ -217,7 +218,41 @@ BinaryTree* BinaryTree_build_of_pre_order(
     } else {
         tree->root = node;
         tree->node_num = in_len;
+        return tree;
+    }
+}
+
+
+BinaryTree* BinaryTree_build_of_post_order(
+    BinaryTreeEleType* in_order, BinaryTreeEleType* post_order,
+    size_t in_len, size_t post_len
+) {
+    if (in_order == NULL || post_order == NULL) {
+        fprintf(stderr, BINARY_TREE_SRC_ACCESS_EXCEPTION);
         return NULL;
+    }
+
+    BinaryTree* tree = BinaryTree_create(BINARY_TREE_INIT_DISABLE, NULL);
+    if (tree == NULL) {
+        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+        return NULL;
+    }
+
+    size_t post_order_index = post_len - 1;
+
+    BinaryTreeNode* node = _BinaryTreeNode_recursion_build_helper(
+        in_order, post_order, &post_order_index, 0, in_len - 1,
+        BINARY_TREE_BUILD_ORDER_INDEX_DECREASE
+    );
+
+    if (node == NULL) {
+        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+        free(tree);
+        return NULL;
+    } else {
+        tree->root = node;
+        tree->node_num = in_len;
+        return tree;
     }
 }
 
@@ -231,6 +266,57 @@ ssize_t BinaryTree_in_order_index_search(
             return i;
     }
     return -1;
+}
+
+
+BinaryTreeNode* _BinaryTreeNode_recursion_build_helper(
+    BinaryTreeEleType* in_order, BinaryTreeEleType* help_order, 
+    size_t* help_order_index, size_t in_order_start, size_t in_order_end,
+    BinaryTreeBuildHelpOrderIndexModeEnum mode
+) {
+    if (in_order_start > in_order_end) {
+        return NULL;
+    }
+
+    BinaryTreeNode* node = 
+        BinaryTreeNode_create(help_order[*help_order_index]);
+
+    if (mode == BINARY_TREE_BUILD_ORDER_INDEX_INCREASE) {
+        (*help_order_index)++;
+    } else if (mode == BINARY_TREE_BUILD_ORDER_INDEX_DECREASE) {
+        (*help_order_index)--;
+    } else {
+        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+        return NULL;
+    }
+
+    if (in_order_start == in_order_end) {
+        return node;
+    }
+
+    ssize_t in_index = BinaryTree_in_order_index_search(
+        in_order, in_order_start, in_order_end, node->data
+    );
+
+    if (mode == BINARY_TREE_BUILD_ORDER_INDEX_INCREASE) {
+        node->left = _BinaryTreeNode_recursion_build_helper(
+            in_order, help_order, help_order_index, in_order_start, in_index - 1, mode
+        );
+
+        node->right = _BinaryTreeNode_recursion_build_helper(
+            in_order, help_order, help_order_index, in_index + 1, in_order_end, mode
+        );
+    } else if (mode == BINARY_TREE_BUILD_ORDER_INDEX_DECREASE) {
+        node->right = _BinaryTreeNode_recursion_build_helper(
+            in_order, help_order, help_order_index, in_index + 1, in_order_end, mode
+        );
+
+        node->left = _BinaryTreeNode_recursion_build_helper(
+            in_order, help_order, help_order_index, in_order_start, in_index - 1, mode
+        );
+    }
+
+    return node;
 }
 
 

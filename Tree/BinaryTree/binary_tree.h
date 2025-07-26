@@ -58,6 +58,12 @@ typedef enum BinaryTreeInitModeEnum {
 } BinaryTreeInitModeEnum;
 
 
+typedef enum BinaryTreeBuildHelpOrderIndexModeEnum {
+    BINARY_TREE_BUILD_ORDER_INDEX_DECREASE,
+    BINARY_TREE_BUILD_ORDER_INDEX_INCREASE
+} BinaryTreeBuildHelpOrderIndexModeEnum;
+
+
 typedef struct _BinaryTreeInnerQueueNode {
     BinaryTreeNode *tree_node;
     struct _BinaryTreeInnerQueueNode *next;
@@ -82,10 +88,6 @@ BinaryTree* BinaryTree_create(
 );
 
 
-BinaryTree* 
-BinaryTree_build_of_array(BinaryTreeEleType* array, size_t array_len);
-
-
 int BinaryTree_pre_order_traversal(
     BinaryTreeNode* node, BinaryTreeNodeOperator op
 );
@@ -104,6 +106,10 @@ int BinaryTree_post_order_traversal(
 int BinaryTree_level_order_traversal(
     BinaryTreeNode* node, BinaryTreeNodeOperator op
 );
+
+
+BinaryTree* 
+BinaryTree_build_of_array(BinaryTreeEleType* array, size_t array_len);
 
 
 BinaryTree* BinaryTree_build_of_pre_order(
@@ -129,9 +135,10 @@ ssize_t BinaryTree_in_order_index_search(
 );
 
 
-BinaryTreeNode* BinaryTreeNode_build_of_pre_order(
+BinaryTreeNode* _BinaryTreeNode_recursion_build_helper(
     BinaryTreeEleType* in_order, BinaryTreeEleType* pre_order, 
-    size_t* pre_order_index, size_t in_order_start, size_t in_order_end
+    size_t* pre_order_index, size_t in_order_start, size_t in_order_end,
+    BinaryTreeBuildHelpOrderIndexModeEnum mode
 );
 
 
