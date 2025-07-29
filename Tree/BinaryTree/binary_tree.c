@@ -257,6 +257,107 @@ BinaryTree* BinaryTree_build_of_post_order(
 }
 
 
+BinaryTree* BinaryTree_build_of_level_order(
+    BinaryTreeEleType* in_order, BinaryTreeEleType* level_order,
+    size_t in_len, size_t level_len
+) {
+    if (in_order == NULL || level_order == NULL) {
+        fprintf(stderr, BINARY_TREE_SRC_ACCESS_EXCEPTION);
+        return NULL;
+    }
+
+    BinaryTree* tree = BinaryTree_create(BINARY_TREE_INIT_DISABLE, NULL);
+    if (tree == NULL) {
+        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+        return NULL;
+    }
+
+    BinaryTreeNode* root = BinaryTreeNode_create(level_order[0]);
+    if (root ==  NULL) {
+        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+        free(tree);
+        return NULL;
+    }
+
+    root->left = root->right = NULL;
+
+    _BinaryTreeInnerQueue* help_queue = _BinaryTreeInnerQueue_create();
+    if (help_queue ==  NULL) {
+        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+        free(tree);
+        BinaryTreeNode_clean(&root);
+        return NULL;
+    }
+
+    _BinaryTreeInnerQueue_enqueue(help_queue, root);
+
+    size_t level_index = 1;
+
+    while (
+        !_BinaryTreeInnerQueue_is_empty(help_queue) && 
+        level_index < level_len
+    ) {
+        BinaryTreeNode* current = _BinaryTreeInnerQueue_dequeue(help_queue);
+
+        ssize_t in_order_index = BinaryTree_in_order_index_search(
+            in_order, 0, in_len - 1, current->data
+        );
+
+        if (in_order_index == -1) continue;
+
+        if (level_index < level_len) {
+            BinaryTreeEleType left_node_data = level_order[level_index];
+            ssize_t left_index = BinaryTree_in_order_index_search(
+                in_order, 0, in_order_index - 1, left_node_data
+            );
+
+            if (left_index != -1) {
+                BinaryTreeNode* left_node = BinaryTreeNode_create(left_node_data);
+                if (left_node ==  NULL) {
+                    fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+                    free(tree);
+                    BinaryTreeNode_clean(&root);
+                    _BinaryTreeInnerQueue_clean(&help_queue);
+                    return NULL;
+                }
+                left_node->left = left_node->right = NULL;
+                current->left = left_node;
+                _BinaryTreeInnerQueue_enqueue(help_queue, left_node);
+                level_index++;
+            }
+
+            if (level_index < level_len) {
+                BinaryTreeEleType right_node_data = level_order[level_index];
+
+                ssize_t right_index = BinaryTree_in_order_index_search(
+                    in_order, in_order_index + 1, in_len - 1, right_node_data
+                );
+
+                if (right_index != -1) {
+                    BinaryTreeNode* right_node = BinaryTreeNode_create(right_node_data);
+                    if (right_node ==  NULL) {
+                        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+                        free(tree);
+                        BinaryTreeNode_clean(&root);
+                        _BinaryTreeInnerQueue_clean(&help_queue);
+                        return NULL;
+                    }
+                    right_node->left = right_node->right = NULL;
+                    current->right = right_node;
+                    _BinaryTreeInnerQueue_enqueue(help_queue, right_node);
+                    level_index++;
+                }
+            }
+        }
+    }
+    free(help_queue);
+    tree->root = root;
+    tree->node_num = in_len;
+    tree->is_init;
+    return tree;
+}
+
+
 ssize_t BinaryTree_in_order_index_search(
     BinaryTreeEleType* in_order, size_t start, size_t end, 
     BinaryTreeEleType val)
@@ -420,4 +521,15 @@ BinaryTreeNode* _BinaryTreeInnerQueue_dequeue(_BinaryTreeInnerQueue* q) {
 
 int _BinaryTreeInnerQueue_is_empty(_BinaryTreeInnerQueue* q) {
     return q->front == NULL;
+}
+
+
+int _BinaryTreeInnerQueue_clean(_BinaryTreeInnerQueue** q) {
+    BinaryTreeNode* tmp;
+    while (!_BinaryTreeInnerQueue_is_empty(*q)) {
+        tmp = _BinaryTreeInnerQueue_dequeue(*q);
+        free(tmp);
+    }
+    *q = NULL;
+    return 0;
 }

@@ -60,7 +60,8 @@ typedef enum BinaryTreeInitModeEnum {
 
 typedef enum BinaryTreeBuildHelpOrderIndexModeEnum {
     BINARY_TREE_BUILD_ORDER_INDEX_DECREASE,
-    BINARY_TREE_BUILD_ORDER_INDEX_INCREASE
+    BINARY_TREE_BUILD_ORDER_INDEX_INCREASE,
+    BINARY_TREE_BUILD_ORDER_INDEX_ALTERNATE
 } BinaryTreeBuildHelpOrderIndexModeEnum;
 
 
@@ -125,7 +126,8 @@ BinaryTree* BinaryTree_build_of_post_order(
 
 
 BinaryTree* BinaryTree_build_of_level_order(
-    BinaryTreeEleType* in_order, BinaryTreeEleType* level_order
+    BinaryTreeEleType* in_order, BinaryTreeEleType* level_order,
+    size_t in_len, size_t level_len
 );
 
 
@@ -169,5 +171,8 @@ BinaryTreeNode* _BinaryTreeInnerQueue_dequeue(_BinaryTreeInnerQueue* q);
 
 
 int _BinaryTreeInnerQueue_is_empty(_BinaryTreeInnerQueue* q);
+
+
+int _BinaryTreeInnerQueue_clean(_BinaryTreeInnerQueue** q);
 
 #endif
