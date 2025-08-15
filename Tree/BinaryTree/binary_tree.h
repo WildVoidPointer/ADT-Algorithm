@@ -38,6 +38,18 @@
 typedef int BinaryTreeEleType;
 
 
+typedef enum BinaryTreeInitModeEnum {
+    BINARY_TREE_INIT_DISABLE,
+    BINARY_TREE_INIT_ENABLE
+} BinaryTreeInitModeEnum;
+
+
+typedef enum BinaryTreeBuildHelpOrderIndexModeEnum {
+    BINARY_TREE_BUILD_ORDER_INDEX_DECREASE,
+    BINARY_TREE_BUILD_ORDER_INDEX_INCREASE
+} BinaryTreeBuildHelpOrderIndexModeEnum;
+
+
 typedef struct BinaryTreeNode {
     BinaryTreeEleType data;
     struct BinaryTreeNode* left;
@@ -48,33 +60,7 @@ typedef struct BinaryTreeNode {
 typedef struct BinaryTree {
     BinaryTreeNode* root;
     size_t node_num;
-    int is_init;
 } BinaryTree;
-
-
-typedef enum BinaryTreeInitModeEnum {
-    BINARY_TREE_INIT_DISABLE,
-    BINARY_TREE_INIT_ENABLE
-} BinaryTreeInitModeEnum;
-
-
-typedef enum BinaryTreeBuildHelpOrderIndexModeEnum {
-    BINARY_TREE_BUILD_ORDER_INDEX_DECREASE,
-    BINARY_TREE_BUILD_ORDER_INDEX_INCREASE,
-    BINARY_TREE_BUILD_ORDER_INDEX_ALTERNATE
-} BinaryTreeBuildHelpOrderIndexModeEnum;
-
-
-typedef struct _BinaryTreeInnerQueueNode {
-    BinaryTreeNode *tree_node;
-    struct _BinaryTreeInnerQueueNode *next;
-} _BinaryTreeInnerQueueNode;
-
-
-typedef struct _BinaryTreeInnerQueue {
-    _BinaryTreeInnerQueueNode *front;
-    _BinaryTreeInnerQueueNode *rear;
-} _BinaryTreeInnerQueue;
 
 
 typedef int (*BinaryTreeNodeOperator)(BinaryTreeNode** node);
@@ -159,20 +145,33 @@ int BinaryTreeNode_clean(BinaryTreeNode** node);
 int BinaryTreeNode_display(BinaryTreeNode** node);
 
 
-_BinaryTreeInnerQueue* _BinaryTreeInnerQueue_create();
+
+typedef struct _BinaryTreeHelpQueueNode {
+    BinaryTreeNode *tree_node;
+    struct _BinaryTreeHelpQueueNode *next;
+} _BinaryTreeHelpQueueNode;
 
 
-void _BinaryTreeInnerQueue_enqueue(
-    _BinaryTreeInnerQueue* q, BinaryTreeNode* tree_node
+typedef struct _BinaryTreeHelpQueue {
+    _BinaryTreeHelpQueueNode *front;
+    _BinaryTreeHelpQueueNode *rear;
+} _BinaryTreeHelpQueue;
+
+
+_BinaryTreeHelpQueue* _BinaryTreeHelpQueue_create();
+
+
+void _BinaryTreeHelpQueue_enqueue(
+    _BinaryTreeHelpQueue* q, BinaryTreeNode* tree_node
 );
 
 
-BinaryTreeNode* _BinaryTreeInnerQueue_dequeue(_BinaryTreeInnerQueue* q);
+BinaryTreeNode* _BinaryTreeHelpQueue_dequeue(_BinaryTreeHelpQueue* q);
 
 
-int _BinaryTreeInnerQueue_is_empty(_BinaryTreeInnerQueue* q);
+int _BinaryTreeHelpQueue_is_empty(_BinaryTreeHelpQueue* q);
 
 
-int _BinaryTreeInnerQueue_clean(_BinaryTreeInnerQueue** q);
+int _BinaryTreeHelpQueue_clean(_BinaryTreeHelpQueue** q);
 
 #endif

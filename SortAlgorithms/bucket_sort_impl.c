@@ -1,20 +1,19 @@
 #include <stdio.h>
+#include <string.h>
 
 
-#define MAX_LENGTH 100
+void bucket_sort(int array[], int len, int record_buf_size) {
+    int record_buf[record_buf_size];
+    memset(record_buf, 0, sizeof(record_buf));
 
-
-void bucket_sort(int array[], int len) {
-    int _record_array[MAX_LENGTH] = {0};
     for (int i = 0; i < len; i++) {
-        _record_array[array[i]]++;
+        record_buf[array[i]]++;
     }
 
-    for (int i = 0; i < MAX_LENGTH; i++) {
-        for (int j = 0; j < _record_array[i]; j++) {
+    for (int i = 0; i < record_buf_size; i++) {
+        for (int j = 0; j < record_buf[i]; j++) {
             printf("%d ", i);
         }
-        
     }
     puts("");
 }
@@ -22,7 +21,7 @@ void bucket_sort(int array[], int len) {
 
 int main(int argc, char const *argv[]) {
     int arr[6] = {2, 2, 3, 3, 1, 0};
-    bucket_sort(arr, 6);
+    bucket_sort(arr, 6, 20);
     return 0;
 }
 

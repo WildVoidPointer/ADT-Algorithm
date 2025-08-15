@@ -41,7 +41,7 @@ int main() {
         BinaryTree_build_of_level_order(in_order, level_order, size, size);
 
     BinaryTree_display(level_order_build_res, NULL);
-    // BinaryTree_clean(&level_order_build_res);
+    BinaryTree_clean(&level_order_build_res);
 
     return 0;
 }
