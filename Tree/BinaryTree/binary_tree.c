@@ -35,7 +35,7 @@ BinaryTree* BinaryTree_create(
 
 
 int BinaryTree_pre_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeOperator op) 
+    BinaryTreeNode* node, BinaryTreeNodeHandler op) 
 {
     if (node != NULL) {
         if (op != NULL) {
@@ -55,7 +55,7 @@ int BinaryTree_pre_order_traversal(
 
 
 int BinaryTree_in_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeOperator op)
+    BinaryTreeNode* node, BinaryTreeNodeHandler op)
 {
     if (node != NULL) {
         BinaryTree_in_order_traversal(node->left, op);
@@ -76,7 +76,7 @@ int BinaryTree_in_order_traversal(
 
 
 int BinaryTree_post_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeOperator op)
+    BinaryTreeNode* node, BinaryTreeNodeHandler op)
 {
     if (node != NULL) {
         BinaryTree_post_order_traversal(node->left, op);
@@ -97,7 +97,7 @@ int BinaryTree_post_order_traversal(
 
 
 int BinaryTree_level_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeOperator op)
+    BinaryTreeNode* node, BinaryTreeNodeHandler op)
 {
     if (node != NULL) {
         BinaryTreeNode* tmp_node;
@@ -129,7 +129,7 @@ int BinaryTree_level_order_traversal(
 }
 
 
-int BinaryTree_display(BinaryTree* tree, BinaryTreeTraversalOperator op) {
+int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator op) {
     if (tree == NULL) {
         fprintf(stderr, BINARY_TREE_ACCESS_EXCEPTION);
         return -1;

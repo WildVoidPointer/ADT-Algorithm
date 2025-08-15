@@ -63,11 +63,22 @@ typedef struct BinaryTree {
 } BinaryTree;
 
 
-typedef int (*BinaryTreeNodeOperator)(BinaryTreeNode** node);
+typedef struct _BinaryTreeHelpQueueNode {
+    BinaryTreeNode *tree_node;
+    struct _BinaryTreeHelpQueueNode *next;
+} _BinaryTreeHelpQueueNode;
 
 
-typedef int (*BinaryTreeTraversalOperator)
-    (BinaryTreeNode* node, BinaryTreeNodeOperator op);
+typedef struct _BinaryTreeHelpQueue {
+    _BinaryTreeHelpQueueNode *front;
+    _BinaryTreeHelpQueueNode *rear;
+} _BinaryTreeHelpQueue;
+
+
+typedef int (*BinaryTreeNodeHandler)(BinaryTreeNode** node);
+
+
+typedef int (*BinaryTreeIterator)(BinaryTreeNode* node, BinaryTreeNodeHandler op);
 
 
 BinaryTree* BinaryTree_create(
@@ -76,22 +87,22 @@ BinaryTree* BinaryTree_create(
 
 
 int BinaryTree_pre_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeOperator op
+    BinaryTreeNode* node, BinaryTreeNodeHandler op
 );
 
 
 int BinaryTree_in_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeOperator op
+    BinaryTreeNode* node, BinaryTreeNodeHandler op
 );
 
 
 int BinaryTree_post_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeOperator op
+    BinaryTreeNode* node, BinaryTreeNodeHandler op
 );
 
 
 int BinaryTree_level_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeOperator op
+    BinaryTreeNode* node, BinaryTreeNodeHandler op
 );
 
 
@@ -130,7 +141,7 @@ BinaryTreeNode* _BinaryTreeNode_recursion_build_helper(
 );
 
 
-int BinaryTree_display(BinaryTree* tree, BinaryTreeTraversalOperator op);
+int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator op);
 
 
 int BinaryTree_clean(BinaryTree** tree);
@@ -143,19 +154,6 @@ int BinaryTreeNode_clean(BinaryTreeNode** node);
 
 
 int BinaryTreeNode_display(BinaryTreeNode** node);
-
-
-
-typedef struct _BinaryTreeHelpQueueNode {
-    BinaryTreeNode *tree_node;
-    struct _BinaryTreeHelpQueueNode *next;
-} _BinaryTreeHelpQueueNode;
-
-
-typedef struct _BinaryTreeHelpQueue {
-    _BinaryTreeHelpQueueNode *front;
-    _BinaryTreeHelpQueueNode *rear;
-} _BinaryTreeHelpQueue;
 
 
 _BinaryTreeHelpQueue* _BinaryTreeHelpQueue_create();
