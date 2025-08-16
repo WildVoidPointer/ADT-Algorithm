@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 
+#include <stdlib.h>
+
 
 #ifdef __linux__
     #include <sys/types.h>
@@ -19,7 +21,11 @@
 
 
 #define LINKED_DEQUE_ACCESS_EXCEPTION \
-    "LinkedDequeAccessException: The LinkedDeque access address is invalid\n"
+    "LinkedDequeAccessException: LinkedDeque access address is invalid\n"
+
+
+#define LINKED_DEQUE_DEQUEUE_EXCEPTION \
+    "LinkedDequeDequeueException: LinkedDeque is empty and dequeue operation cannot be performed\n"
 
 typedef int LinkedDequeEleType;
 
@@ -46,9 +52,13 @@ typedef enum LinkedDequeLimitedModeEnum {
 } LinkedDequeLimitedModeEnum;
 
 
-LinkedDeque* LinkedDeque_create(ssize_t size);
+LinkedDeque* LinkedDeque_create(
+    size_t size, LinkedDequeLimitedModeEnum mode
+);
 
 int LinkedDeque_is_empty(LinkedDeque* q);
+
+int LinkedDeque_is_limited(LinkedDeque* q);
 
 ssize_t LinkedDeque_get_size(LinkedDeque* q);
 
