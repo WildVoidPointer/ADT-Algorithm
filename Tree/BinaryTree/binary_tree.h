@@ -38,6 +38,9 @@
 typedef int BinaryTreeEleType;
 
 
+typedef void BinaryTreeContext;
+
+
 typedef enum BinaryTreeInitModeEnum {
     BINARY_TREE_INIT_DISABLE,
     BINARY_TREE_INIT_ENABLE
@@ -63,22 +66,24 @@ typedef struct BinaryTree {
 } BinaryTree;
 
 
-typedef struct _BinaryTreeHelpQueueNode {
+typedef struct BinaryTreeHelpQueueNode {
     BinaryTreeNode *tree_node;
-    struct _BinaryTreeHelpQueueNode *next;
-} _BinaryTreeHelpQueueNode;
+    struct BinaryTreeHelpQueueNode *next;
+} BinaryTreeHelpQueueNode;
 
 
-typedef struct _BinaryTreeHelpQueue {
-    _BinaryTreeHelpQueueNode *front;
-    _BinaryTreeHelpQueueNode *rear;
-} _BinaryTreeHelpQueue;
+typedef struct BinaryTreeHelpQueue {
+    BinaryTreeHelpQueueNode *front;
+    BinaryTreeHelpQueueNode *rear;
+} BinaryTreeHelpQueue;
 
 
-typedef int (*BinaryTreeNodeHandler)(BinaryTreeNode** node);
+typedef int (*BinaryTreeNodeHandler)(BinaryTreeNode** node, BinaryTreeContext* context);
 
 
-typedef int (*BinaryTreeIterator)(BinaryTreeNode* node, BinaryTreeNodeHandler op);
+typedef int (*BinaryTreeIterator)(
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context
+);
 
 
 BinaryTree* BinaryTree_create(
@@ -87,22 +92,22 @@ BinaryTree* BinaryTree_create(
 
 
 int BinaryTree_pre_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context
 );
 
 
 int BinaryTree_in_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context
 );
 
 
 int BinaryTree_post_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context
 );
 
 
 int BinaryTree_level_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context
 );
 
 
@@ -150,26 +155,29 @@ int BinaryTree_clean(BinaryTree** tree);
 BinaryTreeNode* BinaryTreeNode_create(BinaryTreeEleType data);
 
 
+int BinaryTreeNode_collect(BinaryTreeNode** node, BinaryTreeContext* q);
+
+
 int BinaryTreeNode_clean(BinaryTreeNode** node);
 
 
-int BinaryTreeNode_display(BinaryTreeNode** node);
+int BinaryTreeNode_display(BinaryTreeNode* node);
 
 
-_BinaryTreeHelpQueue* _BinaryTreeHelpQueue_create();
+BinaryTreeHelpQueue* BinaryTreeHelpQueue_create();
 
 
-void _BinaryTreeHelpQueue_enqueue(
-    _BinaryTreeHelpQueue* q, BinaryTreeNode* tree_node
+void BinaryTreeHelpQueue_enqueue(
+    BinaryTreeHelpQueue* q, BinaryTreeNode* tree_node
 );
 
 
-BinaryTreeNode* _BinaryTreeHelpQueue_dequeue(_BinaryTreeHelpQueue* q);
+BinaryTreeNode* BinaryTreeHelpQueue_dequeue(BinaryTreeHelpQueue* q);
 
 
-int _BinaryTreeHelpQueue_is_empty(_BinaryTreeHelpQueue* q);
+int BinaryTreeHelpQueue_is_empty(BinaryTreeHelpQueue* q);
 
 
-int _BinaryTreeHelpQueue_clean(_BinaryTreeHelpQueue** q);
+int BinaryTreeHelpQueue_clean(BinaryTreeHelpQueue** q);
 
 #endif
