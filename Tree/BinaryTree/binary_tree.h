@@ -146,7 +146,7 @@ BinaryTreeNode* _BinaryTreeNode_recursion_build_helper(
 );
 
 
-int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator op);
+int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator iter);
 
 
 int BinaryTree_clean(BinaryTree** tree);

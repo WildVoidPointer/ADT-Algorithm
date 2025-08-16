@@ -37,11 +37,8 @@ BinaryTree* BinaryTree_create(
 int BinaryTree_pre_order_traversal(
     BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context) 
 {
-    if (node != NULL) {
-        if (op != NULL) {
-            op(&node, context);
-        }
-
+    if (node != NULL && op != NULL) {
+        op(&node, context);
         BinaryTree_pre_order_traversal(node->left, op, context);
         BinaryTree_pre_order_traversal(node->right, op, context);
     } else {
@@ -55,13 +52,9 @@ int BinaryTree_pre_order_traversal(
 int BinaryTree_in_order_traversal(
     BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context)
 {
-    if (node != NULL) {
+    if (node != NULL && op != NULL) {
         BinaryTree_in_order_traversal(node->left, op, context);
-
-        if (op != NULL) {
-            op(&node, context);
-        }
-
+        op(&node, context);
         BinaryTree_in_order_traversal(node->right, op, context);
     } else {
         return -1;
@@ -74,14 +67,10 @@ int BinaryTree_in_order_traversal(
 int BinaryTree_post_order_traversal(
     BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context)
 {
-    if (node != NULL) {
+    if (node != NULL && op != NULL) {
         BinaryTree_post_order_traversal(node->left, op, context);
         BinaryTree_post_order_traversal(node->right, op, context);
-
-        if (op != NULL) {
-            op(&node, context);
-        }
-
+        op(&node, context);
     } else {
         return -1;
     }
@@ -93,7 +82,7 @@ int BinaryTree_post_order_traversal(
 int BinaryTree_level_order_traversal(
     BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context)
 {
-    if (node != NULL) {
+    if (node != NULL && op != NULL) {
 
         BinaryTreeNode* tmp_node;
         BinaryTreeHelpQueue* q = BinaryTreeHelpQueue_create();
@@ -110,10 +99,8 @@ int BinaryTree_level_order_traversal(
             if (tmp_node->right !=  NULL) {
                 BinaryTreeHelpQueue_enqueue(q, tmp_node->right);
             }
-            
-            if (op != NULL) {
-                op(&tmp_node, context);
-            }
+
+            op(&tmp_node, context);
         }
 
         BinaryTreeHelpQueue_clean(&q);
@@ -125,7 +112,7 @@ int BinaryTree_level_order_traversal(
 }
 
 
-int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator op) {
+int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator iter) {
     if (tree == NULL) {
         fprintf(stderr, BINARY_TREE_ACCESS_EXCEPTION);
         return -1;
@@ -133,10 +120,10 @@ int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator op) {
 
     BinaryTreeHelpQueue* q = BinaryTreeHelpQueue_create();
 
-    if (op == NULL) {
+    if (iter == NULL) {
         BinaryTree_level_order_traversal(tree->root, BinaryTreeNode_collect, q);
     } else {
-        op(tree->root, BinaryTreeNode_collect, q);
+        iter(tree->root, BinaryTreeNode_collect, q);
     }
 
 
