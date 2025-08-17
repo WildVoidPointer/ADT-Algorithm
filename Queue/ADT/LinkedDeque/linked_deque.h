@@ -16,6 +16,15 @@
     "LinkedDequeCreateError: Memory initialization of LinkedDeque failed\n"
 
 
+#define LINKED_DEQUE_BUILD_EXCEPTION \
+    "LinkedDequeBuildException: The initialization data for " \
+    "LinkedDeque build cannot be accessed or is invalid\n"
+
+
+#define LINKED_DEQUE_BUILD_ERROR \
+    "LinkedDequeBuildError: Memory initialization of LinkedDeque failed in build\n"
+
+
 #define LINKED_DEQUE_CREATE_EXCEPTION \
     "LinkedDequeCreateException: LinkedDeque initialization mode exception\n"
 
@@ -26,6 +35,23 @@
 
 #define LINKED_DEQUE_DEQUEUE_EXCEPTION \
     "LinkedDequeDequeueException: LinkedDeque is empty and dequeue operation cannot be performed\n"
+
+
+#define LINKED_DEQUE_ENQUEUE_EXCEPTION \
+    "LinkedDequeEnqueueException: LinkedDeque is filled and enqueue operation cannot be performed\n"
+
+
+#define LINKED_DEQUE_ENQUEUE_FAILED_ERROR \
+    "LinkedDequeEnqueueFaildError: Memory initialization of new LinkedDequeUnit failed\n"
+
+
+#define LINKED_DEQUE_UNIT_CREATE_ERROR \
+    "LinkedDequeUnitCreateError: Memory initialization of LinkedDequeUnit failed\n"
+
+
+#define LINKED_DEQUE_UNIT_BUFFER_CREATE_ERROR \
+    "LinkedDequeUnitBufferCreateError: Memory initialization of LinkedDequeUnitBuffer failed\n"
+
 
 typedef int LinkedDequeEleType;
 
@@ -56,7 +82,14 @@ LinkedDeque* LinkedDeque_create(
     size_t size, LinkedDequeLimitedModeEnum mode
 );
 
+LinkedDeque* LinkedDeque_build_of_array(
+    size_t len, LinkedDequeEleType* arr, 
+    size_t size, LinkedDequeLimitedModeEnum mode
+);
+
 int LinkedDeque_is_empty(LinkedDeque* q);
+
+int LinkedDeque_is_filled(LinkedDeque* q);
 
 int LinkedDeque_is_limited(LinkedDeque* q);
 
