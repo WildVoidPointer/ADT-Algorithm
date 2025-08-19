@@ -18,6 +18,9 @@
 #define BINARY_TREE_BUILD_ERROR \
     "BinaryTreeBuildError: Memory initialization of BinaryTree failed\n"
 
+#define BINARY_TREE_COPY_ERROR \
+    "BinaryTreeCopyError: Memory initialization failed in BinaryTree copying \n"
+
 #define BINARY_TREE_ACCESS_EXCEPTION \
     "BinaryTreeAccessException: The data address of the BinaryTree cannot be accessed\n"
 
@@ -115,6 +118,9 @@ BinaryTree*
 BinaryTree_build_of_array(BinaryTreeEleType* array, size_t array_len);
 
 
+BinaryTree* BinaryTree_copy(BinaryTree* tree);
+
+
 BinaryTree* BinaryTree_build_of_pre_order(
     BinaryTreeEleType* in_order, BinaryTreeEleType* pre_order,
     size_t in_len, size_t pre_len
@@ -144,6 +150,9 @@ BinaryTreeNode* _BinaryTreeNode_recursion_build_helper(
     size_t* pre_order_index, size_t in_order_start, size_t in_order_end,
     BinaryTreeBuildHelpOrderIndexModeEnum mode
 );
+
+
+BinaryTreeNode* _BinaryTreeNode_recursion_copy_helper(BinaryTreeNode* node);
 
 
 int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator iter);

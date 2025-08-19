@@ -183,6 +183,34 @@ BinaryTree_build_of_array(BinaryTreeEleType* array, size_t array_len) {
 }
 
 
+BinaryTree* BinaryTree_copy(BinaryTree* tree) {
+    if (tree == NULL) {
+        fprintf(stderr, BINARY_TREE_ACCESS_EXCEPTION);
+        return NULL;
+    }
+
+    BinaryTree* new_tree = BinaryTree_create(BINARY_TREE_INIT_DISABLE, NULL);
+
+    if (new_tree == NULL) {
+        fprintf(stderr, BINARY_TREE_COPY_ERROR);
+        return NULL;
+    }
+
+    BinaryTreeNode* new_tree_root = 
+        _BinaryTreeNode_recursion_copy_helper(tree->root);
+
+    if (new_tree_root == NULL) {
+        fprintf(stderr, BINARY_TREE_COPY_ERROR);
+        BinaryTree_clean(&new_tree);
+        return NULL;
+    }
+
+    new_tree->root = new_tree_root;
+    new_tree->node_num = tree->node_num;
+    return new_tree;
+}
+
+
 BinaryTree* BinaryTree_build_of_pre_order(
     BinaryTreeEleType* in_order, BinaryTreeEleType* pre_order,
     size_t in_len, size_t pre_len
@@ -411,6 +439,25 @@ BinaryTreeNode* _BinaryTreeNode_recursion_build_helper(
     }
 
     return node;
+}
+
+
+BinaryTreeNode* _BinaryTreeNode_recursion_copy_helper(BinaryTreeNode* node) {
+    if (node == NULL) {
+        return NULL;
+    }
+
+    BinaryTreeNode* new_node = BinaryTreeNode_create(node->data);
+
+    if (new_node == NULL) {
+        fprintf(stderr, BINARY_TREE_COPY_ERROR);
+        return NULL;
+    }
+
+    new_node->left = _BinaryTreeNode_recursion_copy_helper(node->left);
+    new_node->right = _BinaryTreeNode_recursion_copy_helper(node->right);
+
+    return new_node;
 }
 
 
