@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 
-#include "binary_tree.h"
+#include "../BinaryTree/binary_tree.h"
 
 
 #define THREAD_BINARY_TREE_CREATE_ERROR \
@@ -33,6 +33,9 @@
 typedef int ThreadBinaryTreeEleType;
 
 
+typedef void ThreadBinaryTreeHandleContext;
+
+
 typedef enum ThreadBinaryTreeIndexStateEnum {
     THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR = 0,
     THREAD_BINARY_TREE_LEFT_IS_PRECURSOR = 1,
@@ -53,31 +56,58 @@ typedef struct ThreadBinaryTreeNode {
 typedef struct ThreadBinaryTree {
     ThreadBinaryTreeNode* root;
     size_t node_num;
+    int is_threaded;
 } ThreadBinaryTree;
 
 
-typedef struct BinaryTreeNode {
-    BinaryTreeEleType data;
-    struct BinaryTreeNode* left;
-    struct BinaryTreeNode* right;
-} BinaryTreeNode;
+typedef struct ThreadBinaryTreeThreadingContext {
+    ThreadBinaryTreeNode* prev;
+} ThreadBinaryTreeThreadingContext;
+
+
+typedef int (*ThreadBinaryTreeHandler) (
+    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandleContext* th_ctx
+);
 
 
 ThreadBinaryTree* ThreadBinaryTree_create();
 
-ThreadBinaryTree* 
-ThreadBinaryTree_build_of_binary_tree(BinaryTree* tree);
 
-ThreadBinaryTreeNode* ThreadBinaryTree_threading(ThreadBinaryTreeNode* node);
+ThreadBinaryTree* 
+ThreadBinaryTree_build_of_binary_tree(BinaryTree* bin_tree);
+
+
+int ThreadBinaryTree_in_order_traversal(
+    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandler th_handler, 
+    ThreadBinaryTreeHandleContext* th_ctx
+);
+
+
+int ThreadBinaryTree_linked_traversal(
+    ThreadBinaryTreeNode* th_root, ThreadBinaryTreeHandler th_handler, 
+    ThreadBinaryTreeHandleContext* th_ctx
+);
+
+
+int ThreadBinaryTree_threading_handler(
+    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandleContext* th_prev
+);
+
+
+int ThreadBinaryTree_threading(ThreadBinaryTree* th_tree);
+
 
 ThreadBinaryTreeNode*
-_ThreadBinaryTree_build_of_binary_tree_helper(BinaryTreeNode* node);
+_ThreadBinaryTree_build_of_binary_tree_helper(BinaryTreeNode* bin_node);
 
-int ThreadBinaryTree_clean(ThreadBinaryTree** t);
+
+int ThreadBinaryTree_clean(ThreadBinaryTree** th_tree);
+
 
 
 ThreadBinaryTreeNode* 
 ThreadBinaryTreeNode_create(ThreadBinaryTreeEleType data);
+
 
 int ThreadBinaryTreeNode_clean(ThreadBinaryTreeNode** node);
 
