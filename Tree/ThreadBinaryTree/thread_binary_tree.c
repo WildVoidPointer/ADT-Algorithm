@@ -73,63 +73,73 @@ int ThreadBinaryTree_linked_traversal(
     ThreadBinaryTreeNode* th_root, ThreadBinaryTreeHandler th_handler, 
     ThreadBinaryTreeHandleContext* th_ctx
 ) {
-    if (th_root != NULL && th_handler != NULL) {
-        ThreadBinaryTreeNode* curr = th_root;
+    if (th_root == NULL || th_handler == NULL) {
+        return -1;
+    }
+    
+    ThreadBinaryTreeNode* curr = th_root;
+    
+    // 找到中序遍历的第一个节点（最左边的节点）
+    while (
+        curr->left != NULL &&
+        curr->left_is_precursor == THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR
+    ) {
+        curr = curr->left;
+    }
+    
+    while (curr != NULL) {
+        // 处理当前节点
+        th_handler(curr, th_ctx);
         
-        while (curr->left_is_precursor == THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR) {
-            curr = curr->left;
-        }
-
-        while (curr != NULL) {
-            th_handler(curr, th_ctx);
-            
-            if (curr->right_is_successor == THREAD_BINARY_TREE_RIGHT_IS_SUCCESSOR) {
-                curr = curr->right;
-            } else {
-                curr = curr->right;
-                if (curr != NULL) {
-                    while (curr->left_is_precursor == THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR) {
-                        curr = curr->left;
-                    }
+        // 如果右指针是线索，直接跟随
+        if (curr->right_is_successor == THREAD_BINARY_TREE_RIGHT_IS_SUCCESSOR) {
+            curr = curr->right;
+        } else {
+            // 否则，转到右子树，然后找到右子树的最左节点
+            curr = curr->right;
+            if (curr != NULL) {
+                while (
+                    curr->left != NULL && 
+                    curr->left_is_precursor == THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR
+                ) {
+                    curr = curr->left;
                 }
             }
         }
-        return 0;
-    } else {
-        return -1;
     }
+    
+    return 0;
 }
-
 
 int ThreadBinaryTree_threading_handler(
     ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandleContext* th_ctx
 ) {
-    if (th_node != NULL && th_ctx != NULL) {
-        ThreadBinaryTreeThreadingContext* th_prev_ctx = 
-            (ThreadBinaryTreeThreadingContext*) th_ctx;
-
-        if (th_node->left == NULL) {
-            th_node->left = th_prev_ctx->prev;
-            th_node->left_is_precursor = 
-                THREAD_BINARY_TREE_LEFT_IS_PRECURSOR;
-        } else {
-            th_node->left_is_precursor = THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR;
-        }
-
-        if (th_prev_ctx->prev != NULL && th_prev_ctx->prev->right == NULL) {
-            th_prev_ctx->prev->right = th_node;
-            th_node->right_is_successor =
-                THREAD_BINARY_TREE_RIGHT_IS_SUCCESSOR;
-        } else if (th_prev_ctx->prev != NULL) {
-            th_prev_ctx->prev->right_is_successor = THREAD_BINARY_TREE_RIGHT_IS_NOT_SUCCESSOR;
-        }
-
-        th_prev_ctx->prev = th_node;
-        return 0;
-
-    } else {
+    if (th_node == NULL) {
         return -1;
     }
+
+    ThreadBinaryTreeThreadingContext* ctx = (ThreadBinaryTreeThreadingContext*)th_ctx;
+    
+    // 处理左线索
+    if (th_node->left == NULL) {
+        th_node->left = ctx->prev;
+        th_node->left_is_precursor = THREAD_BINARY_TREE_LEFT_IS_PRECURSOR;
+    } else {
+        th_node->left_is_precursor = THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR;
+    }
+    
+    // 处理前驱节点的右线索
+    if (ctx->prev != NULL && ctx->prev->right == NULL) {
+        ctx->prev->right = th_node;
+        ctx->prev->right_is_successor = THREAD_BINARY_TREE_RIGHT_IS_SUCCESSOR;
+    } else if (ctx->prev != NULL) {
+        ctx->prev->right_is_successor = THREAD_BINARY_TREE_RIGHT_IS_NOT_SUCCESSOR;
+    }
+    
+    // 更新前驱节点
+    ctx->prev = th_node;
+    
+    return 0;
 }
 
 
