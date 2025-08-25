@@ -20,8 +20,10 @@ void bucket_sort(int array[], int len, int record_buf_size) {
 
 
 int main(int argc, char const *argv[]) {
+    
     int arr[6] = {2, 2, 3, 3, 1, 0};
     bucket_sort(arr, 6, 20);
+
     return 0;
 }
 

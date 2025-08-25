@@ -65,6 +65,7 @@ void quick_sort_with_first_partition(int array[], int left_index, int right_inde
 
 
 int main() {
+    
     int test_array1[] = {4, 3, 2, 1, 0, 8, 7, 6, 5};
     int test_array_len1 = sizeof(test_array1) / sizeof(test_array1[0]);
     quick_sort_with_fixed_partition(test_array1, 0, test_array_len1 - 1);
