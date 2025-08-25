@@ -24,4 +24,5 @@ int main() {
     ThreadBinaryTree_threading(th_tree);
 
     ThreadBinaryTree_linked_traversal(th_tree->root, linked_print_handle, NULL);
+    putc('\n', stdout);
 }

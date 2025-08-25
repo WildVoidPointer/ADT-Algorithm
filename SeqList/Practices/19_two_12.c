@@ -49,7 +49,7 @@ int search_main_element2(int size, int sl[]) {
 }
 
 
-void quick_sort(int array[], int left_ptr, int right_ptr) {
+void quick_sort_with_fixed_partition(int array[], int left_ptr, int right_ptr) {
     if (left_ptr >= right_ptr) 
         return;
     
@@ -73,13 +73,13 @@ void quick_sort(int array[], int left_ptr, int right_ptr) {
             _right_ptr--;
         }
     }
-    quick_sort(array, left_ptr, _right_ptr);
-    quick_sort(array, _left_ptr, right_ptr);
+    quick_sort_with_fixed_partition(array, left_ptr, _right_ptr);
+    quick_sort_with_fixed_partition(array, _left_ptr, right_ptr);
 }
 
 
 int search_main_element3(int size, int sl[]) {
-    quick_sort(sl, 0, size -1);
+    quick_sort_with_fixed_partition(sl, 0, size -1);
     int candidate = sl[size / 2];
     int count = 0;
     for (int i = 0; i < size; i++) {

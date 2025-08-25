@@ -6,7 +6,7 @@
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
 
-void quick_sort(int array[], int left_ptr, int right_ptr);
+void quick_sort_with_fixed_partition(int array[], int left_ptr, int right_ptr);
 
 
 int find_closest(int arr[], int size, int target) {
@@ -41,8 +41,8 @@ int find_closest(int arr[], int size, int target) {
 
 int get_minimum_distance_point(int l1, int sl1[], int l2, int sl2[], int l3, int sl3[]) {
 
-    quick_sort(sl2, 0, l2 - 1);
-    quick_sort(sl3, 0, l3 - 1);
+    quick_sort_with_fixed_partition(sl2, 0, l2 - 1);
+    quick_sort_with_fixed_partition(sl3, 0, l3 - 1);
     
     int min_distance = INT_MAX;
     
@@ -67,7 +67,7 @@ int get_minimum_distance_point(int l1, int sl1[], int l2, int sl2[], int l3, int
 }
 
 
-void quick_sort(int array[], int left_ptr, int right_ptr) {
+void quick_sort_with_fixed_partition(int array[], int left_ptr, int right_ptr) {
     if (left_ptr >= right_ptr) 
         return;
     
@@ -91,8 +91,8 @@ void quick_sort(int array[], int left_ptr, int right_ptr) {
             _right_ptr--;
         }
     }
-    quick_sort(array, left_ptr, _right_ptr);
-    quick_sort(array, _left_ptr, right_ptr);
+    quick_sort_with_fixed_partition(array, left_ptr, _right_ptr);
+    quick_sort_with_fixed_partition(array, _left_ptr, right_ptr);
 }
 
 

@@ -56,11 +56,10 @@ int trapping_water_by_prefix_sum(int column_height[], int size) {
 }
 
 
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const *argv[]){
+    
     int column_height[] = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
 
     printf("%d\n", trapping_water_by_prefix_sum(column_height, 12));
     return 0;
 }
-

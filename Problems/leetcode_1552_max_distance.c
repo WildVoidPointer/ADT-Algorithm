@@ -40,7 +40,7 @@ Constraints:
 #include <stdio.h>
 
 
-void quick_sort(int array[], int left, int right) {
+void quick_sort_with_fixed_partition(int array[], int left, int right) {
     if (left >= right)
         return;
     
@@ -66,11 +66,11 @@ void quick_sort(int array[], int left, int right) {
     }
 
     if (left < t_right) {
-        quick_sort(array, left, t_right);
+        quick_sort_with_fixed_partition(array, left, t_right);
     }
 
     if (t_left < right) {
-        quick_sort(array, t_left, right);
+        quick_sort_with_fixed_partition(array, t_left, right);
     }
 }
 
@@ -91,7 +91,7 @@ int is_valid_distance(int step_size, int* pos, int pos_size, int balls) {
 
 
 int max_distance(int* pos, int pos_size, int balls) {
-    quick_sort(pos, 0, pos_size - 1);
+    quick_sort_with_fixed_partition(pos, 0, pos_size - 1);
 
     int res = 0;
     int left = 1;

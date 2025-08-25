@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 
-void quick_sort(int array[], int left_ptr, int right_ptr) {
+void quick_sort_with_fixed_partition(int array[], int left_ptr, int right_ptr) {
     if (left_ptr >= right_ptr) 
         return;
     
@@ -25,8 +25,8 @@ void quick_sort(int array[], int left_ptr, int right_ptr) {
             _right_ptr--;
         }
     }
-    quick_sort(array, left_ptr, _right_ptr);
-    quick_sort(array, _left_ptr, right_ptr);
+    quick_sort_with_fixed_partition(array, left_ptr, _right_ptr);
+    quick_sort_with_fixed_partition(array, _left_ptr, right_ptr);
 }
 
 
@@ -36,7 +36,7 @@ calculate_smallest_non_occurrence_positive_integer1(int size, int sl[]) {
         return 1;
     }
 
-    quick_sort(sl, 0, size - 1);
+    quick_sort_with_fixed_partition(sl, 0, size - 1);
     int index = 0;
     
     while (index < size && sl[index] <= 0) {
