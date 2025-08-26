@@ -1,5 +1,6 @@
-#include <stdio.h>
 #include "./array_utils/array_utils.h"
+
+#include <stdio.h>
 
 
 void quick_sort_with_fixed_partition(int array[], int left_index, int right_index) {

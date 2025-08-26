@@ -1,6 +1,6 @@
-#include <stdio.h>
-
 #include "./array_utils/array_utils.h"
+
+#include <stdio.h>
 
 
 void bubble_sort_without_sentry(int array[], int len) {

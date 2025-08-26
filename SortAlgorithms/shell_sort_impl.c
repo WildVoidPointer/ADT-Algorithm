@@ -1,5 +1,6 @@
-#include <stdio.h>
 #include "./array_utils/array_utils.h"
+
+#include <stdio.h>
 
 
 void shell_sort(int* array, int len) {

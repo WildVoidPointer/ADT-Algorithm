@@ -1,5 +1,6 @@
-#include <stdio.h>
 #include "./array_utils/array_utils.h"
+
+#include <stdio.h>
 
 
 void insert_sort_without_sentry(int array[], int len) {

@@ -1,5 +1,6 @@
-#include <stdio.h>
 #include "./array_utils/array_utils.h"
+
+#include <stdio.h>
 
 
 void merge_sort_merge_helper(
