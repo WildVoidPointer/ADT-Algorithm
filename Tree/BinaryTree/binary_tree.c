@@ -34,85 +34,8 @@ BinaryTree* BinaryTree_create(
 }
 
 
-int BinaryTree_pre_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context) 
-{
-    if (node != NULL && op != NULL) {
-        op(&node, context);
-        BinaryTree_pre_order_traversal(node->left, op, context);
-        BinaryTree_pre_order_traversal(node->right, op, context);
-    } else {
-        return -1;
-    }
-
-    return 0;
-}
-
-
-int BinaryTree_in_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context)
-{
-    if (node != NULL && op != NULL) {
-        BinaryTree_in_order_traversal(node->left, op, context);
-        op(&node, context);
-        BinaryTree_in_order_traversal(node->right, op, context);
-    } else {
-        return -1;
-    }
-
-    return 0;
-}
-
-
-int BinaryTree_post_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context)
-{
-    if (node != NULL && op != NULL) {
-        BinaryTree_post_order_traversal(node->left, op, context);
-        BinaryTree_post_order_traversal(node->right, op, context);
-        op(&node, context);
-    } else {
-        return -1;
-    }
-
-    return 0;
-}
-
-
-int BinaryTree_level_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context)
-{
-    if (node != NULL && op != NULL) {
-
-        BinaryTreeNode* tmp_node;
-        BinaryTreeHelpQueue* q = BinaryTreeHelpQueue_create();
-        BinaryTreeHelpQueue_enqueue(q, node);
-       
-        while (!BinaryTreeHelpQueue_is_empty(q)) {
-
-            tmp_node = BinaryTreeHelpQueue_dequeue(q);
-
-            if (tmp_node->left !=  NULL) {
-                BinaryTreeHelpQueue_enqueue(q, tmp_node->left);
-            }
-
-            if (tmp_node->right !=  NULL) {
-                BinaryTreeHelpQueue_enqueue(q, tmp_node->right);
-            }
-
-            op(&tmp_node, context);
-        }
-
-        BinaryTreeHelpQueue_clean(&q);
-        return 0;
-
-    } else {
-        return -1;
-    }
-}
-
-
 int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator iter) {
+
     if (tree == NULL) {
         fprintf(stderr, BINARY_TREE_ACCESS_EXCEPTION);
         return -1;
@@ -121,9 +44,9 @@ int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator iter) {
     BinaryTreeHelpQueue* q = BinaryTreeHelpQueue_create();
 
     if (iter == NULL) {
-        BinaryTree_level_order_traversal(tree->root, BinaryTreeNode_collect, q);
+        BinaryTree_level_order_traversal(&(tree->root), BinaryTreeNode_collector, q);
     } else {
-        iter(tree->root, BinaryTreeNode_collect, q);
+        iter(&(tree->root), BinaryTreeNode_collector, q);
     }
 
 
@@ -133,53 +56,9 @@ int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator iter) {
     }
     printf("}\n");
 
-    BinaryTreeHelpQueue_clean(&q);
+    BinaryTreeHelpQueue_clean_without_free_node(&q);
 
     return 0;
-}
-
-
-BinaryTree* 
-BinaryTree_build_of_array(BinaryTreeEleType* array, size_t array_len) {
-    if (array == NULL) {
-        fprintf(stderr, BINARY_TREE_SRC_ACCESS_EXCEPTION);
-        return NULL;
-    }
-
-    BinaryTree* tree = BinaryTree_create(BINARY_TREE_INIT_DISABLE, NULL);
-
-    if(tree == NULL) {
-        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
-        return NULL;
-    }
-
-    BinaryTreeNode* root = BinaryTreeNode_create(array[0]);
-    BinaryTreeHelpQueue* help_queue = BinaryTreeHelpQueue_create();
-    BinaryTreeHelpQueue_enqueue(help_queue, root);
-    
-    int i = 1;
-    while (i < array_len && !BinaryTreeHelpQueue_is_empty(help_queue)) {
-        BinaryTreeNode* current = BinaryTreeHelpQueue_dequeue(help_queue);
-        
-        // 处理左子节点
-        if (i < array_len) {
-            current->left = BinaryTreeNode_create(array[i]);
-            BinaryTreeHelpQueue_enqueue(help_queue, current->left);
-        }
-        i++;
-        
-        // 处理右子节点
-        if (i < array_len) {
-            current->right = BinaryTreeNode_create(array[i]);
-            BinaryTreeHelpQueue_enqueue(help_queue, current->right);
-        }
-        i++;
-    }
-    
-    BinaryTreeHelpQueue_clean(&help_queue);
-    tree->root = root;
-    tree->node_num = array_len;
-    return tree;
 }
 
 
@@ -208,6 +87,172 @@ BinaryTree* BinaryTree_copy(BinaryTree* tree) {
     new_tree->root = new_tree_root;
     new_tree->node_num = tree->node_num;
     return new_tree;
+}
+
+
+int BinaryTree_clean(BinaryTree** tree) {
+    if (tree == NULL || *tree == NULL) {
+        fprintf(stderr, BINARY_TREE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    BinaryTree_post_order_traversal(&(*tree)->root, BinaryTreeNode_deletor, NULL);
+    
+    free(*tree);
+    *tree = NULL;
+    return 0;
+}
+
+
+int BinaryTree_pre_order_traversal(
+    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+) {
+    if (node != NULL && *node != NULL && op != NULL) {
+        op(node, ctx);
+        BinaryTree_pre_order_traversal(&((*node)->left), op, ctx);
+        BinaryTree_pre_order_traversal(&((*node)->right), op, ctx);
+    } else {
+        return -1;
+    }
+
+    return 0;
+}
+
+
+int BinaryTree_in_order_traversal(
+    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+) {
+    if (node != NULL && *node != NULL && op != NULL) {
+        BinaryTree_in_order_traversal(&((*node)->left), op, ctx);
+        op(node, ctx);
+        BinaryTree_in_order_traversal(&((*node)->right), op, ctx);
+    } else {
+        return -1;
+    }
+
+    return 0;
+}
+
+
+int BinaryTree_post_order_traversal(
+    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+) {
+    if (node != NULL && *node != NULL && op != NULL) {
+        BinaryTree_post_order_traversal(&((*node)->left), op, ctx);
+        BinaryTree_post_order_traversal(&((*node)->right), op, ctx);
+        op(node, ctx);
+    } else {
+        return -1;
+    }
+
+    return 0;
+}
+
+
+int BinaryTree_level_order_traversal(
+    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+) {
+    if (node != NULL && *node != NULL && op != NULL) {
+
+        BinaryTreeNode* tmp_node;
+        BinaryTreeHelpQueue* q = BinaryTreeHelpQueue_create();
+        BinaryTreeHelpQueue_enqueue(q, *node);
+       
+        while (!BinaryTreeHelpQueue_is_empty(q)) {
+
+            tmp_node = BinaryTreeHelpQueue_dequeue(q);
+
+            if (tmp_node->left !=  NULL) {
+                BinaryTreeHelpQueue_enqueue(q, tmp_node->left);
+            }
+
+            if (tmp_node->right !=  NULL) {
+                BinaryTreeHelpQueue_enqueue(q, tmp_node->right);
+            }
+
+            op(&tmp_node, ctx);
+        }
+
+        BinaryTreeHelpQueue_clean_without_free_node(&q);
+        return 0;
+
+    } else {
+        return -1;
+    }
+}
+
+
+BinaryTree* 
+BinaryTree_build_of_array(BinaryTreeEleType* array, size_t array_len) {
+    if (array == NULL) {
+        fprintf(stderr, BINARY_TREE_SRC_ACCESS_EXCEPTION);
+        return NULL;
+    }
+
+    BinaryTree* tree = BinaryTree_create(BINARY_TREE_INIT_DISABLE, NULL);
+    if(tree == NULL) {
+        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+        return NULL;
+    }
+
+    BinaryTreeNode* root = BinaryTreeNode_create(array[0]);
+    if (root == NULL) {
+        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+        BinaryTree_clean(&tree);
+        return NULL;
+    }
+
+    BinaryTreeHelpQueue* help_queue = BinaryTreeHelpQueue_create();
+    if (help_queue == NULL) {
+        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+        BinaryTree_clean(&tree);
+        BinaryTreeNode_clean(&root);
+        return NULL;
+    }
+
+    BinaryTreeHelpQueue_enqueue(help_queue, root);
+
+    int build_abort = 0;
+    
+    int i = 1;
+    while (i < array_len && !BinaryTreeHelpQueue_is_empty(help_queue)) {
+        BinaryTreeNode* current = BinaryTreeHelpQueue_dequeue(help_queue);
+        
+        // 处理左子节点
+        if (i < array_len) {
+            current->left = BinaryTreeNode_create(array[i]);
+            if (current->left == NULL) {
+                fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+                build_abort = 1;
+                break;
+            }
+
+            BinaryTreeHelpQueue_enqueue(help_queue, current->left);
+        }
+        i++;
+        
+        // 处理右子节点
+        if (i < array_len) {
+            current->right = BinaryTreeNode_create(array[i]);
+            if (current->right == NULL) {
+                fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+                build_abort = 1;
+                break;
+            }
+            BinaryTreeHelpQueue_enqueue(help_queue, current->right);
+        }
+        i++;
+    }
+    
+    BinaryTreeHelpQueue_clean_without_free_node(&help_queue);
+    tree->root = root;
+    tree->node_num = array_len;
+
+    if (build_abort) {
+        BinaryTree_clean(&tree);
+        return NULL;
+    }
+    return tree;
 }
 
 
@@ -304,9 +349,9 @@ BinaryTree* BinaryTree_build_of_level_order(
     root->left = root->right = NULL;
 
     BinaryTreeHelpQueue* help_queue = BinaryTreeHelpQueue_create();
-    if (help_queue ==  NULL) {
+    if (help_queue == NULL) {
         fprintf(stderr, BINARY_TREE_BUILD_ERROR);
-        free(tree);
+        BinaryTree_clean(&tree);
         BinaryTreeNode_clean(&root);
         return NULL;
     }
@@ -314,6 +359,8 @@ BinaryTree* BinaryTree_build_of_level_order(
     BinaryTreeHelpQueue_enqueue(help_queue, root);
 
     size_t level_index = 1;
+
+    int build_abort = 0;
 
     while (
         !BinaryTreeHelpQueue_is_empty(help_queue) && 
@@ -337,11 +384,10 @@ BinaryTree* BinaryTree_build_of_level_order(
                 BinaryTreeNode* left_node = BinaryTreeNode_create(left_node_data);
                 if (left_node ==  NULL) {
                     fprintf(stderr, BINARY_TREE_BUILD_ERROR);
-                    free(tree);
-                    BinaryTreeNode_clean(&root);
-                    BinaryTreeHelpQueue_clean(&help_queue);
-                    return NULL;
+                    build_abort = 1;
+                    break;
                 }
+
                 left_node->left = left_node->right = NULL;
                 current->left = left_node;
                 BinaryTreeHelpQueue_enqueue(help_queue, left_node);
@@ -359,10 +405,8 @@ BinaryTree* BinaryTree_build_of_level_order(
                     BinaryTreeNode* right_node = BinaryTreeNode_create(right_node_data);
                     if (right_node ==  NULL) {
                         fprintf(stderr, BINARY_TREE_BUILD_ERROR);
-                        free(tree);
-                        BinaryTreeNode_clean(&root);
-                        BinaryTreeHelpQueue_clean(&help_queue);
-                        return NULL;
+                        build_abort = 1;
+                        break;
                     }
                     right_node->left = right_node->right = NULL;
                     current->right = right_node;
@@ -372,9 +416,17 @@ BinaryTree* BinaryTree_build_of_level_order(
             }
         }
     }
-    BinaryTreeHelpQueue_clean(&help_queue);
+
+    BinaryTreeHelpQueue_clean_without_free_node(&help_queue);
+
     tree->root = root;
     tree->node_num = in_len;
+
+    if (build_abort) {
+        BinaryTree_clean(&tree);
+        return NULL;
+    }
+
     return tree;
 }
 
@@ -402,6 +454,10 @@ BinaryTreeNode* _BinaryTreeNode_recursion_build_helper(
 
     BinaryTreeNode* node = 
         BinaryTreeNode_create(help_order[*help_order_index]);
+    if (node == NULL) {
+        fprintf(stderr, BINARY_TREE_BUILD_ERROR);
+        return NULL;
+    }
 
     if (mode == BINARY_TREE_BUILD_ORDER_INDEX_INCREASE) {
         (*help_order_index)++;
@@ -448,7 +504,6 @@ BinaryTreeNode* _BinaryTreeNode_recursion_copy_helper(BinaryTreeNode* node) {
     }
 
     BinaryTreeNode* new_node = BinaryTreeNode_create(node->data);
-
     if (new_node == NULL) {
         fprintf(stderr, BINARY_TREE_COPY_ERROR);
         return NULL;
@@ -458,31 +513,6 @@ BinaryTreeNode* _BinaryTreeNode_recursion_copy_helper(BinaryTreeNode* node) {
     new_node->right = _BinaryTreeNode_recursion_copy_helper(node->right);
 
     return new_node;
-}
-
-
-int BinaryTree_clean(BinaryTree** tree) {
-    if (tree == NULL || *tree == NULL) {
-        fprintf(stderr, BINARY_TREE_ACCESS_EXCEPTION);
-        return -1;
-    }
-
-    BinaryTreeHelpQueue* q = BinaryTreeHelpQueue_create();
-
-    BinaryTreeNode* tmp_node = NULL;
-
-    BinaryTree_post_order_traversal((*tree)->root, BinaryTreeNode_collect, q);
-
-    while (!BinaryTreeHelpQueue_is_empty(q)) {
-        tmp_node = BinaryTreeHelpQueue_dequeue(q);
-        BinaryTreeNode_clean(&tmp_node);
-    }
-
-    BinaryTreeHelpQueue_clean(&q);
-    
-    free(*tree);
-    *tree = NULL;
-    return 0;
 }
 
 
@@ -502,14 +532,24 @@ BinaryTreeNode* BinaryTreeNode_create(BinaryTreeEleType data) {
 }
 
 
-int
-BinaryTreeNode_collect(BinaryTreeNode** node, BinaryTreeContext* q) {
+int BinaryTreeNode_collector(BinaryTreeNode** node, BinaryTreeContext* q) {
     if (node == NULL || *node == NULL) {
         fprintf(stderr, BINARY_TREE_NODE_ACCESS_EXCEPTION);
         return -1;
     }
 
     BinaryTreeHelpQueue_enqueue((BinaryTreeHelpQueue*) q, *node);
+    return 0;
+}
+
+
+int BinaryTreeNode_deletor(BinaryTreeNode** node,  BinaryTreeContext* ctx) {
+    if (node == NULL || *node == NULL) {
+        fprintf(stderr, BINARY_TREE_NODE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    BinaryTreeNode_clean(node);
     return 0;
 }
 
@@ -541,18 +581,32 @@ BinaryTreeHelpQueue* BinaryTreeHelpQueue_create() {
     BinaryTreeHelpQueue* q = 
         (BinaryTreeHelpQueue*)malloc(sizeof(BinaryTreeHelpQueue));
 
+    if (q == NULL) {
+        fprintf(stderr, BINARY_TREE_HELP_QUEUE_CREATE_ERROR);
+        return NULL;
+    }
+
     q->front = q->rear = NULL;
     return q;
 }
 
 
-void BinaryTreeHelpQueue_enqueue(
-    BinaryTreeHelpQueue* q, BinaryTreeNode* tree_node) 
-{
+int BinaryTreeHelpQueue_enqueue(
+    BinaryTreeHelpQueue* q, BinaryTreeNode* tree_node
+) {
+    if (q == NULL) {
+        fprintf(stderr, BINARY_TREE_HELP_QUEUE_ACCESS_EXCEPTION);
+        return -1;
+    }
 
     BinaryTreeHelpQueueNode* new_node = 
         (BinaryTreeHelpQueueNode*) 
         malloc (sizeof(BinaryTreeHelpQueueNode));
+    
+    if (q == NULL) {
+        fprintf(stderr, BINARY_TREE_HELP_QUEUE_NODE_CREATE_ERROR);
+        return -1;
+    }
 
     new_node->tree_node = tree_node;
     new_node->next = NULL;
@@ -563,10 +617,17 @@ void BinaryTreeHelpQueue_enqueue(
         q->rear->next = new_node;
         q->rear = new_node;
     }
+
+    return 0;
 }
 
 
 BinaryTreeNode* BinaryTreeHelpQueue_dequeue(BinaryTreeHelpQueue* q) {
+    if (q == NULL) {
+        fprintf(stderr, BINARY_TREE_HELP_QUEUE_ACCESS_EXCEPTION);
+        return NULL;
+    }
+
     if (q->front == NULL) return NULL;
     
     BinaryTreeHelpQueueNode* temp = q->front;
@@ -587,11 +648,18 @@ int BinaryTreeHelpQueue_is_empty(BinaryTreeHelpQueue* q) {
 }
 
 
-int BinaryTreeHelpQueue_clean(BinaryTreeHelpQueue** q) {
+int BinaryTreeHelpQueue_clean_without_free_node(BinaryTreeHelpQueue** q) {
+    if (q == NULL || *q == NULL) {
+        fprintf(stderr, BINARY_TREE_HELP_QUEUE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
     while (!BinaryTreeHelpQueue_is_empty(*q)) {
         BinaryTreeHelpQueue_dequeue(*q);
     }
+
     free(*q);
     *q = NULL;
+
     return 0;
 }

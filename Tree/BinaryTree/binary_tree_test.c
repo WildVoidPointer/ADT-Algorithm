@@ -10,6 +10,11 @@ void origin_order_display(char* order_name, int len, BinaryTreeEleType* order) {
 }
 
 
+int test_handle(BinaryTreeNode** node, BinaryTreeContext* ctx) {
+    (*node)->data = (*node)->data + 1;
+}
+
+
 int main() {
     BinaryTreeEleType tree_node_array[] = {1, 2, 3, 4, 5, 6, 7, 8};
     int tree_node_array_len = 
@@ -27,7 +32,6 @@ int main() {
     );
 
     origin_order_display("OriginArrayInfo", tree_node_array_len, tree_node_array);
-
     printf("BinaryTreeBuildLevelOrderResult: ");
     BinaryTree_display(tree, NULL);
 

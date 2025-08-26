@@ -16,10 +16,10 @@
     "BinaryTreeCreateError: Memory initialization of BinaryTree failed\n"
 
 #define BINARY_TREE_BUILD_ERROR \
-    "BinaryTreeBuildError: Memory initialization of BinaryTree failed\n"
+    "BinaryTreeBuildError: Memory initialization failed in process of building BinaryTree\n"
 
 #define BINARY_TREE_COPY_ERROR \
-    "BinaryTreeCopyError: Memory initialization failed in BinaryTree copying \n"
+    "BinaryTreeCopyError: Memory initialization failed in BinaryTree copying\n"
 
 #define BINARY_TREE_ACCESS_EXCEPTION \
     "BinaryTreeAccessException: The data address of the BinaryTree cannot be accessed\n"
@@ -36,6 +36,17 @@
 // other misc exception messages of BinaryTree options
 #define BINARY_TREE_SRC_ACCESS_EXCEPTION \
     "BinaryTreeSRCAccessException: The data address of the BinaryTree source cannot be accessed\n"
+
+
+#define BINARY_TREE_HELP_QUEUE_CREATE_ERROR \
+    "BinaryTreeHelpQueueCreateError: Memory initialization of BinaryTreeHelpQueue failed\n"
+
+#define BINARY_TREE_HELP_QUEUE_ACCESS_EXCEPTION \
+    "BinaryTreeHelpQueueAccessException: The data address of the BinaryTreeHelpQueue cannot be accessed\n"
+
+
+#define BINARY_TREE_HELP_QUEUE_NODE_CREATE_ERROR \
+    "BinaryTreeHelpQueueNodeCreateError: Memory initialization of BinaryTreeHelpQueueNode failed\n"
 
 
 typedef int BinaryTreeEleType;
@@ -81,11 +92,13 @@ typedef struct BinaryTreeHelpQueue {
 } BinaryTreeHelpQueue;
 
 
-typedef int (*BinaryTreeNodeHandler)(BinaryTreeNode** node, BinaryTreeContext* context);
+typedef int (*BinaryTreeNodeHandler)(
+    BinaryTreeNode** node, BinaryTreeContext* ctx
+);
 
 
 typedef int (*BinaryTreeIterator)(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context
+    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
 );
 
 
@@ -93,57 +106,50 @@ BinaryTree* BinaryTree_create(
     BinaryTreeInitModeEnum init_root, BinaryTreeEleType* root_init_data
 );
 
-
-int BinaryTree_pre_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context
-);
-
-
-int BinaryTree_in_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context
-);
-
-
-int BinaryTree_post_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context
-);
-
-
-int BinaryTree_level_order_traversal(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* context
-);
-
-
-BinaryTree* 
-BinaryTree_build_of_array(BinaryTreeEleType* array, size_t array_len);
-
+int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator iter);
 
 BinaryTree* BinaryTree_copy(BinaryTree* tree);
 
+int BinaryTree_clean(BinaryTree** tree);
+
+int BinaryTree_pre_order_traversal(
+    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+);
+
+int BinaryTree_in_order_traversal(
+    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+);
+
+int BinaryTree_post_order_traversal(
+    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+);
+
+int BinaryTree_level_order_traversal(
+    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+);
+
+BinaryTree* 
+BinaryTree_build_of_array(BinaryTreeEleType* array, size_t array_len);
 
 BinaryTree* BinaryTree_build_of_pre_order(
     BinaryTreeEleType* in_order, BinaryTreeEleType* pre_order,
     size_t in_len, size_t pre_len
 );
 
-
 BinaryTree* BinaryTree_build_of_post_order(
     BinaryTreeEleType* in_order, BinaryTreeEleType* post_order,
     size_t in_len, size_t post_len
 );
-
 
 BinaryTree* BinaryTree_build_of_level_order(
     BinaryTreeEleType* in_order, BinaryTreeEleType* level_order,
     size_t in_len, size_t level_len
 );
 
-
 ssize_t BinaryTree_in_order_index_search(
     BinaryTreeEleType* in_order, size_t start, size_t end, 
     BinaryTreeEleType val
 );
-
 
 BinaryTreeNode* _BinaryTreeNode_recursion_build_helper(
     BinaryTreeEleType* in_order, BinaryTreeEleType* pre_order, 
@@ -151,42 +157,30 @@ BinaryTreeNode* _BinaryTreeNode_recursion_build_helper(
     BinaryTreeBuildHelpOrderIndexModeEnum mode
 );
 
-
 BinaryTreeNode* _BinaryTreeNode_recursion_copy_helper(BinaryTreeNode* node);
-
-
-int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator iter);
-
-
-int BinaryTree_clean(BinaryTree** tree);
 
 
 BinaryTreeNode* BinaryTreeNode_create(BinaryTreeEleType data);
 
+int BinaryTreeNode_collector(BinaryTreeNode** node, BinaryTreeContext* q);
 
-int BinaryTreeNode_collect(BinaryTreeNode** node, BinaryTreeContext* q);
-
+int BinaryTreeNode_deletor(BinaryTreeNode** node,  BinaryTreeContext* ctx);
 
 int BinaryTreeNode_clean(BinaryTreeNode** node);
-
 
 int BinaryTreeNode_display(BinaryTreeNode* node);
 
 
 BinaryTreeHelpQueue* BinaryTreeHelpQueue_create();
 
-
-void BinaryTreeHelpQueue_enqueue(
+int BinaryTreeHelpQueue_enqueue(
     BinaryTreeHelpQueue* q, BinaryTreeNode* tree_node
 );
 
-
 BinaryTreeNode* BinaryTreeHelpQueue_dequeue(BinaryTreeHelpQueue* q);
-
 
 int BinaryTreeHelpQueue_is_empty(BinaryTreeHelpQueue* q);
 
-
-int BinaryTreeHelpQueue_clean(BinaryTreeHelpQueue** q);
+int BinaryTreeHelpQueue_clean_without_free_node(BinaryTreeHelpQueue** q);
 
 #endif
