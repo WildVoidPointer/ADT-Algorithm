@@ -93,12 +93,12 @@ typedef struct BinaryTreeHelpQueue {
 
 
 typedef int (*BinaryTreeNodeHandler)(
-    BinaryTreeNode** node, BinaryTreeContext* ctx
+    BinaryTreeNode* node, BinaryTreeContext* ctx
 );
 
 
-typedef int (*BinaryTreeIterator)(
-    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+typedef int (*BinaryTreeTraverser)(
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
 );
 
 
@@ -106,30 +106,31 @@ BinaryTree* BinaryTree_create(
     BinaryTreeInitModeEnum init_root, BinaryTreeEleType* root_init_data
 );
 
-int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator iter);
+int BinaryTree_display(BinaryTree* tree, BinaryTreeTraverser iter);
 
 BinaryTree* BinaryTree_copy(BinaryTree* tree);
 
 int BinaryTree_clean(BinaryTree** tree);
 
-int BinaryTree_pre_order_traversal(
-    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+int BinaryTree_pre_order_traverse(
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
 );
 
-int BinaryTree_in_order_traversal(
-    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+int BinaryTree_in_order_traverse(
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
 );
 
-int BinaryTree_post_order_traversal(
-    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+int BinaryTree_post_order_traverse(
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
 );
 
-int BinaryTree_level_order_traversal(
-    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+int BinaryTree_level_order_traverse(
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
 );
 
-BinaryTree* 
-BinaryTree_build_of_array(BinaryTreeEleType* array, size_t array_len);
+BinaryTree* BinaryTree_build_of_array(
+    BinaryTreeEleType* array, size_t array_len
+);
 
 BinaryTree* BinaryTree_build_of_pre_order(
     BinaryTreeEleType* in_order, BinaryTreeEleType* pre_order,
@@ -162,9 +163,9 @@ BinaryTreeNode* _BinaryTreeNode_recursion_copy_helper(BinaryTreeNode* node);
 
 BinaryTreeNode* BinaryTreeNode_create(BinaryTreeEleType data);
 
-int BinaryTreeNode_collector(BinaryTreeNode** node, BinaryTreeContext* q);
+int BinaryTreeNode_collector(BinaryTreeNode* node, BinaryTreeContext* q);
 
-int BinaryTreeNode_deletor(BinaryTreeNode** node,  BinaryTreeContext* ctx);
+int BinaryTreeNode_deletor(BinaryTreeNode* node,  BinaryTreeContext* ctx);
 
 int BinaryTreeNode_clean(BinaryTreeNode** node);
 

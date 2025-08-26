@@ -34,7 +34,7 @@ BinaryTree* BinaryTree_create(
 }
 
 
-int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator iter) {
+int BinaryTree_display(BinaryTree* tree, BinaryTreeTraverser iter) {
 
     if (tree == NULL) {
         fprintf(stderr, BINARY_TREE_ACCESS_EXCEPTION);
@@ -44,9 +44,9 @@ int BinaryTree_display(BinaryTree* tree, BinaryTreeIterator iter) {
     BinaryTreeHelpQueue* q = BinaryTreeHelpQueue_create();
 
     if (iter == NULL) {
-        BinaryTree_level_order_traversal(&(tree->root), BinaryTreeNode_collector, q);
+        BinaryTree_level_order_traverse(tree->root, BinaryTreeNode_collector, q);
     } else {
-        iter(&(tree->root), BinaryTreeNode_collector, q);
+        iter(tree->root, BinaryTreeNode_collector, q);
     }
 
 
@@ -96,7 +96,7 @@ int BinaryTree_clean(BinaryTree** tree) {
         return -1;
     }
 
-    BinaryTree_post_order_traversal(&(*tree)->root, BinaryTreeNode_deletor, NULL);
+    BinaryTree_post_order_traverse((*tree)->root, BinaryTreeNode_deletor, NULL);
     
     free(*tree);
     *tree = NULL;
@@ -104,13 +104,13 @@ int BinaryTree_clean(BinaryTree** tree) {
 }
 
 
-int BinaryTree_pre_order_traversal(
-    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+int BinaryTree_pre_order_traverse(
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
 ) {
-    if (node != NULL && *node != NULL && op != NULL) {
+    if (node != NULL && op != NULL) {
         op(node, ctx);
-        BinaryTree_pre_order_traversal(&((*node)->left), op, ctx);
-        BinaryTree_pre_order_traversal(&((*node)->right), op, ctx);
+        BinaryTree_pre_order_traverse(node->left, op, ctx);
+        BinaryTree_pre_order_traverse(node->right, op, ctx);
     } else {
         return -1;
     }
@@ -119,13 +119,13 @@ int BinaryTree_pre_order_traversal(
 }
 
 
-int BinaryTree_in_order_traversal(
-    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+int BinaryTree_in_order_traverse(
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
 ) {
-    if (node != NULL && *node != NULL && op != NULL) {
-        BinaryTree_in_order_traversal(&((*node)->left), op, ctx);
+    if (node != NULL && op != NULL) {
+        BinaryTree_in_order_traverse(node->left, op, ctx);
         op(node, ctx);
-        BinaryTree_in_order_traversal(&((*node)->right), op, ctx);
+        BinaryTree_in_order_traverse(node->right, op, ctx);
     } else {
         return -1;
     }
@@ -134,12 +134,12 @@ int BinaryTree_in_order_traversal(
 }
 
 
-int BinaryTree_post_order_traversal(
-    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+int BinaryTree_post_order_traverse(
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
 ) {
-    if (node != NULL && *node != NULL && op != NULL) {
-        BinaryTree_post_order_traversal(&((*node)->left), op, ctx);
-        BinaryTree_post_order_traversal(&((*node)->right), op, ctx);
+    if (node != NULL && op != NULL) {
+        BinaryTree_post_order_traverse(node->left, op, ctx);
+        BinaryTree_post_order_traverse(node->right, op, ctx);
         op(node, ctx);
     } else {
         return -1;
@@ -149,14 +149,14 @@ int BinaryTree_post_order_traversal(
 }
 
 
-int BinaryTree_level_order_traversal(
-    BinaryTreeNode** node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+int BinaryTree_level_order_traverse(
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
 ) {
-    if (node != NULL && *node != NULL && op != NULL) {
+    if (node != NULL && op != NULL) {
 
         BinaryTreeNode* tmp_node;
         BinaryTreeHelpQueue* q = BinaryTreeHelpQueue_create();
-        BinaryTreeHelpQueue_enqueue(q, *node);
+        BinaryTreeHelpQueue_enqueue(q, node);
        
         while (!BinaryTreeHelpQueue_is_empty(q)) {
 
@@ -170,7 +170,7 @@ int BinaryTree_level_order_traversal(
                 BinaryTreeHelpQueue_enqueue(q, tmp_node->right);
             }
 
-            op(&tmp_node, ctx);
+            op(tmp_node, ctx);
         }
 
         BinaryTreeHelpQueue_clean_without_free_node(&q);
@@ -532,24 +532,24 @@ BinaryTreeNode* BinaryTreeNode_create(BinaryTreeEleType data) {
 }
 
 
-int BinaryTreeNode_collector(BinaryTreeNode** node, BinaryTreeContext* q) {
-    if (node == NULL || *node == NULL) {
+int BinaryTreeNode_collector(BinaryTreeNode* node, BinaryTreeContext* q) {
+    if (node == NULL) {
         fprintf(stderr, BINARY_TREE_NODE_ACCESS_EXCEPTION);
         return -1;
     }
 
-    BinaryTreeHelpQueue_enqueue((BinaryTreeHelpQueue*) q, *node);
+    BinaryTreeHelpQueue_enqueue((BinaryTreeHelpQueue*) q, node);
     return 0;
 }
 
 
-int BinaryTreeNode_deletor(BinaryTreeNode** node,  BinaryTreeContext* ctx) {
-    if (node == NULL || *node == NULL) {
+int BinaryTreeNode_deletor(BinaryTreeNode* node,  BinaryTreeContext* ctx) {
+    if (node == NULL) {
         fprintf(stderr, BINARY_TREE_NODE_ACCESS_EXCEPTION);
         return -1;
     }
 
-    BinaryTreeNode_clean(node);
+    BinaryTreeNode_clean(&node);
     return 0;
 }
 

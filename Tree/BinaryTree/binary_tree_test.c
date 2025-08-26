@@ -10,11 +10,6 @@ void origin_order_display(char* order_name, int len, BinaryTreeEleType* order) {
 }
 
 
-int test_handle(BinaryTreeNode** node, BinaryTreeContext* ctx) {
-    (*node)->data = (*node)->data + 1;
-}
-
-
 int main() {
     BinaryTreeEleType tree_node_array[] = {1, 2, 3, 4, 5, 6, 7, 8};
     int tree_node_array_len = 
@@ -36,13 +31,13 @@ int main() {
     BinaryTree_display(tree, NULL);
 
     printf("BinaryTreeArrayBuildPreOrderResult: ");
-    BinaryTree_display(tree, BinaryTree_pre_order_traversal);
+    BinaryTree_display(tree, BinaryTree_pre_order_traverse);
 
     printf("BinaryTreeArrayBuildInOrderResult: ");
-    BinaryTree_display(tree, BinaryTree_in_order_traversal);
+    BinaryTree_display(tree, BinaryTree_in_order_traverse);
 
     printf("BinaryTreeArrayBuildPostOrderResult: ");
-    BinaryTree_display(tree, BinaryTree_post_order_traversal);
+    BinaryTree_display(tree, BinaryTree_post_order_traverse);
 
     BinaryTree_clean(&tree);
     printf("BinaryTreeArrayBuildCleanResult: %p\n", tree);
@@ -72,13 +67,13 @@ int main() {
     BinaryTree_display(pre_order_build_res, NULL);
 
     origin_order_display("PreOrder  ", order_len, pre_order);
-    BinaryTree_display(pre_order_build_res, BinaryTree_pre_order_traversal);
+    BinaryTree_display(pre_order_build_res, BinaryTree_pre_order_traverse);
 
     origin_order_display("InOrder   ", order_len, in_order);
-    BinaryTree_display(pre_order_build_res, BinaryTree_in_order_traversal);
+    BinaryTree_display(pre_order_build_res, BinaryTree_in_order_traverse);
 
     origin_order_display("PostOrder ", order_len, post_order);
-    BinaryTree_display(pre_order_build_res, BinaryTree_post_order_traversal);
+    BinaryTree_display(pre_order_build_res, BinaryTree_post_order_traverse);
 
     BinaryTree_clean(&pre_order_build_res);
     printf("=======================\n");
@@ -91,13 +86,13 @@ int main() {
     BinaryTree_display(post_order_build_res, NULL);
 
     origin_order_display("PreOrder  ", order_len, pre_order);
-    BinaryTree_display(post_order_build_res, BinaryTree_pre_order_traversal);
+    BinaryTree_display(post_order_build_res, BinaryTree_pre_order_traverse);
 
     origin_order_display("InOrder   ", order_len, in_order);
-    BinaryTree_display(post_order_build_res, BinaryTree_in_order_traversal);
+    BinaryTree_display(post_order_build_res, BinaryTree_in_order_traverse);
 
     origin_order_display("PostOrder ", order_len, post_order);
-    BinaryTree_display(post_order_build_res, BinaryTree_post_order_traversal);
+    BinaryTree_display(post_order_build_res, BinaryTree_post_order_traverse);
 
     BinaryTree_clean(&post_order_build_res);
     printf("=======================\n");
@@ -110,13 +105,13 @@ int main() {
     BinaryTree_display(level_order_build_res, NULL);
 
     origin_order_display("PreOrder  ", order_len, pre_order);
-    BinaryTree_display(level_order_build_res, BinaryTree_pre_order_traversal);
+    BinaryTree_display(level_order_build_res, BinaryTree_pre_order_traverse);
 
     origin_order_display("InOrder   ", order_len, in_order);
-    BinaryTree_display(level_order_build_res, BinaryTree_in_order_traversal);
+    BinaryTree_display(level_order_build_res, BinaryTree_in_order_traverse);
 
     origin_order_display("PostOrder ", order_len, post_order);
-    BinaryTree_display(level_order_build_res, BinaryTree_post_order_traversal);
+    BinaryTree_display(level_order_build_res, BinaryTree_post_order_traverse);
     
     printf("=======================\n");
 
