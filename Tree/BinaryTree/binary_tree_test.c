@@ -1,8 +1,8 @@
 #include "binary_tree.h"
 
 
-void origin_order_display(char* order_name, int len, BinaryTreeEleType* order) {
-    printf("%s: {  ", order_name);
+void BinaryTreeEleType_array_println(char* desp, int len, BinaryTreeEleType* order) {
+    printf("%s: {  ", desp);
     for (int i = 0; i < len; i++) {
         printf("%d  ", order[i]);
     }
@@ -15,6 +15,7 @@ int main() {
     int tree_node_array_len = 
         sizeof(tree_node_array) / sizeof(tree_node_array[0]);
 
+
     BinaryTreeEleType level_order[] = {1, 2, 3, -1, 4, 5, 6};
     BinaryTreeEleType pre_order[] = {1, 2, -1, 4, 3, 5, 6};
     BinaryTreeEleType in_order[] = {-1, 2, 4, 1, 5, 3, 6};
@@ -26,7 +27,7 @@ int main() {
         tree_node_array, tree_node_array_len
     );
 
-    origin_order_display("OriginArrayInfo", tree_node_array_len, tree_node_array);
+    BinaryTreeEleType_array_println("OriginArrayInfo", tree_node_array_len, tree_node_array);
     printf("BinaryTreeBuildLevelOrderResult: ");
     BinaryTree_display(tree, NULL);
 
@@ -63,16 +64,16 @@ int main() {
     BinaryTree* pre_order_build_res = BinaryTree_build_of_pre_order(
         in_order, pre_order, order_len, order_len
     );
-    origin_order_display("LevelOrder", order_len, level_order);
+    BinaryTreeEleType_array_println("LevelOrder", order_len, level_order);
     BinaryTree_display(pre_order_build_res, NULL);
 
-    origin_order_display("PreOrder  ", order_len, pre_order);
+    BinaryTreeEleType_array_println("PreOrder  ", order_len, pre_order);
     BinaryTree_display(pre_order_build_res, BinaryTree_pre_order_traverse);
 
-    origin_order_display("InOrder   ", order_len, in_order);
+    BinaryTreeEleType_array_println("InOrder   ", order_len, in_order);
     BinaryTree_display(pre_order_build_res, BinaryTree_in_order_traverse);
 
-    origin_order_display("PostOrder ", order_len, post_order);
+    BinaryTreeEleType_array_println("PostOrder ", order_len, post_order);
     BinaryTree_display(pre_order_build_res, BinaryTree_post_order_traverse);
 
     BinaryTree_clean(&pre_order_build_res);
@@ -82,16 +83,16 @@ int main() {
     BinaryTree* post_order_build_res = BinaryTree_build_of_post_order(
         in_order, post_order, order_len, order_len
     );
-    origin_order_display("LevelOrder", order_len, level_order);
+    BinaryTreeEleType_array_println("LevelOrder", order_len, level_order);
     BinaryTree_display(post_order_build_res, NULL);
 
-    origin_order_display("PreOrder  ", order_len, pre_order);
+    BinaryTreeEleType_array_println("PreOrder  ", order_len, pre_order);
     BinaryTree_display(post_order_build_res, BinaryTree_pre_order_traverse);
 
-    origin_order_display("InOrder   ", order_len, in_order);
+    BinaryTreeEleType_array_println("InOrder   ", order_len, in_order);
     BinaryTree_display(post_order_build_res, BinaryTree_in_order_traverse);
 
-    origin_order_display("PostOrder ", order_len, post_order);
+    BinaryTreeEleType_array_println("PostOrder ", order_len, post_order);
     BinaryTree_display(post_order_build_res, BinaryTree_post_order_traverse);
 
     BinaryTree_clean(&post_order_build_res);
@@ -101,16 +102,16 @@ int main() {
     BinaryTree* level_order_build_res = BinaryTree_build_of_level_order(
         in_order, level_order, order_len, order_len
     );
-    origin_order_display("LevelOrder", order_len, level_order);
+    BinaryTreeEleType_array_println("LevelOrder", order_len, level_order);
     BinaryTree_display(level_order_build_res, NULL);
 
-    origin_order_display("PreOrder  ", order_len, pre_order);
+    BinaryTreeEleType_array_println("PreOrder  ", order_len, pre_order);
     BinaryTree_display(level_order_build_res, BinaryTree_pre_order_traverse);
 
-    origin_order_display("InOrder   ", order_len, in_order);
+    BinaryTreeEleType_array_println("InOrder   ", order_len, in_order);
     BinaryTree_display(level_order_build_res, BinaryTree_in_order_traverse);
 
-    origin_order_display("PostOrder ", order_len, post_order);
+    BinaryTreeEleType_array_println("PostOrder ", order_len, post_order);
     BinaryTree_display(level_order_build_res, BinaryTree_post_order_traverse);
     
     printf("=======================\n");
