@@ -36,9 +36,20 @@
     "The data address of the UnionFindSet cannot be accessed\n"
 
 
-#define UNION_FIND_SET_UNIT_UNION_EXCEPTION \
+#define UNION_FIND_SET_UNION_SRC_ACCESS_EXCEPTION \
     "UnionFindSetUnitUnionException: " \
     "The data address of the UnionFindSetUnit cannot be accessed\n"
+
+
+#define UNION_FIND_SET_UNION_MODE_NOT_FOUND_EXCEPTION \
+    "UnionFindSetUnitUnionModeNotFoundException: " \
+    "There is no matching pattern in the UnionFindSetUnionCompareModeEnum\n"
+
+
+#define UNION_FIND_SET_FINDING_EXCEPTION \
+    "UnionFindSetUnitFindingException: " \
+    "The data address of the UnionFindSetUnit " \
+    "or UnionFindSet cannot be accessed\n"
 
 
 #define UNION_FIND_SET_UNIT_ACCESS_EXCEPTION \
@@ -57,17 +68,16 @@ typedef struct SequentialUnionFindSetUnit {
 } SequentialUnionFindSetUnit;
 
 
-typedef struct LinkedUnionFindSetUnit {
-    UnionFindSetDataType val;
-    struct LinkedUnionFindSetUnit* parent;
-    size_t size;
-} LinkedUnionFindSetUnit;
-
-
 typedef struct SequentialUnionFindSet {
     SequentialUnionFindSetUnit* units;
     size_t size;
 } SequentialUnionFindSet;
+
+
+typedef enum UnionFindSetUnionCompareModeEnum {
+    UNION_FIND_SET_UNION_COMPARE_DISABLE = 0,
+    UNION_FIND_SET_UNION_COMPARE_ENABLE = 1
+} UnionFindSetUnionCompareModeEnum;
 
 
 SequentialUnionFindSet* SequentialUnionFindSet_create(size_t size);
@@ -90,7 +100,13 @@ SequentialUnionFindSetUnit* SequentialUnionFindSet_root_find(
 
 
 int SequentialUnionFindSet_root_union(
-    SequentialUnionFindSetUnit* root1, SequentialUnionFindSetUnit* root2
+    SequentialUnionFindSetUnit* root1, SequentialUnionFindSetUnit* root2,
+    UnionFindSetUnionCompareModeEnum mode
+);
+
+
+int SequentialUnionFindSetUnit_level_compress(
+    SequentialUnionFindSet* suf_set, SequentialUnionFindSetUnit* usf_unit
 );
 
 

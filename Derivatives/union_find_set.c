@@ -102,10 +102,11 @@ SequentialUnionFindSetUnit* SequentialUnionFindSet_root_find(
 
 
 int SequentialUnionFindSet_root_union(
-    SequentialUnionFindSetUnit* root1, SequentialUnionFindSetUnit* root2
+    SequentialUnionFindSetUnit* root1, SequentialUnionFindSetUnit* root2,
+    UnionFindSetUnionCompareModeEnum mode
 ) {
     if (root1 == NULL || root2 == NULL) {
-        fprintf(stderr, UNION_FIND_SET_UNIT_UNION_EXCEPTION);
+        fprintf(stderr, UNION_FIND_SET_UNION_SRC_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -113,13 +114,62 @@ int SequentialUnionFindSet_root_union(
         return 0;
     }
 
-    root2->parent_idx = root1->self_idx;
-    root1->ele_num += root2->ele_num;
+    if (mode == UNION_FIND_SET_UNION_COMPARE_DISABLE) {
+        root2->parent_idx = root1->self_idx;
+        root1->ele_num += root2->ele_num;
+    } else if (mode == UNION_FIND_SET_UNION_COMPARE_ENABLE) {
+        if (root1->ele_num >= root2->ele_num) {
+            root2->parent_idx = root1->self_idx;
+            root1->ele_num += root2->ele_num;
+        } else {
+            root1->parent_idx = root2->self_idx;
+            root2->ele_num += root1->ele_num;
+        }
+    } else {
+        
+    }
+    
     return 0;
 }
 
 
-int SequentialUnionFindSetUnit_display(SequentialUnionFindSetUnit* suf_unit) {
+int SequentialUnionFindSetUnit_level_compress(
+    SequentialUnionFindSet* suf_set, SequentialUnionFindSetUnit* suf_unit
+) {
+    if (suf_set == NULL || suf_unit == NULL) {
+        fprintf(stderr, UNION_FIND_SET_FINDING_EXCEPTION);
+        return -1;
+    }
+
+    SequentialUnionFindSetUnit* suf_unit_root = suf_unit;
+
+    while (suf_unit_root->parent_idx >= 0) {
+        suf_unit_root = &(suf_set->units[suf_unit_root->parent_idx]);
+    }
+
+    SequentialUnionFindSetUnit* suf_unit_curr_parent;
+
+    size_t curr_decrease = 1;
+
+    while (suf_unit != suf_unit_root) {
+        suf_unit_curr_parent = &(suf_set->units[suf_unit->parent_idx]);
+        suf_unit->parent_idx = suf_unit_root->self_idx;
+
+        if (suf_unit_curr_parent != suf_unit_root) {
+            suf_unit_curr_parent->ele_num -= curr_decrease;
+            curr_decrease++;
+        }
+        
+        suf_unit = suf_unit_curr_parent;
+    }
+
+    return 0;
+}
+
+
+int SequentialUnionFindSetUnit_display(
+    SequentialUnionFindSetUnit* suf_unit
+) {
 
     if (suf_unit == NULL) {
         fprintf(stderr, UNION_FIND_SET_UNIT_ACCESS_EXCEPTION);
@@ -128,9 +178,9 @@ int SequentialUnionFindSetUnit_display(SequentialUnionFindSetUnit* suf_unit) {
 
     printf(
         "SequentialUnionFindSetUnit: "  \
-        "{  val: %d, parent_idx: %d, ele_num: %lu  }\n",
-        suf_unit->val,
+        "{  parent_idx: %d, val: %d, ele_num: %lu  }\n",
         suf_unit->parent_idx,
+        suf_unit->val,
         suf_unit->ele_num
     );
 
