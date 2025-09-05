@@ -1,8 +1,9 @@
 #include "sequence_list.h"
 
 
-SequenceList* 
-SequenceList_create(size_t size, SequenceListInitModeEnum is_init, SequenceListEleType *init_data) {
+SequenceList* SequenceList_create(
+    size_t size, SequenceListInitModeEnum is_init, SequenceListEleType *init_data
+) {
 
     SequenceList* seqlist = (SequenceList*)malloc(sizeof(SequenceList));
     if (seqlist == NULL) {
@@ -10,7 +11,9 @@ SequenceList_create(size_t size, SequenceListInitModeEnum is_init, SequenceListE
         return NULL;
     }
 
-    seqlist->elements = (SequenceListEleType*)malloc(size * sizeof(SequenceListEleType));
+    seqlist->elements = (SequenceListEleType*) malloc(
+        size * sizeof(SequenceListEleType)
+    );
     if (seqlist->elements == NULL) {
         fprintf(stderr, SEQUENCE_LIST_ELEMENTS_INIT_ERROR);
         free(seqlist);
@@ -34,15 +37,19 @@ SequenceList_create(size_t size, SequenceListInitModeEnum is_init, SequenceListE
 }
 
 
-int 
-SequenceList_expand(SequenceList* seqlist, size_t expand_size, SequenceListInitModeEnum is_init) {
+int SequenceList_expand(
+    SequenceList* seqlist, size_t expand_size, SequenceListInitModeEnum is_init
+) {
     if (seqlist == NULL) {
         fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
         return -1;
     }
 
     SequenceListEleType* tmp = (SequenceListEleType*) 
-        realloc (seqlist->elements, sizeof(SequenceListEleType) * (seqlist->size + expand_size));
+        realloc (
+            seqlist->elements, 
+            sizeof(SequenceListEleType) * (seqlist->size + expand_size)
+        );
 
     if (tmp == NULL) {
         fprintf(stderr, SEQUENCE_LIST_EXPAND_ERROR);
@@ -51,7 +58,10 @@ SequenceList_expand(SequenceList* seqlist, size_t expand_size, SequenceListInitM
         seqlist->elements = tmp;
     }
 
-    if (is_init == (SequenceListInitModeEnum) SEQUENCE_LIST_INIT_ENABLE || seqlist->is_init) {
+    if (
+        is_init == (SequenceListInitModeEnum) SEQUENCE_LIST_INIT_ENABLE || 
+        seqlist->is_init
+    ) {
         for (size_t i = seqlist->size; i < (seqlist->size + expand_size); i++) {
             seqlist->elements[i] = seqlist->init_data;
         }
@@ -123,7 +133,9 @@ int SequenceList_remove(SequenceList* seqlist, size_t pos, SequenceListEleType* 
 }
 
 
-int SequenceList_search(SequenceList* seqlist, size_t* pos, SequenceListEleType* buf, int flag) {
+int SequenceList_search(
+    SequenceList* seqlist, size_t* pos, SequenceListEleType* buf, int flag
+) {
     if (seqlist == NULL) {
         fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
         return -1;

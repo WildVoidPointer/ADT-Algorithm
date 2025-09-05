@@ -64,12 +64,14 @@ typedef struct SequenceList {
 
 
 SequenceList* SequenceList_create(
-    size_t size, SequenceListInitModeEnum is_init, SequenceListEleType *init_data
+    size_t size, SequenceListInitModeEnum is_init, 
+    SequenceListEleType *init_data
 );
 
 
 int SequenceList_expand(
-    SequenceList* seqlist, size_t expand_size, SequenceListInitModeEnum is_init
+    SequenceList* seqlist, size_t expand_size, 
+    SequenceListInitModeEnum is_init
 );
 
 
@@ -79,13 +81,20 @@ size_t SequenceList_length(SequenceList* seqlist);
 int SequenceList_is_empty(SequenceList* seqlist);
 
 
-int SequenceList_insert(SequenceList* seqlist, size_t pos, SequenceListEleType buf);
+int SequenceList_insert(
+    SequenceList* seqlist, size_t pos, SequenceListEleType buf
+);
 
 
-int SequenceList_remove(SequenceList* seqlist, size_t pos, SequenceListEleType* buf);
+int SequenceList_remove(
+    SequenceList* seqlist, size_t pos, SequenceListEleType* buf
+);
 
 
-int SequenceList_search(SequenceList* seqlist, size_t* pos, SequenceListEleType* buf, int flag);
+int SequenceList_search(
+    SequenceList* seqlist, size_t* pos, 
+    SequenceListEleType* buf, int flag
+);
 
 
 int SequenceList_clean(SequenceList** seqlist);

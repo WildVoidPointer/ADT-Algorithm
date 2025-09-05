@@ -5,6 +5,7 @@
 
 
 int main(int argc, char const *argv[]) {
+    
     SequenceList* seqlist = SequenceList_create(
         5, SEQUENCE_LIST_INIT_DISABLE, NULL
     );
