@@ -1,10 +1,9 @@
 #include <stdio.h>
 
 
-int 
-sl_min_ele_rm_and_trailing_ele_fill(int len, int sl[]) {
-    if (len == 0) {
-        puts("error");
+int seqlist_minimum_del_and_last_fill(int len, int sl[]) {
+    if (len <= 0) {
+        puts("error: the sequence_list is empty\n");
     }
 
     int min_index = 0;
@@ -23,7 +22,7 @@ sl_min_ele_rm_and_trailing_ele_fill(int len, int sl[]) {
 int main() {
     int arr[] = {1, 2, 3, 4, 0, 6};
 
-    int res = sl_min_ele_rm_and_trailing_ele_fill(6, arr);
+    int res = seqlist_minimum_del_and_last_fill(6, arr);
 
     for (int i = 0; i < 6; i++) {
         printf("%d  ", arr[i]);
