@@ -44,6 +44,12 @@ typedef enum ThreadBinaryTreeIndexStateEnum {
 } ThreadBinaryTreeIndexStateEnum;
 
 
+typedef enum ThreadBinaryTreeThreadStateEnum {
+    THREAD_BINARY_TREE_IS_NOT_THREADED = 0,
+    THREAD_BINARY_TREE_IS_THREADED = 1
+} ThreadBinaryTreeThreadStateEnum;
+
+
 typedef struct ThreadBinaryTreeNode {
     ThreadBinaryTreeEleType data;
     struct ThreadBinaryTreeNode* left;
@@ -56,7 +62,7 @@ typedef struct ThreadBinaryTreeNode {
 typedef struct ThreadBinaryTree {
     ThreadBinaryTreeNode* root;
     size_t node_num;
-    int is_threaded;
+    ThreadBinaryTreeThreadStateEnum is_threaded;
 } ThreadBinaryTree;
 
 
@@ -71,6 +77,15 @@ typedef int (*ThreadBinaryTreeHandler) (
 
 
 ThreadBinaryTree* ThreadBinaryTree_create();
+
+
+int ThreadBinaryTree_clean(ThreadBinaryTree** th_tree);
+
+
+int ThreadBinaryTree_threaded_tree_clean(ThreadBinaryTree** th_tree);
+
+
+int ThreadBinaryTree_not_threaded_tree_clean(ThreadBinaryTree** th_tree);
 
 
 ThreadBinaryTree* 
@@ -99,9 +114,6 @@ int ThreadBinaryTree_threading(ThreadBinaryTree* th_tree);
 
 ThreadBinaryTreeNode*
 _ThreadBinaryTree_build_of_binary_tree_helper(BinaryTreeNode* bin_node);
-
-
-int ThreadBinaryTree_clean(ThreadBinaryTree** th_tree);
 
 
 

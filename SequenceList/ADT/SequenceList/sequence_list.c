@@ -1,23 +1,23 @@
-#include "seqlist.h"
+#include "sequence_list.h"
 
 
-SeqList* 
-SeqList_create(size_t size, SeqListInitModeEnum is_init, SeqListEleType *init_data) {
+SequenceList* 
+SequenceList_create(size_t size, SequenceListInitModeEnum is_init, SequenceListEleType *init_data) {
 
-    SeqList* seqlist = (SeqList*)malloc(sizeof(SeqList));
+    SequenceList* seqlist = (SequenceList*)malloc(sizeof(SequenceList));
     if (seqlist == NULL) {
-        fprintf(stderr, SEQLIST_CREATE_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_CREATE_ERROR);
         return NULL;
     }
 
-    seqlist->elements = (SeqListEleType*)malloc(size * sizeof(SeqListEleType));
+    seqlist->elements = (SequenceListEleType*)malloc(size * sizeof(SequenceListEleType));
     if (seqlist->elements == NULL) {
-        fprintf(stderr, ELEMENTS_INIT_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_ELEMENTS_INIT_ERROR);
         free(seqlist);
         return NULL;
     }
 
-    if (is_init == (SeqListInitModeEnum)SEQLIST_INIT_ENABLE) {
+    if (is_init == (SequenceListInitModeEnum)SEQUENCE_LIST_INIT_ENABLE) {
         seqlist->is_init = 1;
         seqlist->init_data = *init_data;
         for (size_t i = 0; i < size; i++) {
@@ -35,23 +35,23 @@ SeqList_create(size_t size, SeqListInitModeEnum is_init, SeqListEleType *init_da
 
 
 int 
-SeqList_expand(SeqList* seqlist, size_t expand_size, SeqListInitModeEnum is_init) {
+SequenceList_expand(SequenceList* seqlist, size_t expand_size, SequenceListInitModeEnum is_init) {
     if (seqlist == NULL) {
-        fprintf(stderr, SEQLIST_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
         return -1;
     }
 
-    SeqListEleType* tmp = (SeqListEleType*) 
-        realloc (seqlist->elements, sizeof(SeqListEleType) * (seqlist->size + expand_size));
+    SequenceListEleType* tmp = (SequenceListEleType*) 
+        realloc (seqlist->elements, sizeof(SequenceListEleType) * (seqlist->size + expand_size));
 
     if (tmp == NULL) {
-        fprintf(stderr, SEQLIST_EXPAND_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_EXPAND_ERROR);
         return -1;
     } else {
         seqlist->elements = tmp;
     }
 
-    if (is_init == (SeqListInitModeEnum) SEQLIST_INIT_ENABLE || seqlist->is_init) {
+    if (is_init == (SequenceListInitModeEnum) SEQUENCE_LIST_INIT_ENABLE || seqlist->is_init) {
         for (size_t i = seqlist->size; i < (seqlist->size + expand_size); i++) {
             seqlist->elements[i] = seqlist->init_data;
         }
@@ -61,19 +61,19 @@ SeqList_expand(SeqList* seqlist, size_t expand_size, SeqListInitModeEnum is_init
 }
 
 
-size_t SeqList_length(SeqList* seqlist) {
+size_t SequenceList_length(SequenceList* seqlist) {
     return seqlist->length;
 }
 
 
-int SeqList_is_empty(SeqList* seqlist) {
+int SequenceList_is_empty(SequenceList* seqlist) {
     return seqlist->length == 0 ? 1 : 0;
 }
 
 
-int SeqList_insert(SeqList* seqlist, size_t pos, SeqListEleType buf) {
+int SequenceList_insert(SequenceList* seqlist, size_t pos, SequenceListEleType buf) {
     if (seqlist == NULL) {
-        fprintf(stderr, SEQLIST_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
         return -1;
     }
 
@@ -81,7 +81,7 @@ int SeqList_insert(SeqList* seqlist, size_t pos, SeqListEleType buf) {
         seqlist->elements[seqlist->length] = buf;
     } else {
         if (pos <= 0 || pos > seqlist->length + 1 || seqlist->length >= seqlist->size) {
-            fprintf(stderr, SEQLIST_INSERT_EXCEPTION);
+            fprintf(stderr, SEQUENCE_LIST_INSERT_EXCEPTION);
             return -1;
         }
 
@@ -97,14 +97,14 @@ int SeqList_insert(SeqList* seqlist, size_t pos, SeqListEleType buf) {
 }
 
 
-int SeqList_remove(SeqList* seqlist, size_t pos, SeqListEleType* buf) {
+int SequenceList_remove(SequenceList* seqlist, size_t pos, SequenceListEleType* buf) {
     if (seqlist == NULL) {
-        fprintf(stderr, SEQLIST_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
         return -1;
     }
 
     if (seqlist->length == 0 || pos > seqlist->length || pos <= 0) {
-        fprintf(stderr, SEQLIST_REMOVE_EXCEPTION);
+        fprintf(stderr, SEQUENCE_LIST_REMOVE_EXCEPTION);
         return -1;
     }
 
@@ -123,20 +123,20 @@ int SeqList_remove(SeqList* seqlist, size_t pos, SeqListEleType* buf) {
 }
 
 
-int SeqList_search(SeqList* seqlist, size_t* pos, SeqListEleType* buf, int flag) {
+int SequenceList_search(SequenceList* seqlist, size_t* pos, SequenceListEleType* buf, int flag) {
     if (seqlist == NULL) {
-        fprintf(stderr, SEQLIST_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
         return -1;
     }
 
     if (pos == NULL || buf == NULL) {
-        fprintf(stderr, SEQLIST_SEARCH_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_SEARCH_ACCESS_ERROR);
         return -1;
     }
 
     if (flag == 0) {
         if (seqlist->length == 0 || *pos > seqlist->length || *pos <= 0) {
-            fprintf(stderr, SEQLIST_SEARCH_EXCEPTION_INDEX);
+            fprintf(stderr, SEQUENCE_LIST_SEARCH_EXCEPTION_INDEX);
             return -1;
         }
         *buf = seqlist->elements[*pos - 1];
@@ -151,21 +151,21 @@ int SeqList_search(SeqList* seqlist, size_t* pos, SeqListEleType* buf, int flag)
             }
         }
         if (!found_state) {
-            fprintf(stderr, SEQLIST_SEARCH_NOT_FOUND);
+            fprintf(stderr, SEQUENCE_LIST_SEARCH_NOT_FOUND);
             return -1;
         }
     }
     else {
-        fprintf(stderr, SEQLIST_SEARCH_EXCEPTION_INDEX);
+        fprintf(stderr, SEQUENCE_LIST_SEARCH_EXCEPTION_INDEX);
         return -1;
     }
     return 0;
 }
 
 
-int SeqList_clean(SeqList** seqlist) {
+int SequenceList_clean(SequenceList** seqlist) {
     if (seqlist == NULL || (*seqlist) == NULL) {
-        fprintf(stderr, SEQLIST_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
         return -1;
     }
     free((*seqlist)->elements);
@@ -175,9 +175,9 @@ int SeqList_clean(SeqList** seqlist) {
 }
 
 
-int SeqList_display(SeqList* seqlist) {
+int SequenceList_display(SequenceList* seqlist) {
     if (seqlist == NULL) {
-        fprintf(stderr, SEQLIST_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
         return -1;
     }
 

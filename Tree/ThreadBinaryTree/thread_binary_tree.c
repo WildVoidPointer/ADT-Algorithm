@@ -19,9 +19,33 @@ ThreadBinaryTree* ThreadBinaryTree_create() {
 
     tree->root = NULL;
     tree->node_num = 0;
-    tree->is_threaded = 0;
+    tree->is_threaded = THREAD_BINARY_TREE_IS_NOT_THREADED;
     return tree;
 }
+
+
+int ThreadBinaryTree_clean(ThreadBinaryTree** th_tree) {
+    if (th_tree == NULL || *th_tree == NULL) {
+        fprintf(stderr, THREAD_BINARY_TREE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    if ((*th_tree)->is_threaded) {
+        ThreadBinaryTree_threaded_tree_clean(th_tree);
+    } else {
+        ThreadBinaryTree_not_threaded_tree_clean(th_tree);
+    }
+
+    *th_tree = NULL;
+
+    return 0;
+}
+
+
+int ThreadBinaryTree_threaded_tree_clean(ThreadBinaryTree** th_tree);
+
+
+int ThreadBinaryTree_not_threaded_tree_clean(ThreadBinaryTree** th_tree);
 
 
 ThreadBinaryTree* 
@@ -184,16 +208,6 @@ _ThreadBinaryTree_build_of_binary_tree_helper(BinaryTreeNode* bin_node) {
     new_th_node->right = _ThreadBinaryTree_build_of_binary_tree_helper(bin_node->right);
 
     return new_th_node;
-}
-
-
-int ThreadBinaryTree_clean(ThreadBinaryTree** th_tree) {
-    if (th_tree == NULL || *th_tree == NULL) {
-        fprintf(stderr, THREAD_BINARY_TREE_ACCESS_EXCEPTION);
-        return -1;
-    }
-
-    return 0;
 }
 
 

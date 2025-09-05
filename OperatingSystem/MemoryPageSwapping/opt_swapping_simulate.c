@@ -6,6 +6,7 @@ typedef struct {
     int prev_drop_page;
     int page_num;
     int size;
+    int swap_count;
 } SimplePageList;
 
 
@@ -26,7 +27,11 @@ void SimplePageList_println(SimplePageList* spl) {
     for (int i = 0; i < spl->page_num; i++) {
         printf("%d  ", spl->pages[i]);
     }
-    printf("}   prev_drop_page: %d\n", spl->prev_drop_page);
+    printf(
+        "prev_drop_page: %d  swap_count: %d  }\n", 
+        spl->prev_drop_page,
+        spl->swap_count
+    );
 }
 
 
@@ -68,6 +73,7 @@ void OPT_page_swap(
 
     spl->prev_drop_page = spl->pages[drop_page_idx];
     spl->pages[drop_page_idx] = require_pages[curr_req_page_idx];
+    spl->swap_count++;
 }
 
 
@@ -88,7 +94,8 @@ int main() {
 
     SimplePageList spl = {
         .pages = spl_pages, .page_num = 0,
-        .size = 3, .prev_drop_page = -1
+        .size = 3, .prev_drop_page = -1,
+        .swap_count = 0
     };
 
     int pages[] = {
