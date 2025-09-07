@@ -24,6 +24,27 @@ ThreadBinaryTree* ThreadBinaryTree_create() {
 }
 
 
+int ThreadBinaryTree_display(ThreadBinaryTree* th_tree) {
+    if (th_tree == NULL) {
+        fprintf(stderr, THREAD_BINARY_TREE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    printf("ThreadBinaryTree: {  ");
+
+    if (th_tree->is_threaded) {
+        ThreadBinaryTree_linked_traverse(
+            th_tree->root, 
+            ThreadBinaryTree_display_handler, 
+            NULL
+        );
+    }
+
+    printf("}\n");
+    
+}
+
+
 int ThreadBinaryTree_clean(ThreadBinaryTree** th_tree) {
     if (th_tree == NULL || *th_tree == NULL) {
         fprintf(stderr, THREAD_BINARY_TREE_ACCESS_EXCEPTION);
@@ -31,21 +52,15 @@ int ThreadBinaryTree_clean(ThreadBinaryTree** th_tree) {
     }
 
     if ((*th_tree)->is_threaded) {
-        ThreadBinaryTree_threaded_tree_clean(th_tree);
+
     } else {
-        ThreadBinaryTree_not_threaded_tree_clean(th_tree);
+
     }
 
     *th_tree = NULL;
 
     return 0;
 }
-
-
-int ThreadBinaryTree_threaded_tree_clean(ThreadBinaryTree** th_tree);
-
-
-int ThreadBinaryTree_not_threaded_tree_clean(ThreadBinaryTree** th_tree);
 
 
 ThreadBinaryTree* 
@@ -78,14 +93,22 @@ ThreadBinaryTree_build_of_binary_tree(BinaryTree* bin_tree) {
 }
 
 
-int ThreadBinaryTree_in_order_traversal(
-    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandler th_handler, 
-    ThreadBinaryTreeHandleContext* th_ctx
-) {
-    if (th_node != NULL && th_handler != NULL) {
-        ThreadBinaryTree_in_order_traversal(th_node->left, th_handler, th_ctx);
-        th_handler(th_node, th_ctx);
-        ThreadBinaryTree_in_order_traversal(th_node->right, th_handler, th_ctx);
+int ThreadBinaryTree_threading(ThreadBinaryTree* th_tree) {
+    if (th_tree == NULL) {
+        fprintf(stderr, THREAD_BINARY_TREE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    ThreadBinaryTreeThreadingContext ctx = { .prev = NULL };
+    
+    int handle_re_code = ThreadBinaryTree_in_order_traverse(
+        th_tree->root, 
+        ThreadBinaryTree_threading_handler, 
+        (ThreadBinaryTreeHandleContext*)&ctx
+    );
+
+    if (handle_re_code == 0) {
+        th_tree->is_threaded = 1;
         return 0;
     } else {
         return -1;
@@ -93,7 +116,46 @@ int ThreadBinaryTree_in_order_traversal(
 }
 
 
-int ThreadBinaryTree_linked_traversal(
+ThreadBinaryTreeNode* ThreadBinaryTree_threaded_root(ThreadBinaryTree* th_tree) {
+    if (th_tree == NULL) {
+        fprintf(stderr, THREAD_BINARY_TREE_ACCESS_EXCEPTION);
+        return NULL;
+    }
+
+    ThreadBinaryTreeNode* curr_node = th_tree->root;
+
+    if (th_tree->is_threaded) {
+        while (
+            curr_node->left_is_prec == 
+                THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR
+        ) {
+            curr_node = curr_node->left;
+        }
+
+        return curr_node;
+    } else {
+        fprintf(stderr, THREAD_BINARY_TREE_THREADED_OPERATION_FAILED_EXCEPTION);
+        return NULL;
+    }
+}
+
+
+int ThreadBinaryTree_in_order_traverse(
+    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandler th_handler, 
+    ThreadBinaryTreeHandleContext* th_ctx
+) {
+    if (th_node != NULL && th_handler != NULL) {
+        ThreadBinaryTree_in_order_traverse(th_node->left, th_handler, th_ctx);
+        th_handler(th_node, th_ctx);
+        ThreadBinaryTree_in_order_traverse(th_node->right, th_handler, th_ctx);
+        return 0;
+    } else {
+        return -1;
+    }
+}
+
+
+int ThreadBinaryTree_linked_traverse(
     ThreadBinaryTreeNode* th_root, ThreadBinaryTreeHandler th_handler, 
     ThreadBinaryTreeHandleContext* th_ctx
 ) {
@@ -106,7 +168,7 @@ int ThreadBinaryTree_linked_traversal(
     // 找到中序遍历的第一个节点（最左边的节点）
     while (
         curr->left != NULL &&
-        curr->left_is_precursor == THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR
+        curr->left_is_prec == THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR
     ) {
         curr = curr->left;
     }
@@ -116,7 +178,7 @@ int ThreadBinaryTree_linked_traversal(
         th_handler(curr, th_ctx);
         
         // 如果右指针是线索，直接跟随
-        if (curr->right_is_successor == THREAD_BINARY_TREE_RIGHT_IS_SUCCESSOR) {
+        if (curr->right_is_succ == THREAD_BINARY_TREE_RIGHT_IS_SUCCESSOR) {
             curr = curr->right;
         } else {
             // 否则，转到右子树，然后找到右子树的最左节点
@@ -124,7 +186,7 @@ int ThreadBinaryTree_linked_traversal(
             if (curr != NULL) {
                 while (
                     curr->left != NULL && 
-                    curr->left_is_precursor == THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR
+                    curr->left_is_prec == THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR
                 ) {
                     curr = curr->left;
                 }
@@ -134,6 +196,7 @@ int ThreadBinaryTree_linked_traversal(
     
     return 0;
 }
+
 
 int ThreadBinaryTree_threading_handler(
     ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandleContext* th_ctx
@@ -147,17 +210,17 @@ int ThreadBinaryTree_threading_handler(
     // 处理左线索
     if (th_node->left == NULL) {
         th_node->left = ctx->prev;
-        th_node->left_is_precursor = THREAD_BINARY_TREE_LEFT_IS_PRECURSOR;
+        th_node->left_is_prec = THREAD_BINARY_TREE_LEFT_IS_PRECURSOR;
     } else {
-        th_node->left_is_precursor = THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR;
+        th_node->left_is_prec = THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR;
     }
     
     // 处理前驱节点的右线索
     if (ctx->prev != NULL && ctx->prev->right == NULL) {
         ctx->prev->right = th_node;
-        ctx->prev->right_is_successor = THREAD_BINARY_TREE_RIGHT_IS_SUCCESSOR;
+        ctx->prev->right_is_succ = THREAD_BINARY_TREE_RIGHT_IS_SUCCESSOR;
     } else if (ctx->prev != NULL) {
-        ctx->prev->right_is_successor = THREAD_BINARY_TREE_RIGHT_IS_NOT_SUCCESSOR;
+        ctx->prev->right_is_succ = THREAD_BINARY_TREE_RIGHT_IS_NOT_SUCCESSOR;
     }
     
     // 更新前驱节点
@@ -167,25 +230,16 @@ int ThreadBinaryTree_threading_handler(
 }
 
 
-int ThreadBinaryTree_threading(ThreadBinaryTree* th_tree) {
-    if (th_tree == NULL) {
-        fprintf(stderr, THREAD_BINARY_TREE_ACCESS_EXCEPTION);
+int ThreadBinaryTree_display_handler(
+    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandleContext* ctx
+) {
+    if (th_node == NULL) {
+        fprintf(stderr, THREAD_BINARY_TREE_NODE_ACCESS_EXCEPTION);
         return -1;
     }
 
-    ThreadBinaryTreeThreadingContext ctx = {NULL};
-    
-    int handle_re_code = ThreadBinaryTree_in_order_traversal(
-        th_tree->root, ThreadBinaryTree_threading_handler, 
-        (ThreadBinaryTreeHandleContext*)&ctx
-    );
-
-    if (handle_re_code == 0) {
-        th_tree->is_threaded = 1;
-        return 0;
-    } else {
-        return -1;
-    }
+    printf("%d  ", th_node->data);
+    return 0;
 }
 
 
@@ -201,8 +255,8 @@ _ThreadBinaryTree_build_of_binary_tree_helper(BinaryTreeNode* bin_node) {
         return NULL;
     }
 
-    new_th_node->left_is_precursor = THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR;
-    new_th_node->right_is_successor = THREAD_BINARY_TREE_RIGHT_IS_NOT_SUCCESSOR;
+    new_th_node->left_is_prec = THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR;
+    new_th_node->right_is_succ = THREAD_BINARY_TREE_RIGHT_IS_NOT_SUCCESSOR;
 
     new_th_node->left = _ThreadBinaryTree_build_of_binary_tree_helper(bin_node->left);
     new_th_node->right = _ThreadBinaryTree_build_of_binary_tree_helper(bin_node->right);
@@ -228,4 +282,30 @@ ThreadBinaryTreeNode_create(ThreadBinaryTreeEleType data) {
 }
 
 
-int ThreadBinaryTreeNode_clean(ThreadBinaryTreeNode** th_node);
+int ThreadBinaryTreeNode_clean(ThreadBinaryTreeNode** th_node) {
+    if (*th_node == NULL || th_node == NULL) {
+        fprintf(stderr, THREAD_BINARY_TREE_NODE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    free(*th_node);
+    *th_node = NULL;
+    return 0;
+}
+
+
+int ThreadBinaryTreeNode_display(ThreadBinaryTreeNode* th_node) {
+    if (th_node == NULL) {
+        fprintf(stderr, THREAD_BINARY_TREE_NODE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    printf(
+        "ThreadBinaryTreeNode: {  data = %d  left_state = %d  right_state = %d}\n",
+        th_node->data,
+        th_node->left_is_prec,
+        th_node->right_is_succ
+    );
+
+    return 0;
+}

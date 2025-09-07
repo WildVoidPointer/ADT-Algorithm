@@ -24,10 +24,18 @@
     "ThreadBinaryTreeAccessException: " \
     "The data address of the ThreadBinaryTree cannot be accessed\n"
 
+#define THREAD_BINARY_TREE_THREADED_OPERATION_FAILED_EXCEPTION \
+    "ThreadBinaryTreeThreadedOperationFailedException: " \
+    "The ThreadBinaryTree is not Threading"
+
 
 #define THREAD_BINARY_TREE_NODE_CREATE_ERROR \
     "ThreadBinaryTreeNodeCreateError: " \
     "Memory initialization of ThreadBinaryTreeNode failed\n"
+
+#define THREAD_BINARY_TREE_NODE_ACCESS_EXCEPTION \
+    "ThreadBinaryTreeNodeAccessException: " \
+    "The data address of the ThreadBinaryTreeNode cannot be accessed\n"
 
 
 typedef int ThreadBinaryTreeEleType;
@@ -54,8 +62,8 @@ typedef struct ThreadBinaryTreeNode {
     ThreadBinaryTreeEleType data;
     struct ThreadBinaryTreeNode* left;
     struct ThreadBinaryTreeNode* right;
-    ThreadBinaryTreeIndexStateEnum left_is_precursor;
-    ThreadBinaryTreeIndexStateEnum right_is_successor;
+    ThreadBinaryTreeIndexStateEnum left_is_prec;
+    ThreadBinaryTreeIndexStateEnum right_is_succ;
 } ThreadBinaryTreeNode;
 
 
@@ -79,26 +87,30 @@ typedef int (*ThreadBinaryTreeHandler) (
 ThreadBinaryTree* ThreadBinaryTree_create();
 
 
+int ThreadBinaryTree_display(ThreadBinaryTree* th_tree);
+
+
 int ThreadBinaryTree_clean(ThreadBinaryTree** th_tree);
-
-
-int ThreadBinaryTree_threaded_tree_clean(ThreadBinaryTree** th_tree);
-
-
-int ThreadBinaryTree_not_threaded_tree_clean(ThreadBinaryTree** th_tree);
 
 
 ThreadBinaryTree* 
 ThreadBinaryTree_build_of_binary_tree(BinaryTree* bin_tree);
 
 
-int ThreadBinaryTree_in_order_traversal(
+int ThreadBinaryTree_threading(ThreadBinaryTree* th_tree);
+
+
+ThreadBinaryTreeNode* 
+ThreadBinaryTree_threaded_root(ThreadBinaryTree* th_tree);
+
+
+int ThreadBinaryTree_in_order_traverse(
     ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandler th_handler, 
     ThreadBinaryTreeHandleContext* th_ctx
 );
 
 
-int ThreadBinaryTree_linked_traversal(
+int ThreadBinaryTree_linked_traverse(
     ThreadBinaryTreeNode* th_root, ThreadBinaryTreeHandler th_handler, 
     ThreadBinaryTreeHandleContext* th_ctx
 );
@@ -109,7 +121,10 @@ int ThreadBinaryTree_threading_handler(
 );
 
 
-int ThreadBinaryTree_threading(ThreadBinaryTree* th_tree);
+int ThreadBinaryTree_display_handler(
+    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandleContext* ctx
+);
+
 
 
 ThreadBinaryTreeNode*
@@ -119,6 +134,9 @@ _ThreadBinaryTree_build_of_binary_tree_helper(BinaryTreeNode* bin_node);
 
 ThreadBinaryTreeNode* 
 ThreadBinaryTreeNode_create(ThreadBinaryTreeEleType data);
+
+
+int ThreadBinaryTreeNode_display(ThreadBinaryTreeNode* th_node);
 
 
 int ThreadBinaryTreeNode_clean(ThreadBinaryTreeNode** node);
