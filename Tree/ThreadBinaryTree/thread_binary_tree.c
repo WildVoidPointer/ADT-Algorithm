@@ -53,7 +53,11 @@ int ThreadBinaryTree_clean(ThreadBinaryTree** th_tree) {
     if ((*th_tree)->is_threaded) {
 
     } else {
-
+        ThreadBinaryTree_post_order_traverse(
+            (*th_tree)->root,
+            ThreadBinaryTree_clean_handler,
+            NULL
+        );
     }
 
     *th_tree = NULL;
@@ -105,7 +109,8 @@ int ThreadBinaryTree_threading(
         return -1;
     }
 
-    ThreadBinaryTreeThreadingContext ctx = { .prev = NULL };
+    ThreadBinaryTreeThreadingContext ctx = 
+        (ThreadBinaryTreeThreadingContext){ .prev = NULL };
     
     int handle_re_code = th_traverser(
         th_tree->root, 
@@ -151,9 +156,11 @@ int ThreadBinaryTree_pre_order_traverse(
     ThreadBinaryTreeHandleContext* th_ctx
 ) {
     if (th_node != NULL && th_handler != NULL) {
+        ThreadBinaryTreeNode* th_left = th_node->left;
+        ThreadBinaryTreeNode* th_right = th_node->right;
         th_handler(th_node, th_ctx);
-        ThreadBinaryTree_pre_order_traverse(th_node->left, th_handler, th_ctx);
-        ThreadBinaryTree_pre_order_traverse(th_node->right, th_handler, th_ctx);
+        ThreadBinaryTree_pre_order_traverse(th_left, th_handler, th_ctx);
+        ThreadBinaryTree_pre_order_traverse(th_right, th_handler, th_ctx);
         return 0;
     } else {
         return -1;
@@ -191,7 +198,31 @@ int ThreadBinaryTree_post_order_traverse(
 }
 
 
-int ThreadBinaryTree_linked_traverse(
+int ThreadBinaryTree_pre_order_threaded_traverse(
+    ThreadBinaryTreeNode* th_root, ThreadBinaryTreeHandler th_handler, 
+    ThreadBinaryTreeHandleContext* th_ctx
+) {
+    if (th_root == NULL || th_handler == NULL) {
+        return -1;
+    }
+    
+    ThreadBinaryTreeNode* curr = th_root;
+
+    while (curr != NULL) {
+        th_handler(curr, th_ctx);
+
+        if (curr->left_is_prec == THREAD_BINARY_TREE_LEFT_IS_NOT_PRECURSOR) {
+            curr = curr->left;
+        } else {
+            curr = curr->right;
+        }
+    }
+
+    return 0;
+}
+
+
+int ThreadBinaryTree_in_order_threaded_traverse(
     ThreadBinaryTreeNode* th_root, ThreadBinaryTreeHandler th_handler, 
     ThreadBinaryTreeHandleContext* th_ctx
 ) {
@@ -275,6 +306,19 @@ int ThreadBinaryTree_display_handler(
     }
 
     printf("%d  ", th_node->data);
+    return 0;
+}
+
+
+int ThreadBinaryTree_clean_handler(
+    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandleContext* ctx
+) {
+    if (th_node == NULL) {
+        fprintf(stderr, THREAD_BINARY_TREE_NODE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    ThreadBinaryTreeNode_clean(&th_node);
     return 0;
 }
 

@@ -20,7 +20,7 @@ int HuffmanTree_clean(HuffmanTree** hf_tree) {
     }
 
     HuffmanTree_post_order_traverse(
-        (*hf_tree)->root, HuffmanTreeNode_delete_handler, NULL
+        (*hf_tree)->root, HuffmanTree_clean_handler, NULL
     );
 
     free(*hf_tree);
@@ -36,7 +36,7 @@ int HuffmanTree_display(HuffmanTree* hf_tree) {
     }
     printf("HuffmanTree: {  ");
     HuffmanTree_post_order_traverse(
-        hf_tree->root, HuffmanTreeNode_weight_print_handler, NULL
+        hf_tree->root, HuffmanTree_weight_print_handler, NULL
     );
     printf("}\n");
     return 0;
@@ -165,14 +165,14 @@ int HuffmanTreeNode_clean(HuffmanTreeNode** hf_node) {
 }
 
 
-int HuffmanTreeNode_delete_handler(
+int HuffmanTree_clean_handler(
     HuffmanTreeNode* hf_node, HuffmanTreeHnadleContext* ctx
 ) {
     return HuffmanTreeNode_clean(&hf_node);
 }
 
 
-int HuffmanTreeNode_weight_print_handler(
+int HuffmanTree_weight_print_handler(
     HuffmanTreeNode* hf_node, HuffmanTreeHnadleContext* ctx
 ) {
     if (hf_node == NULL) {

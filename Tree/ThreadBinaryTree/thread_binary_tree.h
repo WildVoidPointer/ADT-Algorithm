@@ -136,7 +136,19 @@ int ThreadBinaryTree_post_order_traverse(
 );
 
 
-int ThreadBinaryTree_linked_traverse(
+int ThreadBinaryTree_pre_order_threaded_traverse(
+    ThreadBinaryTreeNode* th_root, ThreadBinaryTreeHandler th_handler, 
+    ThreadBinaryTreeHandleContext* th_ctx
+);
+
+
+int ThreadBinaryTree_in_order_threaded_traverse(
+    ThreadBinaryTreeNode* th_root, ThreadBinaryTreeHandler th_handler, 
+    ThreadBinaryTreeHandleContext* th_ctx
+);
+
+
+int ThreadBinaryTree_post_order_threaded_traverse(
     ThreadBinaryTreeNode* th_root, ThreadBinaryTreeHandler th_handler, 
     ThreadBinaryTreeHandleContext* th_ctx
 );
@@ -148,6 +160,11 @@ int ThreadBinaryTree_threading_handler(
 
 
 int ThreadBinaryTree_display_handler(
+    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandleContext* ctx
+);
+
+
+int ThreadBinaryTree_clean_handler(
     ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandleContext* ctx
 );
 

@@ -180,6 +180,12 @@ ssize_t BinaryTree_in_order_index_search(
 );
 
 
+int BinaryTree_collect_handler(BinaryTreeNode* node, BinaryTreeContext* q);
+
+
+int BinaryTree_clean_handler(BinaryTreeNode* node,  BinaryTreeContext* ctx);
+
+
 BinaryTreeNode* _BinaryTreeNode_recursion_build_helper(
     BinaryTreeEleType* in_order, BinaryTreeEleType* pre_order, 
     size_t* pre_order_index, size_t in_order_start, size_t in_order_end,
@@ -192,12 +198,6 @@ BinaryTreeNode* _BinaryTreeNode_recursion_copy_helper(BinaryTreeNode* node);
 
 
 BinaryTreeNode* BinaryTreeNode_create(BinaryTreeEleType data);
-
-
-int BinaryTreeNode_collector(BinaryTreeNode* node, BinaryTreeContext* q);
-
-
-int BinaryTreeNode_deletor(BinaryTreeNode* node,  BinaryTreeContext* ctx);
 
 
 int BinaryTreeNode_clean(BinaryTreeNode** node);

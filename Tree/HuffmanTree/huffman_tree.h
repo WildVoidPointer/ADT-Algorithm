@@ -96,6 +96,16 @@ HuffmanTree* HuffmanTree_build_of_weight_array(
 );
 
 
+int HuffmanTree_clean_handler(
+    HuffmanTreeNode* hf_node, HuffmanTreeHnadleContext* ctx
+);
+
+
+int HuffmanTree_weight_print_handler(
+    HuffmanTreeNode* hf_node, HuffmanTreeHnadleContext* ctx
+);
+
+
 HuffmanTreeNode* HuffmanTreeNode_create(
     HuffmanTreeEleType* data, HuffmanTreeWeightType* weight
 );
@@ -103,14 +113,5 @@ HuffmanTreeNode* HuffmanTreeNode_create(
 
 int HuffmanTreeNode_clean(HuffmanTreeNode** hf_node);
 
-
-int HuffmanTreeNode_delete_handler(
-    HuffmanTreeNode* hf_node, HuffmanTreeHnadleContext* ctx
-);
-
-
-int HuffmanTreeNode_weight_print_handler(
-    HuffmanTreeNode* hf_node, HuffmanTreeHnadleContext* ctx
-);
 
 #endif

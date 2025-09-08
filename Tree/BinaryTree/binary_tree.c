@@ -44,9 +44,9 @@ int BinaryTree_display(BinaryTree* tree, BinaryTreeTraverser traverser) {
     BinaryTreeHelpQueue* q = BinaryTreeHelpQueue_create();
 
     if (traverser == NULL) {
-        BinaryTree_level_order_traverse(tree->root, BinaryTreeNode_collector, q);
+        BinaryTree_level_order_traverse(tree->root, BinaryTree_collect_handler, q);
     } else {
-        traverser(tree->root, BinaryTreeNode_collector, q);
+        traverser(tree->root, BinaryTree_collect_handler, q);
     }
 
 
@@ -96,7 +96,7 @@ int BinaryTree_clean(BinaryTree** tree) {
         return -1;
     }
 
-    BinaryTree_post_order_traverse((*tree)->root, BinaryTreeNode_deletor, NULL);
+    BinaryTree_post_order_traverse((*tree)->root, BinaryTree_clean_handler, NULL);
     
     free(*tree);
     *tree = NULL;
@@ -532,7 +532,7 @@ BinaryTreeNode* BinaryTreeNode_create(BinaryTreeEleType data) {
 }
 
 
-int BinaryTreeNode_collector(BinaryTreeNode* node, BinaryTreeContext* q) {
+int BinaryTree_collect_handler(BinaryTreeNode* node, BinaryTreeContext* q) {
     if (node == NULL) {
         fprintf(stderr, BINARY_TREE_NODE_ACCESS_EXCEPTION);
         return -1;
@@ -543,7 +543,7 @@ int BinaryTreeNode_collector(BinaryTreeNode* node, BinaryTreeContext* q) {
 }
 
 
-int BinaryTreeNode_deletor(BinaryTreeNode* node,  BinaryTreeContext* ctx) {
+int BinaryTree_clean_handler(BinaryTreeNode* node,  BinaryTreeContext* ctx) {
     if (node == NULL) {
         fprintf(stderr, BINARY_TREE_NODE_ACCESS_EXCEPTION);
         return -1;
