@@ -24,8 +24,12 @@
     "ThreadBinaryTreeAccessException: " \
     "The data address of the ThreadBinaryTree cannot be accessed\n"
 
-#define THREAD_BINARY_TREE_THREADED_OPERATION_FAILED_EXCEPTION \
-    "ThreadBinaryTreeThreadedOperationFailedException: " \
+#define THREAD_BINARY_TREE_THREAD_TRAVERSER_ERROR \
+    "ThreadBinaryTreeThreadTraverserError: " \
+    "The threading operation tranverser is invaild\n"
+
+#define THREAD_BINARY_TREE_NOT_THREADED_EXCEPTION \
+    "ThreadBinaryTreeNotThreadedException: " \
     "The ThreadBinaryTree is not Threading"
 
 
@@ -84,10 +88,18 @@ typedef int (*ThreadBinaryTreeHandler) (
 );
 
 
+typedef int (*ThreadBinaryTreeTraverser) (
+    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandler th_handler, 
+    ThreadBinaryTreeHandleContext* th_ctx
+);
+
+
 ThreadBinaryTree* ThreadBinaryTree_create();
 
 
-int ThreadBinaryTree_display(ThreadBinaryTree* th_tree);
+int ThreadBinaryTree_display(
+    ThreadBinaryTree* th_tree, ThreadBinaryTreeTraverser th_traverser
+);
 
 
 int ThreadBinaryTree_clean(ThreadBinaryTree** th_tree);
@@ -97,14 +109,28 @@ ThreadBinaryTree*
 ThreadBinaryTree_build_of_binary_tree(BinaryTree* bin_tree);
 
 
-int ThreadBinaryTree_threading(ThreadBinaryTree* th_tree);
+int ThreadBinaryTree_threading(
+    ThreadBinaryTree* th_tree, ThreadBinaryTreeTraverser th_traverser
+);
 
 
 ThreadBinaryTreeNode* 
 ThreadBinaryTree_threaded_root(ThreadBinaryTree* th_tree);
 
 
+int ThreadBinaryTree_pre_order_traverse(
+    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandler th_handler, 
+    ThreadBinaryTreeHandleContext* th_ctx
+);
+
+
 int ThreadBinaryTree_in_order_traverse(
+    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandler th_handler, 
+    ThreadBinaryTreeHandleContext* th_ctx
+);
+
+
+int ThreadBinaryTree_post_order_traverse(
     ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandler th_handler, 
     ThreadBinaryTreeHandleContext* th_ctx
 );

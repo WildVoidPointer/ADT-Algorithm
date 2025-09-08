@@ -122,7 +122,7 @@ BinaryTree* BinaryTree_create(
 );
 
 
-int BinaryTree_display(BinaryTree* tree, BinaryTreeTraverser iter);
+int BinaryTree_display(BinaryTree* tree, BinaryTreeTraverser traverser);
 
 
 BinaryTree* BinaryTree_copy(BinaryTree* tree);

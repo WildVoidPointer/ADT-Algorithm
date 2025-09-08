@@ -14,14 +14,24 @@ int main() {
     ThreadBinaryTree* built_th_tree = 
         ThreadBinaryTree_build_of_binary_tree(bin_tree);
 
-    ThreadBinaryTree_threading(built_th_tree);
+    ThreadBinaryTree_display(
+        built_th_tree, ThreadBinaryTree_pre_order_traverse
+    );
+    ThreadBinaryTree_display(
+        built_th_tree, ThreadBinaryTree_in_order_traverse
+    );
+    ThreadBinaryTree_display(
+        built_th_tree, ThreadBinaryTree_post_order_traverse
+    );
+
+    
+    ThreadBinaryTree_threading(built_th_tree, ThreadBinaryTree_in_order_traverse);
+    ThreadBinaryTree_display(built_th_tree, ThreadBinaryTree_linked_traverse);
 
 
-    ThreadBinaryTree_display(built_th_tree);
+    // ThreadBinaryTreeNode* threaded_root = 
+    //     ThreadBinaryTree_threaded_root(built_th_tree);
 
-
-    ThreadBinaryTreeNode* threaded_root = ThreadBinaryTree_threaded_root(built_th_tree);
-
-    ThreadBinaryTreeNode_display(threaded_root);
+    // ThreadBinaryTreeNode_display(threaded_root);
     
 }

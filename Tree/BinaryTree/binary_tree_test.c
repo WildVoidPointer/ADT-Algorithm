@@ -27,7 +27,10 @@ int main() {
         tree_node_array, tree_node_array_len
     );
 
-    BinaryTreeEleType_array_println("OriginArrayInfo", tree_node_array_len, tree_node_array);
+    BinaryTreeEleType_array_println(
+        "OriginArrayInfo", 
+        tree_node_array_len, tree_node_array
+    );
     printf("BinaryTreeBuildLevelOrderResult: ");
     BinaryTree_display(tree, NULL);
 

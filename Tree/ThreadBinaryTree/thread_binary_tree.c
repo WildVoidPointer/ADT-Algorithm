@@ -24,24 +24,23 @@ ThreadBinaryTree* ThreadBinaryTree_create() {
 }
 
 
-int ThreadBinaryTree_display(ThreadBinaryTree* th_tree) {
+int ThreadBinaryTree_display(
+    ThreadBinaryTree* th_tree, ThreadBinaryTreeTraverser th_traverser
+) {
     if (th_tree == NULL) {
         fprintf(stderr, THREAD_BINARY_TREE_ACCESS_EXCEPTION);
         return -1;
     }
 
-    printf("ThreadBinaryTree: {  ");
-
-    if (th_tree->is_threaded) {
-        ThreadBinaryTree_linked_traverse(
-            th_tree->root, 
-            ThreadBinaryTree_display_handler, 
+    if (th_traverser != NULL) {
+        printf("ThreadBinaryTree: {  ");
+        th_traverser(
+            th_tree->root,
+            ThreadBinaryTree_display_handler,
             NULL
         );
+        printf("}\n");
     }
-
-    printf("}\n");
-    
 }
 
 
@@ -93,15 +92,22 @@ ThreadBinaryTree_build_of_binary_tree(BinaryTree* bin_tree) {
 }
 
 
-int ThreadBinaryTree_threading(ThreadBinaryTree* th_tree) {
+int ThreadBinaryTree_threading(
+    ThreadBinaryTree* th_tree, ThreadBinaryTreeTraverser th_traverser
+) {
     if (th_tree == NULL) {
         fprintf(stderr, THREAD_BINARY_TREE_ACCESS_EXCEPTION);
         return -1;
     }
 
+    if (th_traverser == NULL) {
+        fprintf(stderr, THREAD_BINARY_TREE_THREAD_TRAVERSER_ERROR);
+        return -1;
+    }
+
     ThreadBinaryTreeThreadingContext ctx = { .prev = NULL };
     
-    int handle_re_code = ThreadBinaryTree_in_order_traverse(
+    int handle_re_code = th_traverser(
         th_tree->root, 
         ThreadBinaryTree_threading_handler, 
         (ThreadBinaryTreeHandleContext*)&ctx
@@ -134,8 +140,23 @@ ThreadBinaryTreeNode* ThreadBinaryTree_threaded_root(ThreadBinaryTree* th_tree) 
 
         return curr_node;
     } else {
-        fprintf(stderr, THREAD_BINARY_TREE_THREADED_OPERATION_FAILED_EXCEPTION);
+        fprintf(stderr, THREAD_BINARY_TREE_NOT_THREADED_EXCEPTION);
         return NULL;
+    }
+}
+
+
+int ThreadBinaryTree_pre_order_traverse(
+    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandler th_handler, 
+    ThreadBinaryTreeHandleContext* th_ctx
+) {
+    if (th_node != NULL && th_handler != NULL) {
+        th_handler(th_node, th_ctx);
+        ThreadBinaryTree_pre_order_traverse(th_node->left, th_handler, th_ctx);
+        ThreadBinaryTree_pre_order_traverse(th_node->right, th_handler, th_ctx);
+        return 0;
+    } else {
+        return -1;
     }
 }
 
@@ -148,6 +169,21 @@ int ThreadBinaryTree_in_order_traverse(
         ThreadBinaryTree_in_order_traverse(th_node->left, th_handler, th_ctx);
         th_handler(th_node, th_ctx);
         ThreadBinaryTree_in_order_traverse(th_node->right, th_handler, th_ctx);
+        return 0;
+    } else {
+        return -1;
+    }
+}
+
+
+int ThreadBinaryTree_post_order_traverse(
+    ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandler th_handler, 
+    ThreadBinaryTreeHandleContext* th_ctx
+) {
+    if (th_node != NULL && th_handler != NULL) {
+        ThreadBinaryTree_post_order_traverse(th_node->left, th_handler, th_ctx);
+        ThreadBinaryTree_post_order_traverse(th_node->right, th_handler, th_ctx);
+        th_handler(th_node, th_ctx);
         return 0;
     } else {
         return -1;

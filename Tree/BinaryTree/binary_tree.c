@@ -34,7 +34,7 @@ BinaryTree* BinaryTree_create(
 }
 
 
-int BinaryTree_display(BinaryTree* tree, BinaryTreeTraverser iter) {
+int BinaryTree_display(BinaryTree* tree, BinaryTreeTraverser traverser) {
 
     if (tree == NULL) {
         fprintf(stderr, BINARY_TREE_ACCESS_EXCEPTION);
@@ -43,10 +43,10 @@ int BinaryTree_display(BinaryTree* tree, BinaryTreeTraverser iter) {
 
     BinaryTreeHelpQueue* q = BinaryTreeHelpQueue_create();
 
-    if (iter == NULL) {
+    if (traverser == NULL) {
         BinaryTree_level_order_traverse(tree->root, BinaryTreeNode_collector, q);
     } else {
-        iter(tree->root, BinaryTreeNode_collector, q);
+        traverser(tree->root, BinaryTreeNode_collector, q);
     }
 
 
