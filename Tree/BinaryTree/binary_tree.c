@@ -108,9 +108,12 @@ int BinaryTree_pre_order_traverse(
     BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
 ) {
     if (node != NULL && op != NULL) {
+        BinaryTreeNode* left = node->left;
+        BinaryTreeNode* right = node->right;
+
         op(node, ctx);
-        BinaryTree_pre_order_traverse(node->left, op, ctx);
-        BinaryTree_pre_order_traverse(node->right, op, ctx);
+        BinaryTree_pre_order_traverse(left, op, ctx);
+        BinaryTree_pre_order_traverse(right, op, ctx);
     } else {
         return -1;
     }
@@ -123,9 +126,10 @@ int BinaryTree_in_order_traverse(
     BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
 ) {
     if (node != NULL && op != NULL) {
+        BinaryTreeNode* right = node->right;
         BinaryTree_in_order_traverse(node->left, op, ctx);
         op(node, ctx);
-        BinaryTree_in_order_traverse(node->right, op, ctx);
+        BinaryTree_in_order_traverse(right, op, ctx);
     } else {
         return -1;
     }

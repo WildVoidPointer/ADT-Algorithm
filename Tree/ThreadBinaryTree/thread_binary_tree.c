@@ -120,6 +120,8 @@ int ThreadBinaryTree_threading(
 
     if (handle_re_code == 0) {
         th_tree->is_threaded = 1;
+        ctx.prev->right = NULL;
+        ctx.prev->right_is_succ = THREAD_BINARY_TREE_RIGHT_IS_SUCCESSOR;
         return 0;
     } else {
         return -1;
@@ -173,9 +175,11 @@ int ThreadBinaryTree_in_order_traverse(
     ThreadBinaryTreeHandleContext* th_ctx
 ) {
     if (th_node != NULL && th_handler != NULL) {
+
+        ThreadBinaryTreeNode* th_right = th_node->right;
         ThreadBinaryTree_in_order_traverse(th_node->left, th_handler, th_ctx);
         th_handler(th_node, th_ctx);
-        ThreadBinaryTree_in_order_traverse(th_node->right, th_handler, th_ctx);
+        ThreadBinaryTree_in_order_traverse(th_right, th_handler, th_ctx);
         return 0;
     } else {
         return -1;
