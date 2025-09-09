@@ -1,5 +1,5 @@
-#ifndef SEQUENTIAL_STACK_H
-#define SEQUENTIAL_STACK_H
+#ifndef STACK_H_
+#define STACK_H_
 
 #include <stdio.h>
 #include <stdlib.h>

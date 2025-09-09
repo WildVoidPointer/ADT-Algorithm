@@ -3,7 +3,7 @@
 
 
 int main() {
-    BinaryTreeEleType tree_node_array[] = {1, 2, 3, 4, 5, 6, 7, 8};
+    BinaryTreeDataType tree_node_array[] = {1, 2, 3, 4, 5, 6, 7, 8};
     int tree_node_array_len = 
         sizeof(tree_node_array) / sizeof(tree_node_array[0]);
 

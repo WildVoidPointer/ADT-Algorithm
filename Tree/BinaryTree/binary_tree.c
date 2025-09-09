@@ -4,7 +4,7 @@
 
 
 BinaryTree* BinaryTree_create(
-    BinaryTreeInitModeEnum init_root, BinaryTreeEleType* root_init_data)
+    BinaryTreeInitModeEnum init_root, BinaryTreeDataType* root_init_data)
 {
     BinaryTree* tree = (BinaryTree*) malloc (sizeof(BinaryTree));
     if (tree == NULL) {
@@ -105,7 +105,7 @@ int BinaryTree_clean(BinaryTree** tree) {
 
 
 int BinaryTree_pre_order_traverse(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeHandleContext* ctx
 ) {
     if (node != NULL && op != NULL) {
         BinaryTreeNode* left = node->left;
@@ -123,7 +123,7 @@ int BinaryTree_pre_order_traverse(
 
 
 int BinaryTree_in_order_traverse(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeHandleContext* ctx
 ) {
     if (node != NULL && op != NULL) {
         BinaryTreeNode* right = node->right;
@@ -139,7 +139,7 @@ int BinaryTree_in_order_traverse(
 
 
 int BinaryTree_post_order_traverse(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeHandleContext* ctx
 ) {
     if (node != NULL && op != NULL) {
         BinaryTree_post_order_traverse(node->left, op, ctx);
@@ -154,7 +154,7 @@ int BinaryTree_post_order_traverse(
 
 
 int BinaryTree_level_order_traverse(
-    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeContext* ctx
+    BinaryTreeNode* node, BinaryTreeNodeHandler op, BinaryTreeHandleContext* ctx
 ) {
     if (node != NULL && op != NULL) {
 
@@ -187,7 +187,7 @@ int BinaryTree_level_order_traverse(
 
 
 BinaryTree* 
-BinaryTree_build_of_array(BinaryTreeEleType* array, size_t array_len) {
+BinaryTree_build_of_array(BinaryTreeDataType* array, size_t array_len) {
     if (array == NULL) {
         fprintf(stderr, BINARY_TREE_SRC_ACCESS_EXCEPTION);
         return NULL;
@@ -261,7 +261,7 @@ BinaryTree_build_of_array(BinaryTreeEleType* array, size_t array_len) {
 
 
 BinaryTree* BinaryTree_build_of_pre_order(
-    BinaryTreeEleType* in_order, BinaryTreeEleType* pre_order,
+    BinaryTreeDataType* in_order, BinaryTreeDataType* pre_order,
     size_t in_len, size_t pre_len
 ) {
     if (in_order == NULL || pre_order == NULL) {
@@ -295,7 +295,7 @@ BinaryTree* BinaryTree_build_of_pre_order(
 
 
 BinaryTree* BinaryTree_build_of_post_order(
-    BinaryTreeEleType* in_order, BinaryTreeEleType* post_order,
+    BinaryTreeDataType* in_order, BinaryTreeDataType* post_order,
     size_t in_len, size_t post_len
 ) {
     if (in_order == NULL || post_order == NULL) {
@@ -329,7 +329,7 @@ BinaryTree* BinaryTree_build_of_post_order(
 
 
 BinaryTree* BinaryTree_build_of_level_order(
-    BinaryTreeEleType* in_order, BinaryTreeEleType* level_order,
+    BinaryTreeDataType* in_order, BinaryTreeDataType* level_order,
     size_t in_len, size_t level_len
 ) {
     if (in_order == NULL || level_order == NULL) {
@@ -379,7 +379,7 @@ BinaryTree* BinaryTree_build_of_level_order(
         if (in_order_index == -1) continue;
 
         if (level_index < level_len) {
-            BinaryTreeEleType left_node_data = level_order[level_index];
+            BinaryTreeDataType left_node_data = level_order[level_index];
             ssize_t left_index = BinaryTree_in_order_index_search(
                 in_order, 0, in_order_index - 1, left_node_data
             );
@@ -399,7 +399,7 @@ BinaryTree* BinaryTree_build_of_level_order(
             }
 
             if (level_index < level_len) {
-                BinaryTreeEleType right_node_data = level_order[level_index];
+                BinaryTreeDataType right_node_data = level_order[level_index];
 
                 ssize_t right_index = BinaryTree_in_order_index_search(
                     in_order, in_order_index + 1, in_len - 1, right_node_data
@@ -436,8 +436,8 @@ BinaryTree* BinaryTree_build_of_level_order(
 
 
 ssize_t BinaryTree_in_order_index_search(
-    BinaryTreeEleType* in_order, size_t start, size_t end, 
-    BinaryTreeEleType val)
+    BinaryTreeDataType* in_order, size_t start, size_t end, 
+    BinaryTreeDataType val)
 {
     for (size_t i = start; i <= end; i++) {
         if (in_order[i] == val)
@@ -448,7 +448,7 @@ ssize_t BinaryTree_in_order_index_search(
 
 
 BinaryTreeNode* _BinaryTreeNode_recursion_build_helper(
-    BinaryTreeEleType* in_order, BinaryTreeEleType* help_order, 
+    BinaryTreeDataType* in_order, BinaryTreeDataType* help_order, 
     size_t* help_order_index, size_t in_order_start, size_t in_order_end,
     BinaryTreeBuildHelpOrderIndexModeEnum mode
 ) {
@@ -520,7 +520,7 @@ BinaryTreeNode* _BinaryTreeNode_recursion_copy_helper(BinaryTreeNode* node) {
 }
 
 
-BinaryTreeNode* BinaryTreeNode_create(BinaryTreeEleType data) {
+BinaryTreeNode* BinaryTreeNode_create(BinaryTreeDataType data) {
     BinaryTreeNode* node = 
         (BinaryTreeNode*) malloc (sizeof(BinaryTreeNode));
 
@@ -536,7 +536,7 @@ BinaryTreeNode* BinaryTreeNode_create(BinaryTreeEleType data) {
 }
 
 
-int BinaryTree_collect_handler(BinaryTreeNode* node, BinaryTreeContext* q) {
+int BinaryTree_collect_handler(BinaryTreeNode* node, BinaryTreeHandleContext* q) {
     if (node == NULL) {
         fprintf(stderr, BINARY_TREE_NODE_ACCESS_EXCEPTION);
         return -1;
@@ -547,7 +547,7 @@ int BinaryTree_collect_handler(BinaryTreeNode* node, BinaryTreeContext* q) {
 }
 
 
-int BinaryTree_clean_handler(BinaryTreeNode* node,  BinaryTreeContext* ctx) {
+int BinaryTree_clean_handler(BinaryTreeNode* node,  BinaryTreeHandleContext* ctx) {
     if (node == NULL) {
         fprintf(stderr, BINARY_TREE_NODE_ACCESS_EXCEPTION);
         return -1;

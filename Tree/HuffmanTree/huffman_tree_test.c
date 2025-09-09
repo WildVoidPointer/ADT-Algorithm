@@ -50,9 +50,9 @@ void integer_array_println(char* desp, int array[], int len) {
 
 
 int main() {
-    HuffmanTreeEleType test_arr[] = {7, 5, 2, 4};
+    HuffmanTreeDataType test_arr[] = {7, 5, 2, 4};
     int test_arr_len = sizeof(test_arr) / sizeof(test_arr[0]);
-    HuffmanTreeEleType buf_arr[test_arr_len];
+    HuffmanTreeDataType buf_arr[test_arr_len];
     integer_array_merge_sort(test_arr, buf_arr, 0, test_arr_len - 1);
     integer_array_println("MergeSortedResult: ", test_arr, test_arr_len);
 

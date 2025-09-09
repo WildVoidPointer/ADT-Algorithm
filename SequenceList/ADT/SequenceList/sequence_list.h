@@ -1,5 +1,5 @@
-#ifndef SEQUENCE_LIST_H
-#define SEQUENCE_LIST_H
+#ifndef SEQUENCE_LIST_H_
+#define SEQUENCE_LIST_H_
 
 #include <stdio.h>
 #include <stdlib.h>

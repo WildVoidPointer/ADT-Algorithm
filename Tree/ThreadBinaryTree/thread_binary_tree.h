@@ -1,5 +1,5 @@
-#ifndef THREAD_BINARY_TREE_H
-#define THREAD_BINARY_TREE_H
+#ifndef THREAD_BINARY_TREE_H_
+#define THREAD_BINARY_TREE_H_
 
 
 #ifdef __linux__
@@ -42,7 +42,7 @@
     "The data address of the ThreadBinaryTreeNode cannot be accessed\n"
 
 
-typedef int ThreadBinaryTreeEleType;
+typedef int ThreadBinaryTreeDataType;
 
 
 typedef void ThreadBinaryTreeHandleContext;
@@ -63,7 +63,7 @@ typedef enum ThreadBinaryTreeThreadStateEnum {
 
 
 typedef struct ThreadBinaryTreeNode {
-    ThreadBinaryTreeEleType data;
+    ThreadBinaryTreeDataType data;
     struct ThreadBinaryTreeNode* left;
     struct ThreadBinaryTreeNode* right;
     ThreadBinaryTreeIndexStateEnum left_is_prec;
@@ -176,7 +176,7 @@ _ThreadBinaryTree_build_of_binary_tree_helper(BinaryTreeNode* bin_node);
 
 
 ThreadBinaryTreeNode* 
-ThreadBinaryTreeNode_create(ThreadBinaryTreeEleType data);
+ThreadBinaryTreeNode_create(ThreadBinaryTreeDataType data);
 
 
 int ThreadBinaryTreeNode_display(ThreadBinaryTreeNode* th_node);

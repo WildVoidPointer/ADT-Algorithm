@@ -1,5 +1,5 @@
-#ifndef DOUBLECIRCULARLINKEDLIST_H
-#define DOUBLECIRCULARLINKEDLIST_H
+#ifndef DOUBLE_CIRCULAR_LINKED_LIST_H_
+#define DOUBLE_CIRCULAR_LINKED_LIST_H_
 
 #include <stdio.h>
 #include <stdlib.h>

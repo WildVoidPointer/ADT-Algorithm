@@ -1,5 +1,5 @@
-#ifndef CIRCULAR_DEQUE_H
-#define CIRCULAR_DEQUE_H
+#ifndef CIRCULAR_DEQUE_H_
+#define CIRCULAR_DEQUE_H_
 
 #include <stdio.h>
 #include <stdlib.h>

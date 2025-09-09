@@ -1,5 +1,5 @@
-#ifndef LINKED_DEQUE_H
-#define LINKED_DEQUE_H
+#ifndef LINKED_DEQUE_H_
+#define LINKED_DEQUE_H_
 
 
 #include <stdio.h>

@@ -350,7 +350,7 @@ _ThreadBinaryTree_build_of_binary_tree_helper(BinaryTreeNode* bin_node) {
 
 
 ThreadBinaryTreeNode* 
-ThreadBinaryTreeNode_create(ThreadBinaryTreeEleType data) {
+ThreadBinaryTreeNode_create(ThreadBinaryTreeDataType data) {
     ThreadBinaryTreeNode* th_node = 
         (ThreadBinaryTreeNode*) malloc (sizeof(ThreadBinaryTreeNode));
 

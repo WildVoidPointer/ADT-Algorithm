@@ -1,5 +1,5 @@
-#ifndef C_STRING_H
-#define C_STRING_H
+#ifndef C_STRING_H_
+#define C_STRING_H_
 
 #ifdef __linux__
     #include <sys/types.h>

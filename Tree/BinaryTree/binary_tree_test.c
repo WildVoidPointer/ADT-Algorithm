@@ -1,7 +1,7 @@
 #include "binary_tree.h"
 
 
-void BinaryTreeEleType_array_println(char* desp, int len, BinaryTreeEleType* order) {
+void BinaryTreeEleType_array_println(char* desp, int len, BinaryTreeDataType* order) {
     printf("%s: {  ", desp);
     for (int i = 0; i < len; i++) {
         printf("%d  ", order[i]);
@@ -11,15 +11,15 @@ void BinaryTreeEleType_array_println(char* desp, int len, BinaryTreeEleType* ord
 
 
 int main() {
-    BinaryTreeEleType tree_node_array[] = {1, 2, 3, 4, 5, 6, 7, 8};
+    BinaryTreeDataType tree_node_array[] = {1, 2, 3, 4, 5, 6, 7, 8};
     int tree_node_array_len = 
         sizeof(tree_node_array) / sizeof(tree_node_array[0]);
 
 
-    BinaryTreeEleType level_order[] = {1, 2, 3, -1, 4, 5, 6};
-    BinaryTreeEleType pre_order[] = {1, 2, -1, 4, 3, 5, 6};
-    BinaryTreeEleType in_order[] = {-1, 2, 4, 1, 5, 3, 6};
-    BinaryTreeEleType post_order[] = {-1, 4, 2, 5, 6, 3, 1};
+    BinaryTreeDataType level_order[] = {1, 2, 3, -1, 4, 5, 6};
+    BinaryTreeDataType pre_order[] = {1, 2, -1, 4, 3, 5, 6};
+    BinaryTreeDataType in_order[] = {-1, 2, 4, 1, 5, 3, 6};
+    BinaryTreeDataType post_order[] = {-1, 4, 2, 5, 6, 3, 1};
     int order_len = sizeof(level_order) / sizeof(level_order[0]);
 
     

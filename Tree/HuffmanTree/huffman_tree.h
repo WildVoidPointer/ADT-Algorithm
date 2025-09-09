@@ -46,7 +46,7 @@
     "The data address of the HuffmanTreeNode cannot be accessed\n"
 
 
-typedef int HuffmanTreeEleType;
+typedef int HuffmanTreeDataType;
 
 
 typedef int HuffmanTreeWeightType;
@@ -56,7 +56,7 @@ typedef void HuffmanTreeHnadleContext;
 
 
 typedef struct HuffmanTreeNode {
-    HuffmanTreeEleType data;
+    HuffmanTreeDataType data;
     HuffmanTreeWeightType weight;
     struct HuffmanTreeNode* left;
     struct HuffmanTreeNode* right;
@@ -92,7 +92,7 @@ int HuffmanTree_post_order_traverse(
 
 
 HuffmanTree* HuffmanTree_build_of_weight_array(
-    HuffmanTreeEleType ordered_arr[], int len
+    HuffmanTreeDataType ordered_arr[], int len
 );
 
 
@@ -107,7 +107,7 @@ int HuffmanTree_weight_print_handler(
 
 
 HuffmanTreeNode* HuffmanTreeNode_create(
-    HuffmanTreeEleType* data, HuffmanTreeWeightType* weight
+    HuffmanTreeDataType* data, HuffmanTreeWeightType* weight
 );
 
 

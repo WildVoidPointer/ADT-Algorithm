@@ -102,7 +102,7 @@ int HuffmanTree_post_order_traverse(
 
 
 HuffmanTree* HuffmanTree_build_of_weight_array(
-    HuffmanTreeEleType ordered_arr[], int len
+    HuffmanTreeDataType ordered_arr[], int len
 ) {
     HuffmanTree* hf_tree = HuffmanTree_create();
     if (hf_tree == NULL) {
@@ -130,7 +130,7 @@ HuffmanTree* HuffmanTree_build_of_weight_array(
 
 
 HuffmanTreeNode* HuffmanTreeNode_create(
-    HuffmanTreeEleType* data, HuffmanTreeWeightType* weight
+    HuffmanTreeDataType* data, HuffmanTreeWeightType* weight
 ) {
     HuffmanTreeNode* hf_node = 
         (HuffmanTreeNode*) malloc (sizeof(HuffmanTreeNode));
