@@ -22,7 +22,23 @@ int BinarySearchTree_clean(BinarySearchTree** bs_tree);
 
 BinarySearchTree* BinarySearchTree_build_of_array(
     BinarySearchTreeDataType arr[], int len
-);
+) {
+    if (arr == NULL) {
+        fprintf(stderr, BINARY_SEARCH_TREE_OTHER_SRC_ACCESS_EXCEPTION);
+        return NULL;
+    }
+
+    BinarySearchTree* bs_tree = BinarySearchTree_create();
+    if (bs_tree != NULL) {
+        for (int i = 0; i < len; i++) {
+            BinarySearchTree_insert(bs_tree, arr[i]);
+        }
+
+        return bs_tree;
+    } else {
+        return NULL;
+    }
+}
 
 
 BinarySearchTreeNode* BinarySearchTree_search(
@@ -36,7 +52,7 @@ BinarySearchTreeNode* BinarySearchTree_search(
     if (bst_key == NULL) {
         fprintf(
             stderr, 
-            BINARY_SEARCH_TREE_SEARCH_TARGET_ACCESS_EXCEPTION
+            BINARY_SEARCH_TREE_OTHER_SRC_ACCESS_EXCEPTION
         );
         return NULL;
     }
@@ -65,29 +81,53 @@ int BinarySearchTree_insert(
     if (bst_data == NULL) {
         fprintf(
             stderr, 
-            BINARY_SEARCH_TREE_INSERT_TARGET_ACCESS_EXCEPTION
+            BINARY_SEARCH_TREE_OTHER_SRC_ACCESS_EXCEPTION
         );
         return -1;
     }
 
-    if (bs_tree->root == NULL) {
+    return _BinarySearchTree_insert_helper(bs_tree->root, bst_data);
+}
+
+
+int BinarySearchTree_remove(
+    BinarySearchTree* bs_tree, BinarySearchTreeDataType* bst_data
+) {
+    if (bs_tree == NULL) {
+        fprintf(stderr, BINARY_SEARCH_TREE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    if (bst_data == NULL) {
+        fprintf(stderr, BINARY_SEARCH_TREE_OTHER_SRC_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+
+}
+
+
+int _BinarySearchTree_insert_helper(
+    BinarySearchTreeNode* bst_node, BinarySearchTreeDataType* bst_data
+) {
+    if (bst_node == NULL) {
         BinarySearchTreeNode* bst_root = BinarySearchTreeNode_create(bst_data);
         if (bst_root == NULL) {
             fprintf(stderr, BINARY_SEARCH_TREE_INSERT_ERROR);
             return -1;
         }
 
-        bs_tree->root = bst_root;
+        bst_node = bst_root;
         return 0;
-    } else if (bst_data == bs_tree) {
-        
+    } else if (*bst_data == bst_node->data) {
+        fprintf(stderr, BINARY_SEARCH_TREE_INSERT_EXCEPTION);
+        return -1;
+    } else if (*bst_data < bst_node->data) {
+        return _BinarySearchTree_insert_helper(bst_node->left, bst_data);
+    } else {
+        return _BinarySearchTree_insert_helper(bst_node->right, bst_data);
     }
 }
-
-
-int BinarySearchTree_remove(
-    BinarySearchTree* bs_tree, BinarySearchTreeDataType* bst_data
-);
 
 
 BinarySearchTreeNode* 

@@ -31,14 +31,10 @@
     "The data address of the BinarySearchTree cannot be accessed\n"
 
 
-#define BINARY_SEARCH_TREE_SEARCH_TARGET_ACCESS_EXCEPTION \
-    "BinarySearchTreeSearchTargetAccessException: " \
+#define BINARY_SEARCH_TREE_OTHER_SRC_ACCESS_EXCEPTION \
+    "BinarySearchTreeOtherSrcAccessException: " \
     "The data address of the search target cannot be accessed\n"
-
-
-#define BINARY_SEARCH_TREE_INSERT_TARGET_ACCESS_EXCEPTION \
-    "BinarySearchTreeInsertTargetAccessException: " \
-    "The data address of the insert target cannot be accessed\n"
+    
 
 
 // the exception messages of BinarySearchTreeNode options
@@ -95,6 +91,11 @@ int BinarySearchTree_insert(
 
 int BinarySearchTree_remove(
     BinarySearchTree* bs_tree, BinarySearchTreeDataType* bst_data
+);
+
+
+int _BinarySearchTree_insert_helper(
+    BinarySearchTreeNode* bst_node, BinarySearchTreeDataType* bst_data
 );
 
 
