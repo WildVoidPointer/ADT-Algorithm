@@ -95,8 +95,16 @@ int BinarySearchTree_remove(
 
 
 int _BinarySearchTree_insert_helper(
-    BinarySearchTreeNode* bst_node, BinarySearchTreeDataType* bst_data
+    BinarySearchTreeNode** bst_node, BinarySearchTreeDataType* bst_data
 );
+
+
+int _BinarySearchTree_remove_helper(
+    BinarySearchTreeNode** bst_node, BinarySearchTreeDataType* bst_data
+);
+
+
+int _BinarySearchTree_clean_helper(BinarySearchTreeNode** bst_node);
 
 
 
@@ -104,6 +112,6 @@ BinarySearchTreeNode*
 BinarySearchTreeNode_create(BinarySearchTreeDataType* bst_data);
 
 
-int BinarySearchTreeNode_clean(BinarySearchTree** bst_node);
+int BinarySearchTreeNode_clean(BinarySearchTreeNode** bst_node);
 
 #endif // BINARY_SEARCH_TREE_H_

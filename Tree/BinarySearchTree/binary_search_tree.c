@@ -17,7 +17,18 @@ BinarySearchTree* BinarySearchTree_create() {
 }
 
 
-int BinarySearchTree_clean(BinarySearchTree** bs_tree);
+int BinarySearchTree_clean(BinarySearchTree** bs_tree) {
+    if (bs_tree == NULL || *bs_tree == NULL) {
+        fprintf(stderr, BINARY_SEARCH_TREE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    _BinarySearchTree_clean_helper(&((*bs_tree)->root));
+
+    free(*bs_tree);
+    *bs_tree = NULL;
+    return 0;
+}
 
 
 BinarySearchTree* BinarySearchTree_build_of_array(
@@ -31,11 +42,12 @@ BinarySearchTree* BinarySearchTree_build_of_array(
     BinarySearchTree* bs_tree = BinarySearchTree_create();
     if (bs_tree != NULL) {
         for (int i = 0; i < len; i++) {
-            BinarySearchTree_insert(bs_tree, arr[i]);
+            BinarySearchTree_insert(bs_tree, &arr[i]);
         }
 
         return bs_tree;
     } else {
+        fprintf(stderr, BINARY_SEARCH_TREE_BUILD_ERROR);
         return NULL;
     }
 }
@@ -86,7 +98,7 @@ int BinarySearchTree_insert(
         return -1;
     }
 
-    return _BinarySearchTree_insert_helper(bs_tree->root, bst_data);
+    return _BinarySearchTree_insert_helper(&(bs_tree->root), bst_data);
 }
 
 
@@ -108,26 +120,43 @@ int BinarySearchTree_remove(
 
 
 int _BinarySearchTree_insert_helper(
-    BinarySearchTreeNode* bst_node, BinarySearchTreeDataType* bst_data
+    BinarySearchTreeNode** bst_node, BinarySearchTreeDataType* bst_data
 ) {
-    if (bst_node == NULL) {
-        BinarySearchTreeNode* bst_root = BinarySearchTreeNode_create(bst_data);
-        if (bst_root == NULL) {
+    if (*bst_node == NULL) {
+        BinarySearchTreeNode* new_bst_node = BinarySearchTreeNode_create(bst_data);
+        if (new_bst_node == NULL) {
             fprintf(stderr, BINARY_SEARCH_TREE_INSERT_ERROR);
             return -1;
         }
 
-        bst_node = bst_root;
+        *bst_node = new_bst_node;
         return 0;
-    } else if (*bst_data == bst_node->data) {
+    } else if (*bst_data == (*bst_node)->data) {
         fprintf(stderr, BINARY_SEARCH_TREE_INSERT_EXCEPTION);
         return -1;
-    } else if (*bst_data < bst_node->data) {
-        return _BinarySearchTree_insert_helper(bst_node->left, bst_data);
+    } else if (*bst_data < (*bst_node)->data) {
+        return _BinarySearchTree_insert_helper(&((*bst_node)->left), bst_data);
     } else {
-        return _BinarySearchTree_insert_helper(bst_node->right, bst_data);
+        return _BinarySearchTree_insert_helper(&((*bst_node)->right), bst_data);
     }
 }
+
+
+int _BinarySearchTree_remove_helper(
+    BinarySearchTreeNode** bst_node, BinarySearchTreeDataType* bst_data
+) {
+    
+}
+
+
+int _BinarySearchTree_clean_helper(BinarySearchTreeNode** bst_node) {
+    if (bst_node != NULL && *bst_node != NULL) {
+        _BinarySearchTree_clean_helper(&((*bst_node)->left));
+        _BinarySearchTree_clean_helper(&((*bst_node)->right));
+        BinarySearchTreeNode_clean(bst_node);
+    }
+}
+
 
 
 BinarySearchTreeNode* 
@@ -153,7 +182,7 @@ BinarySearchTreeNode_create(BinarySearchTreeDataType* bst_data) {
 }
 
 
-int BinarySearchTreeNode_clean(BinarySearchTree** bst_node) {
+int BinarySearchTreeNode_clean(BinarySearchTreeNode** bst_node) {
     if (bst_node == NULL) {
         fprintf(stderr, BINARY_SEARCH_TREE_NODE_ACCESS_EXCEPTION);
         return -1;
