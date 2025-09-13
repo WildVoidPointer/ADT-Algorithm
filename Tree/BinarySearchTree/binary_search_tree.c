@@ -102,20 +102,20 @@ int BinarySearchTree_insert(
 }
 
 
-int BinarySearchTree_remove(
+BinarySearchTreeNode* BinarySearchTree_remove(
     BinarySearchTree* bs_tree, BinarySearchTreeDataType* bst_data
 ) {
     if (bs_tree == NULL) {
         fprintf(stderr, BINARY_SEARCH_TREE_ACCESS_EXCEPTION);
-        return -1;
+        return NULL;
     }
 
     if (bst_data == NULL) {
         fprintf(stderr, BINARY_SEARCH_TREE_OTHER_SRC_ACCESS_EXCEPTION);
-        return -1;
+        return NULL;
     }
 
-
+    return _BinarySearchTree_remove_helper((&(bs_tree)->root), bst_data);
 }
 
 
@@ -142,10 +142,55 @@ int _BinarySearchTree_insert_helper(
 }
 
 
-int _BinarySearchTree_remove_helper(
+BinarySearchTreeNode* _BinarySearchTree_remove_helper(
     BinarySearchTreeNode** bst_node, BinarySearchTreeDataType* bst_data
 ) {
-    
+    if (bst_node == NULL || *bst_node == NULL || bst_data == NULL) {
+        return NULL;
+    }
+
+    if (*bst_data < (*bst_node)->data) {
+
+        (*bst_node)->left = _BinarySearchTree_remove_helper(
+            &((*bst_node)->left), bst_data
+        );
+
+    } else if (*bst_data > (*bst_node)->data) {
+
+        (*bst_node)->right = _BinarySearchTree_remove_helper(
+            &((*bst_node)->right), bst_data
+        );
+
+    } else {
+
+        if ((*bst_node)->left == NULL) {
+
+            BinarySearchTreeNode* bst_node_tmp = (*bst_node)->right;
+            BinarySearchTreeNode_clean(bst_node);
+            return bst_node_tmp;
+            
+        } else if ((*bst_node)->right == NULL) {
+
+            BinarySearchTreeNode* bst_node_tmp = (*bst_node)->left;
+            BinarySearchTreeNode_clean(bst_node);
+            return bst_node_tmp;
+        }
+
+        BinarySearchTreeNode* in_order_first_node = (*bst_node)->left;
+
+        while ( in_order_first_node != NULL) {
+            in_order_first_node = in_order_first_node->left;
+        }
+
+        (*bst_node)->data = in_order_first_node->data;
+
+        (*bst_node)->right = _BinarySearchTree_remove_helper(
+            (&(*bst_node)->right), 
+            &(in_order_first_node->data)
+        );
+    }
+
+    return (*bst_node);
 }
 
 

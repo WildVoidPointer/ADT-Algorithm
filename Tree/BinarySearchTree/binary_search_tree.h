@@ -89,7 +89,7 @@ int BinarySearchTree_insert(
 );
 
 
-int BinarySearchTree_remove(
+BinarySearchTreeNode* BinarySearchTree_remove(
     BinarySearchTree* bs_tree, BinarySearchTreeDataType* bst_data
 );
 
@@ -99,7 +99,7 @@ int _BinarySearchTree_insert_helper(
 );
 
 
-int _BinarySearchTree_remove_helper(
+BinarySearchTreeNode* _BinarySearchTree_remove_helper(
     BinarySearchTreeNode** bst_node, BinarySearchTreeDataType* bst_data
 );
 
