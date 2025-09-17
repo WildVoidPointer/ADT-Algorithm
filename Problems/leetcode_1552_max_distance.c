@@ -2,6 +2,7 @@
 From:
     https://leetcode.com/problems/magnetic-force-between-two-balls/description/
 
+    
 Description:
     In the universe Earth C-137, Rick discovered a special form of magnetic force between two balls 
     if they are put in his new invented basket. Rick has n empty baskets, the ith basket is at position[i], 

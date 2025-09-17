@@ -2,6 +2,7 @@
 From: 
     Algorithm Thought Book?
 
+    
 Description:
     Given a non-negative integer array `height` representing a histogram,
     where each element represents the height of a bar. 
