@@ -25,7 +25,8 @@ Example 1:
         knows(0, 1) is true, so person 0 knows person 1.
         knows(1, 0) is false, knows(1, 2) is false. Person 1 knows no one.
         knows(2, 0) is true, knows(2, 1) is true. Person 2 knows person 0 and 1.
-        In this example, person 1 is the celebrity. Everyone else (0 and 2) knows 1, and 1 knows no one.
+        In this example, person 1 is the celebrity. 
+        Everyone else (0 and 2) knows 1, and 1 knows no one.
 
     Output:
         1
