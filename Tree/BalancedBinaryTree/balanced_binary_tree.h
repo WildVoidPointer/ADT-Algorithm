@@ -101,8 +101,8 @@ BalancedBinaryTreeNode*
 BalancedBinaryTree_left_rorate(BalancedBinaryTreeNode* balanced_node);
 
 
-int _BalancedBinaryTree_insert_helper(
-    BalancedBinaryTreeNode* balanced_node, BalancedBinaryTreeDataType* new_data
+BalancedBinaryTreeNode* _BalancedBinaryTree_insert_helper(
+    BalancedBinaryTreeNode* balanced_node, BalancedBinaryTreeNode* new_node
 );
 
 

@@ -37,7 +37,27 @@ BalancedBinaryTree* BalancedBinaryTree_build_of_array(
 
 int BalancedBinaryTree_insert(
     BalancedBinaryTree* balanced_tree, BalancedBinaryTreeDataType* new_data
-);
+) {
+    if (balanced_tree == NULL) {
+        fprintf(stderr, BALANCED_BINARY_TREE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    if (new_data == NULL) {
+        fprintf(stderr, BALANCED_BINARY_TREE_OTHER_SRC_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    BalancedBinaryTreeNode* new_node = BalancedBinaryTreeNode_create(new_data);
+    if (new_node == NULL) {
+        fprintf(stderr, BALANCED_BINARY_TREE_INSERT_ERROR);
+        return -1;
+    }
+
+    _BalancedBinaryTree_insert_helper(balanced_tree->root, new_node);
+
+    return 0;
+}
 
 
 int BalancedBinaryTree_remove(
@@ -101,9 +121,28 @@ BalancedBinaryTree_left_rorate(BalancedBinaryTreeNode* balanced_node) {
 }
 
 
-int _BalancedBinaryTree_insert_helper(
-    BalancedBinaryTreeNode* balanced_node, BalancedBinaryTreeDataType* new_data
-);
+BalancedBinaryTreeNode* _BalancedBinaryTree_insert_helper(
+    BalancedBinaryTreeNode* balanced_node, BalancedBinaryTreeNode* new_node
+) {
+    if (new_node == NULL) {
+        fprintf(stderr, BALANCED_BINARY_TREE_NODE_SRC_ACCESS_EXCEPTION);
+        return NULL;
+    }
+
+    if (new_node == NULL) {
+        return new_node;
+    }
+
+    if (new_node->data < balanced_node->data) {
+        balanced_node = _BalancedBinaryTree_insert_helper(
+            balanced_node->left, new_node
+        );
+    } else if (new_node->data > balanced_node->data) {
+        balanced_node = _BalancedBinaryTree_insert_helper(
+            balanced_node->right, new_node
+        );
+    }
+}
 
 
 int _BalancedBinaryTree_remove_helper(
