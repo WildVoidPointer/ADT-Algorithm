@@ -93,6 +93,9 @@ int BalancedBinaryTree_remove(
 );
 
 
+int BalancedBinaryTree_update_height(BalancedBinaryTreeNode* adjust_node);
+
+
 BalancedBinaryTreeNode* 
 BalancedBinaryTree_right_rorate(BalancedBinaryTreeNode* balanced_node);
 

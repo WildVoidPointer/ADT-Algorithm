@@ -65,6 +65,23 @@ int BalancedBinaryTree_remove(
 );
 
 
+int BalancedBinaryTree_update_height(BalancedBinaryTreeNode* adjust_node) {
+    if (adjust_node == NULL) {
+        fprintf(stderr, BALANCED_BINARY_TREE_NODE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    adjust_node->height = 
+        BalancedBinaryTree_get_height(adjust_node->left) > 
+        
+        BalancedBinaryTree_get_height(adjust_node->right) ?
+
+        adjust_node->left->height + 1 : adjust_node->right->height + 1;
+
+    return 0;
+}
+
+
 BalancedBinaryTreeNode*
 BalancedBinaryTree_right_rorate(BalancedBinaryTreeNode* balanced_node) {
 
@@ -73,23 +90,16 @@ BalancedBinaryTree_right_rorate(BalancedBinaryTreeNode* balanced_node) {
         return -1;
     }
 
-    BalancedBinaryTreeNode* left = balanced_node->left;
-    BalancedBinaryTreeNode* left_right_subtree = left->right;
+    BalancedBinaryTreeNode* left_node = balanced_node->left;
+    BalancedBinaryTreeNode* left_node_right_subtree = left_node->right;
 
-    left->right = balanced_node;
-    balanced_node = left_right_subtree;
+    left_node->right = balanced_node;
+    balanced_node->left = left_node_right_subtree;
     
-    left->height = 
-        BalancedBinaryTree_get_height(left->left->height) 
-            > BalancedBinaryTree_get_height(left->right->height) ? 
-            left->left->height : left->right->height;
-    
-    balanced_node->height = 
-        BalancedBinaryTree_get_height(balanced_node->left->height) 
-            > BalancedBinaryTree_get_height(balanced_node->right->height) ? 
-            balanced_node->left->height : balanced_node->right->height;
-    
-    return left;
+    BalancedBinaryTree_update_height(balanced_node);
+    BalancedBinaryTree_update_height(left_node);
+
+    return left_node;
 }
 
 
@@ -101,23 +111,16 @@ BalancedBinaryTree_left_rorate(BalancedBinaryTreeNode* balanced_node) {
         return -1;
     }
 
-    BalancedBinaryTreeNode* right = balanced_node->right;
-    BalancedBinaryTreeNode* right_left_subtree = right->left;
+    BalancedBinaryTreeNode* right_node = balanced_node->right;
+    BalancedBinaryTreeNode* right_node_left_subtree = right_node->left;
 
-    right->left = balanced_node;
-    balanced_node->right = right_left_subtree;
+    right_node->left = balanced_node;
+    balanced_node->right = right_node_left_subtree;
 
-    right->height = 
-        BalancedBinaryTree_get_height(right->left->height) 
-            > BalancedBinaryTree_get_height(right->right->height) ? 
-            right->left->height : right->right->height;
+    BalancedBinaryTree_update_height(balanced_node);
+    BalancedBinaryTree_update_height(right_node);
 
-    balanced_node->height = 
-        BalancedBinaryTree_get_height(balanced_node->left->height) 
-            > BalancedBinaryTree_get_height(balanced_node->right->height) ? 
-            balanced_node->left->height : balanced_node->right->height;
-
-    return right;
+    return right_node;
 }
 
 
