@@ -103,11 +103,11 @@ int BalancedBinaryTree_get_balance_factor(BalancedBinaryTreeNode* balanced_node)
 
 
 BalancedBinaryTreeNode* 
-BalancedBinaryTree_right_rorate(BalancedBinaryTreeNode* balanced_node);
+BalancedBinaryTree_right_rotate(BalancedBinaryTreeNode* balanced_node);
 
 
 BalancedBinaryTreeNode* 
-BalancedBinaryTree_left_rorate(BalancedBinaryTreeNode* balanced_node);
+BalancedBinaryTree_left_rotate(BalancedBinaryTreeNode* balanced_node);
 
 
 BalancedBinaryTreeNode* _BalancedBinaryTree_insert_helper(
@@ -115,12 +115,15 @@ BalancedBinaryTreeNode* _BalancedBinaryTree_insert_helper(
 );
 
 
-void _BalancedBinaryTree_in_order_traversal();
-
-
 int _BalancedBinaryTree_remove_helper(
     BalancedBinaryTreeNode* balanced_node, BalancedBinaryTreeDataType* new_data
 );
+
+
+void _BalancedBinaryTree_clean_helper(BalancedBinaryTreeNode* balanced_node);
+
+
+void _BalancedBinaryTree_in_order_traversal(BalancedBinaryTreeNode* balanced_node);
 
 
 

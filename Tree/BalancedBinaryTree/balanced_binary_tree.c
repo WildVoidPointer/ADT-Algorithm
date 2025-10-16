@@ -17,7 +17,18 @@ BalancedBinaryTree* BalancedBinaryTree_create() {
 }
 
 
-int BalancedBinaryTree_clean(BalancedBinaryTree** balanced_tree);
+int BalancedBinaryTree_clean(BalancedBinaryTree** balanced_tree) {
+    if (balanced_tree == NULL || *balanced_tree == NULL) {
+        fprintf(stderr, BALANCED_BINARY_TREE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    _BalancedBinaryTree_clean_helper((*balanced_tree)->root);
+
+    *balanced_tree = NULL;
+
+    return 0;
+}
 
 
 int BalancedBinaryTree_get_height(BalancedBinaryTreeNode* balanced_node) {
@@ -45,7 +56,7 @@ BalancedBinaryTree* BalancedBinaryTree_build_of_array(
     }
 
     for (int i = 0; i < arr_len; i++) {
-        balanced_tree = BalancedBinaryTree_insert(balanced_tree, arr[i]);
+        BalancedBinaryTree_insert(balanced_tree, &arr[i]);
     }
 
     return balanced_tree;
@@ -71,7 +82,7 @@ int BalancedBinaryTree_insert(
         return -1;
     }
 
-    balanced_tree = _BalancedBinaryTree_insert_helper(balanced_tree->root, new_node);
+    balanced_tree->root = _BalancedBinaryTree_insert_helper(balanced_tree->root, new_node);
 
     return 0;
 }
@@ -83,7 +94,15 @@ int BalancedBinaryTree_remove(
 
 
 int BalancedBinaryTree_in_order_println(BalancedBinaryTree* balanced_tree) {
-    
+    if (balanced_tree == NULL) {
+        fprintf(stderr, BALANCED_BINARY_TREE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    printf("BalancedBinaryTree: {  ");
+    _BalancedBinaryTree_in_order_traversal(balanced_tree->root);
+    printf("}\n");
+    return 0;
 }
 
 
@@ -93,12 +112,13 @@ int BalancedBinaryTree_update_height(BalancedBinaryTreeNode* adjust_node) {
         return -1;
     }
 
-    adjust_node->height = 
-        BalancedBinaryTree_get_height(adjust_node->left) > 
-        
-        BalancedBinaryTree_get_height(adjust_node->right) ?
+    int left_height = adjust_node->left == NULL ? 
+        0 : BalancedBinaryTree_get_height(adjust_node->left);
 
-        adjust_node->left->height + 1 : adjust_node->right->height + 1;
+    int right_height = adjust_node->right == NULL ? 
+        0 : BalancedBinaryTree_get_height(adjust_node->right);
+
+    adjust_node->height = (left_height > right_height ? left_height : right_height) + 1;
 
     return 0;
 }
@@ -110,16 +130,23 @@ int BalancedBinaryTree_get_balance_factor(BalancedBinaryTreeNode* balanced_node)
         return 0;
     }
 
-    return balanced_node->left->height - balanced_node->right->height;
+    
+    int left_height = balanced_node->left == NULL ? 
+        0 : BalancedBinaryTree_get_height(balanced_node->left);
+
+    int right_height = balanced_node->right == NULL ? 
+        0 : BalancedBinaryTree_get_height(balanced_node->right);
+
+    return left_height - right_height;
 }
 
 
 BalancedBinaryTreeNode*
-BalancedBinaryTree_right_rorate(BalancedBinaryTreeNode* balanced_node) {
+BalancedBinaryTree_right_rotate(BalancedBinaryTreeNode* balanced_node) {
 
     if (balanced_node == NULL) {
         fprintf(stderr, BALANCED_BINARY_TREE_NODE_ACCESS_EXCEPTION);
-        return -1;
+        return NULL;
     }
 
     BalancedBinaryTreeNode* left_node = balanced_node->left;
@@ -136,11 +163,11 @@ BalancedBinaryTree_right_rorate(BalancedBinaryTreeNode* balanced_node) {
 
 
 BalancedBinaryTreeNode* 
-BalancedBinaryTree_left_rorate(BalancedBinaryTreeNode* balanced_node) {
+BalancedBinaryTree_left_rotate(BalancedBinaryTreeNode* balanced_node) {
 
     if (balanced_node == NULL) {
         fprintf(stderr, BALANCED_BINARY_TREE_NODE_ACCESS_EXCEPTION);
-        return -1;
+        return NULL;
     }
 
     BalancedBinaryTreeNode* right_node = balanced_node->right;
@@ -164,24 +191,25 @@ BalancedBinaryTreeNode* _BalancedBinaryTree_insert_helper(
         return NULL;
     }
 
-    if (new_node == NULL) {
+    if (balanced_node == NULL) {
         return new_node;
     }
 
     if (new_node->data == balanced_node->data) {
 
         fprintf(stderr, BALANCED_BINARY_TREE_INSERT_EXCEPTION);
-        return new_node;
+        BalancedBinaryTreeNode_clean(&new_node);
+        return balanced_node;
 
     } else if (new_node->data < balanced_node->data) {
 
-        balanced_node = _BalancedBinaryTree_insert_helper(
+        balanced_node->left = _BalancedBinaryTree_insert_helper(
             balanced_node->left, new_node
         );
 
     } else if (new_node->data > balanced_node->data) {
 
-        balanced_node = _BalancedBinaryTree_insert_helper(
+        balanced_node->right = _BalancedBinaryTree_insert_helper(
             balanced_node->right, new_node
         );
 
@@ -191,22 +219,26 @@ BalancedBinaryTreeNode* _BalancedBinaryTree_insert_helper(
 
     int balance_factor = BalancedBinaryTree_get_balance_factor(balanced_node);
 
-    if (balance_factor > 1 && new_node->data < balanced_node->left->data) {
-        balanced_node = BalancedBinaryTree_right_rorate(balanced_node);
+    if (balance_factor > 1 && balanced_node->left != NULL 
+        && new_node->data < balanced_node->left->data) {
+        balanced_node = BalancedBinaryTree_right_rotate(balanced_node);
     }
 
-    if (balanced_node > 1 && new_node->data > balanced_node->left->data) {
-        balanced_node->left = BalancedBinaryTree_left_rorate(balanced_node->left);
-        balanced_node = BalancedBinaryTree_right_rorate(balanced_node);
+    if (balance_factor > 1 && balanced_node->left != NULL 
+        && new_node->data > balanced_node->left->data) {
+        balanced_node->left = BalancedBinaryTree_left_rotate(balanced_node->left);
+        balanced_node = BalancedBinaryTree_right_rotate(balanced_node);
     }
 
-    if (balance_factor < -1 && new_node->data > balanced_node->right->data) {
-        balanced_node = BalancedBinaryTree_left_rorate(balanced_node);
+    if (balance_factor < -1 && balanced_node->right != NULL
+        && new_node->data > balanced_node->right->data) {
+        balanced_node = BalancedBinaryTree_left_rotate(balanced_node);
     }
 
-    if (balanced_node < -1 && new_node->data < balanced_node->right->data) {
-        balanced_node->right = BalancedBinaryTree_right_rorate(balanced_node ->right);
-        balanced_node = BalancedBinaryTree_left_rorate(balanced_node);
+    if (balance_factor < -1 && balanced_node->right != NULL
+        && new_node->data < balanced_node->right->data) {
+        balanced_node->right = BalancedBinaryTree_right_rotate(balanced_node ->right);
+        balanced_node = BalancedBinaryTree_left_rotate(balanced_node);
     }
 
     return balanced_node;
@@ -216,6 +248,24 @@ BalancedBinaryTreeNode* _BalancedBinaryTree_insert_helper(
 int _BalancedBinaryTree_remove_helper(
     BalancedBinaryTreeNode* balanced_node, BalancedBinaryTreeDataType* new_data
 );
+
+
+void _BalancedBinaryTree_clean_helper(BalancedBinaryTreeNode* balanced_node) {
+    if (balanced_node != NULL) {
+        _BalancedBinaryTree_clean_helper(balanced_node->left);
+        _BalancedBinaryTree_clean_helper(balanced_node->right);
+        BalancedBinaryTreeNode_clean(&balanced_node);
+    }
+}
+
+
+void _BalancedBinaryTree_in_order_traversal(BalancedBinaryTreeNode* balanced_node) {
+    if (balanced_node != NULL) {
+        _BalancedBinaryTree_in_order_traversal(balanced_node->left);
+        printf("%d  ", balanced_node->data);
+        _BalancedBinaryTree_in_order_traversal(balanced_node->right);
+    }
+}
 
 
 
