@@ -176,9 +176,9 @@ BinarySearchTreeNode* _BinarySearchTree_remove_helper(
             return bst_node_tmp;
         }
 
-        BinarySearchTreeNode* in_order_first_node = (*bst_node)->left;
+        BinarySearchTreeNode* in_order_first_node = (*bst_node)->right;
 
-        while ( in_order_first_node != NULL) {
+        while (in_order_first_node->left != NULL) {
             in_order_first_node = in_order_first_node->left;
         }
 

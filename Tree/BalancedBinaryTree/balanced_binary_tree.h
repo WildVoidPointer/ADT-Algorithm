@@ -89,7 +89,7 @@ int BalancedBinaryTree_insert(
 
 
 int BalancedBinaryTree_remove(
-    BalancedBinaryTree* balanced_tree, BalancedBinaryTreeDataType* new_data
+    BalancedBinaryTree* balanced_tree, BalancedBinaryTreeDataType* data
 );
 
 
@@ -115,8 +115,8 @@ BalancedBinaryTreeNode* _BalancedBinaryTree_insert_helper(
 );
 
 
-int _BalancedBinaryTree_remove_helper(
-    BalancedBinaryTreeNode* balanced_node, BalancedBinaryTreeDataType* new_data
+BalancedBinaryTreeNode* _BalancedBinaryTree_remove_helper(
+    BalancedBinaryTreeNode* balanced_node, BalancedBinaryTreeDataType* data
 );
 
 

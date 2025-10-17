@@ -82,15 +82,31 @@ int BalancedBinaryTree_insert(
         return -1;
     }
 
-    balanced_tree->root = _BalancedBinaryTree_insert_helper(balanced_tree->root, new_node);
+    balanced_tree->root = 
+        _BalancedBinaryTree_insert_helper(balanced_tree->root, new_node);
 
     return 0;
 }
 
 
 int BalancedBinaryTree_remove(
-    BalancedBinaryTree* balanced_tree, BalancedBinaryTreeDataType* new_data
-);
+    BalancedBinaryTree* balanced_tree, BalancedBinaryTreeDataType* data
+) {
+    if (balanced_tree == NULL) {
+        fprintf(stderr, BALANCED_BINARY_TREE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    if (data == NULL) {
+        fprintf(stderr, BALANCED_BINARY_TREE_OTHER_SRC_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    balanced_tree->root = 
+        _BalancedBinaryTree_remove_helper(balanced_tree->root, data);
+
+    return 0;
+}
 
 
 int BalancedBinaryTree_in_order_println(BalancedBinaryTree* balanced_tree) {
@@ -219,35 +235,122 @@ BalancedBinaryTreeNode* _BalancedBinaryTree_insert_helper(
 
     int balance_factor = BalancedBinaryTree_get_balance_factor(balanced_node);
 
-    if (balance_factor > 1 && balanced_node->left != NULL 
-        && new_node->data < balanced_node->left->data) {
-        balanced_node = BalancedBinaryTree_right_rotate(balanced_node);
+    // 左左情况
+    if (balance_factor > 1 
+        && BalancedBinaryTree_get_balance_factor(balanced_node->left) >= 0
+    ) {
+        return BalancedBinaryTree_right_rotate(balanced_node);
     }
-
-    if (balance_factor > 1 && balanced_node->left != NULL 
-        && new_node->data > balanced_node->left->data) {
+    
+    // 左右情况
+    if (balance_factor > 1 
+        && BalancedBinaryTree_get_balance_factor(balanced_node->left) < 0
+    ) {
         balanced_node->left = BalancedBinaryTree_left_rotate(balanced_node->left);
-        balanced_node = BalancedBinaryTree_right_rotate(balanced_node);
+        return BalancedBinaryTree_right_rotate(balanced_node);
     }
-
-    if (balance_factor < -1 && balanced_node->right != NULL
-        && new_node->data > balanced_node->right->data) {
-        balanced_node = BalancedBinaryTree_left_rotate(balanced_node);
+    
+    // 右右情况
+    if (balance_factor < -1 
+        && BalancedBinaryTree_get_balance_factor(balanced_node->right) <= 0
+    ) {
+        return BalancedBinaryTree_left_rotate(balanced_node);
     }
-
-    if (balance_factor < -1 && balanced_node->right != NULL
-        && new_node->data < balanced_node->right->data) {
-        balanced_node->right = BalancedBinaryTree_right_rotate(balanced_node ->right);
-        balanced_node = BalancedBinaryTree_left_rotate(balanced_node);
+    
+    // 右左情况
+    if (balance_factor < -1 
+        && BalancedBinaryTree_get_balance_factor(balanced_node->right) > 0
+    ) {
+        balanced_node->right = BalancedBinaryTree_right_rotate(balanced_node->right);
+        return BalancedBinaryTree_left_rotate(balanced_node);
     }
 
     return balanced_node;
 }
 
 
-int _BalancedBinaryTree_remove_helper(
-    BalancedBinaryTreeNode* balanced_node, BalancedBinaryTreeDataType* new_data
-);
+BalancedBinaryTreeNode* _BalancedBinaryTree_remove_helper(
+    BalancedBinaryTreeNode* balanced_node, BalancedBinaryTreeDataType* data
+) {
+    if (balanced_node == NULL) {
+        return balanced_node;
+    }
+
+    if (*data < balanced_node->data) {
+
+        balanced_node->left = 
+            _BalancedBinaryTree_remove_helper(balanced_node->left, data);
+
+    } else if (*data > balanced_node->data) {
+
+        balanced_node->right = 
+            _BalancedBinaryTree_remove_helper(balanced_node->right, data);
+
+    } else {
+        // 找到要删除的节点
+        if (balanced_node->left == NULL || balanced_node->right == NULL) {
+
+            BalancedBinaryTreeNode* temp = 
+                balanced_node->right == NULL ? 
+                balanced_node->left : balanced_node->right;
+
+            BalancedBinaryTreeNode_clean(&balanced_node);
+
+            balanced_node = temp;
+            
+        } else {
+            // 有两个子节点情况
+            BalancedBinaryTreeNode* successor = balanced_node->right;
+            while (successor->left != NULL) {
+                successor = successor->left;
+            }
+            
+            balanced_node->data = successor->data;
+            balanced_node->right = _BalancedBinaryTree_remove_helper(
+                balanced_node->right, &successor->data);
+        }
+    }
+
+    if (balanced_node == NULL) {
+        return balanced_node;
+    }
+
+    // 更新高度并重新平衡
+    BalancedBinaryTree_update_height(balanced_node);
+    int balance_factor = BalancedBinaryTree_get_balance_factor(balanced_node);
+
+    // 左左情况
+    if (balance_factor > 1 
+        && BalancedBinaryTree_get_balance_factor(balanced_node->left) >= 0
+    ) {
+        return BalancedBinaryTree_right_rotate(balanced_node);
+    }
+    
+    // 左右情况
+    if (balance_factor > 1 
+        && BalancedBinaryTree_get_balance_factor(balanced_node->left) < 0
+    ) {
+        balanced_node->left = BalancedBinaryTree_left_rotate(balanced_node->left);
+        return BalancedBinaryTree_right_rotate(balanced_node);
+    }
+    
+    // 右右情况
+    if (balance_factor < -1 
+        && BalancedBinaryTree_get_balance_factor(balanced_node->right) <= 0
+    ) {
+        return BalancedBinaryTree_left_rotate(balanced_node);
+    }
+    
+    // 右左情况
+    if (balance_factor < -1 
+        && BalancedBinaryTree_get_balance_factor(balanced_node->right) > 0
+    ) {
+        balanced_node->right = BalancedBinaryTree_right_rotate(balanced_node->right);
+        return BalancedBinaryTree_left_rotate(balanced_node);
+    }
+
+    return balanced_node;
+}
 
 
 void _BalancedBinaryTree_clean_helper(BalancedBinaryTreeNode* balanced_node) {
