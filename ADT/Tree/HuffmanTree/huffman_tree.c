@@ -43,45 +43,129 @@ int HuffmanTree_display(HuffmanTree* hf_tree) {
 }
 
 
-int HuffmanTree_extend(HuffmanTree* hf_tree, HuffmanTreeNode* hf_node) {
-    if (hf_tree == NULL || hf_node == NULL) {
-        fprintf(stderr, HUFFMAN_TREE_EXTEND_EXCEPTION);
+int HuffmanTree_find_two_min_nodes(
+    HuffmanTreeNode* arr[], size_t arr_len,
+    ssize_t* min1, ssize_t* min2
+) {
+    if (arr == NULL || min1 == NULL || min2 == NULL
+    ) {
+        fprintf(stderr, HUFFMAN_TREE_SRC_ACCESS_EXCEPTION);
         return -1;
     }
 
-    if (hf_tree->root == NULL) {
-        HuffmanTreeNode* hf_root = HuffmanTreeNode_create(NULL, NULL);
-        if (hf_root == NULL) {
-            fprintf(stderr, HUFFMAN_TREE_EXTEND_ERROR);
-            return -1;
+    *min1 = -1;
+    *min2 = -1;
+
+    for (size_t i = 0; i < arr_len; i++) {
+        if (arr[i] != NULL) {
+            if (*min1 == -1 || arr[i]->weight < arr[(*min1)]->weight) {
+                *min2 = *min1;
+                *min1 = i;
+            } 
+            else if (*min2 == -1 || arr[i]->weight < arr[(*min2)]->weight) {
+                *min2 = i;
+            }
         }
-        hf_tree->root = hf_root;
     }
-
-    if (hf_tree->root->right == NULL) {
-        hf_tree->root->right = hf_node;
-        
-    } else if (
-        hf_tree->root->right != NULL && hf_tree->root->left == NULL
-    ) {
-        hf_tree->root->left = hf_node;
-
-    } else {
-        HuffmanTreeNode* hf_ext_node = HuffmanTreeNode_create(
-            NULL, &(hf_tree->root->weight)
-        );
-        if (hf_ext_node == NULL) {
-            fprintf(stderr, HUFFMAN_TREE_EXTEND_ERROR);
-            return -1;
-        }
-        hf_ext_node->right = hf_tree->root;
-        hf_ext_node->left = hf_node;
-        hf_tree->root = hf_ext_node;
-    }
-
-    hf_tree->root->weight += hf_node->weight;
 
     return 0;
+}
+
+
+HuffmanTreeNode* HuffmanTree_merge_node(
+    HuffmanTreeNode* node1, HuffmanTreeNode* node2
+) {
+    if (node1 == NULL || node2 == NULL) {
+        fprintf(stderr, HUFFMAN_TREE_NODE_ACCESS_EXCEPTION);
+        return NULL;
+    }
+
+    HuffmanTreeWeightType new = (node1->weight + node2->weight);
+    HuffmanTreeNode* parent = HuffmanTreeNode_create(NULL, &new);
+    if (parent == NULL) {
+        return NULL;
+    }
+    
+    parent->left = node1;
+    parent->right = node2;
+    return parent;
+}
+
+
+HuffmanTree* HuffmanTree_build_of_any_array(
+    HuffmanTreeWeightType arr[], size_t arr_len
+) {
+    if (arr == NULL) {
+        fprintf(stderr, HUFFMAN_TREE_SRC_ACCESS_EXCEPTION);
+        return NULL;
+    }
+
+    HuffmanTree* hf_tree = HuffmanTree_create();
+    if (hf_tree == NULL) {
+        fprintf(stderr, HUFFMAN_TREE_BUILD_ERROR);
+        return NULL;
+    }
+
+    HuffmanTreeNode** hf_nodes = (HuffmanTreeNode**) 
+        malloc (arr_len * sizeof(HuffmanTreeNode*));
+
+    for (size_t i = 0; i < arr_len; i++) {
+        hf_nodes[i] = HuffmanTreeNode_create(NULL, &arr[i]);
+        if (hf_nodes[i] == NULL) {
+            fprintf(stderr, HUFFMAN_TREE_BUILD_ERROR);
+            for (size_t j = 0; j < i; j++) {
+                HuffmanTreeNode_clean(&hf_nodes[j]);
+            }
+            HuffmanTree_clean(&hf_tree);
+            free(hf_nodes);
+            return NULL;
+        }
+    }
+
+    size_t remaining = arr_len;
+
+    ssize_t min1;
+
+    ssize_t min2;
+
+    while (remaining > 1) {
+
+        HuffmanTree_find_two_min_nodes(hf_nodes, arr_len, &min1, &min2);
+
+        HuffmanTreeNode* merged = HuffmanTree_merge_node(
+            hf_nodes[min1], hf_nodes[min2]
+        );
+
+        if (merged == NULL) {
+            fprintf(stderr, HUFFMAN_TREE_BUILD_ERROR);
+            for (size_t i = 0; i < arr_len; i++) {
+                HuffmanTreeNode_clean(&hf_nodes[i]);
+            }
+            HuffmanTree_clean(&hf_tree);
+            free(hf_nodes);
+            return NULL;
+        }
+
+        hf_nodes[min1] = merged;
+        hf_nodes[min2] = NULL;
+
+        remaining--;
+    }
+
+    HuffmanTreeNode* root = NULL;
+
+    for (size_t i = 0; i < arr_len; i++) {
+        if (hf_nodes[i] != NULL) {
+            root = hf_nodes[i];
+            break;
+        }
+    }
+
+    hf_tree->root = root;
+
+    free(hf_nodes);
+
+    return hf_tree;
 }
 
 
@@ -98,34 +182,6 @@ int HuffmanTree_post_order_traverse(
     } else {
         return -1;
     }
-}
-
-
-HuffmanTree* HuffmanTree_build_of_weight_array(
-    HuffmanTreeDataType ordered_arr[], int len
-) {
-    HuffmanTree* hf_tree = HuffmanTree_create();
-    if (hf_tree == NULL) {
-        fprintf(stderr, HUFFMAN_TREE_BUILD_ERROR);
-        return NULL;
-    }
-
-    for (int i = 0; i < len; i++) {
-        HuffmanTreeNode* new_hf_node = HuffmanTreeNode_create(NULL, &ordered_arr[i]);
-        if (new_hf_node == NULL) {
-            fprintf(stderr, HUFFMAN_TREE_BUILD_ERROR);
-            HuffmanTree_clean(&hf_tree);
-            return NULL;
-        }
-
-        int extend_re_code = HuffmanTree_extend(hf_tree, new_hf_node);
-        if (extend_re_code == -1) {
-            fprintf(stderr, HUFFMAN_TREE_BUILD_ERROR);
-            HuffmanTree_clean(&hf_tree);
-            return NULL;
-        }
-    }
-    return hf_tree;
 }
 
 

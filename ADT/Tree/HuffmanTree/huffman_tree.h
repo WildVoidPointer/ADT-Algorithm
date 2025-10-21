@@ -31,9 +31,8 @@
     "The data address of the HuffmanTree cannot be accessed\n"
 
 
-#define HUFFMAN_TREE_EXTEND_EXCEPTION \
-    "HuffmanTreeExtendException: " \
-    "The extension of the HuffmanTree failed and src cannot be accessed\n"
+#define HUFFMAN_TREE_SRC_ACCESS_EXCEPTION \
+    "HuffmanTreeExtendException: The  src cannot be accessed\n"
 
 
 #define HUFFMAN_TREE_NODE_CREATE_ERROR \
@@ -82,17 +81,25 @@ int HuffmanTree_clean(HuffmanTree** hf_tree);
 int HuffmanTree_display(HuffmanTree* hf_tree);
 
 
-int HuffmanTree_extend(HuffmanTree* hf_tree, HuffmanTreeNode* hf_node);
+int HuffmanTree_find_two_min_nodes(
+    HuffmanTreeNode* arr[], size_t arr_len,
+    ssize_t* min1, ssize_t* min2
+);
+
+
+HuffmanTreeNode* HuffmanTree_merge_node(
+    HuffmanTreeNode* node1, HuffmanTreeNode* node2
+);
+
+
+HuffmanTree* HuffmanTree_build_of_any_array(
+    HuffmanTreeWeightType arr[], size_t arr_len
+);
 
 
 int HuffmanTree_post_order_traverse(
     HuffmanTreeNode* hf_node, HuffmanTreeNodeHandler op, 
     HuffmanTreeHnadleContext* ctx
-);
-
-
-HuffmanTree* HuffmanTree_build_of_weight_array(
-    HuffmanTreeDataType ordered_arr[], int len
 );
 
 

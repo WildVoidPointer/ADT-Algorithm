@@ -50,7 +50,7 @@ void integer_array_println(char* desp, int array[], int len) {
 
 
 int main() {
-    HuffmanTreeDataType test_arr[] = {7, 5, 2, 4};
+    HuffmanTreeDataType test_arr[] = {5, 9, 12, 13, 16, 45};
     int test_arr_len = sizeof(test_arr) / sizeof(test_arr[0]);
     HuffmanTreeDataType buf_arr[test_arr_len];
     integer_array_merge_sort(test_arr, buf_arr, 0, test_arr_len - 1);
@@ -63,7 +63,7 @@ int main() {
     printf("HuffmanTreeCleanReasult: %p\n", empty_hf_tree);
 
 
-    HuffmanTree* build_from_array = HuffmanTree_build_of_weight_array(
+    HuffmanTree* build_from_array = HuffmanTree_build_of_any_array(
         test_arr, test_arr_len
     );
     HuffmanTree_display(build_from_array);
