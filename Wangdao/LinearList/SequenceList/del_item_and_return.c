@@ -82,7 +82,9 @@ SeqListDataType DeleteAndReturnMinElement(SeqList* sl, bool* flag) {
 
 /* -----------------------------作答部分结束---------------------------------- */
 
+
 // 测试主函数 此处不出现在真实考场答案中
+
 int main() {
     SeqList sl;
     sl.len = 0;

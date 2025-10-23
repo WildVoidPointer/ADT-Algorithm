@@ -77,6 +77,7 @@ void DeleteAllSpecialElements(SeqList* sl, SeqListDataType ele) {
 /* -----------------------------作答部分结束---------------------------------- */
 
 // 测试主函数 此处不出现在真实考场答案中
+
 void SeqListPrintln(SeqList* sl) {
     for (int i = 0; i < sl->len; i++) {
         printf("%d  ", sl->data[i]);
