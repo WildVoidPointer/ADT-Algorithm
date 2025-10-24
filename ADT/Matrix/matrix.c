@@ -4,8 +4,11 @@
 #include "matrix.h"
 
 
-Matrix* 
-Matrix_create(size_t rows, size_t cols, MatrixInitModeEnum is_init, MatrixEleType* init_data) {
+Matrix* Matrix_create(
+    size_t rows, size_t cols, 
+    MatrixInitModeEnum is_init, 
+    MatrixDataType* init_data
+) {
 
     Matrix* matrix = (Matrix*) malloc (sizeof(Matrix));
     if (matrix == NULL) {
@@ -14,7 +17,7 @@ Matrix_create(size_t rows, size_t cols, MatrixInitModeEnum is_init, MatrixEleTyp
     }
 
     matrix->data = 
-        (MatrixEleType*) malloc (sizeof(MatrixEleType) * rows * cols);
+        (MatrixDataType*) malloc (sizeof(MatrixDataType) * rows * cols);
     if (matrix->data == NULL) {
         fprintf(stderr, MATRIX_CREATE_ERROR);
         free(matrix);
@@ -41,8 +44,56 @@ Matrix_create(size_t rows, size_t cols, MatrixInitModeEnum is_init, MatrixEleTyp
 }
 
 
-Matrix* 
-Matrix_build_of_stack(size_t rows, size_t cols, MatrixEleType (*stack_matrix)[cols]) {
+Matrix* Matrix_copy(Matrix* matrix) {
+
+    if (matrix == NULL) {
+        fprintf(stderr, MATRIX_ACCESS_EXCEPTION);
+        return NULL;
+    }
+
+    Matrix* new = Matrix_create(
+        matrix->rows, matrix->cols, MATRIX_INIT_DISABLE, NULL
+    );
+
+    if (new == NULL) {
+        fprintf(stderr, MATRIX_COPY_ERROR);
+        return NULL;
+    }
+
+    for (size_t i = 0; i < matrix->rows; i++) {
+        for (size_t j = 0; j < matrix->cols; j++) {
+            Matrix_set_element(
+                new, i, j, _Matrix_get_element_unsafe(matrix, i, j)
+            );
+        }
+    }
+
+    return new;
+}
+
+
+int Matrix_set_element(
+    Matrix* matrix, size_t row, size_t col, 
+    MatrixDataType* data
+) {
+    if (matrix == NULL) {
+        fprintf(stderr, MATRIX_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    MatrixDataType* old = _Matrix_get_element_unsafe(
+        matrix, row, col
+    );
+
+    *old = *data;
+    return 0;
+}
+
+
+Matrix* Matrix_build_of_array(
+    size_t rows, size_t cols, 
+    MatrixDataType (*stack_matrix)[cols]
+) {
 
     Matrix* matrix = 
         Matrix_create(rows, cols, MATRIX_INIT_DISABLE, NULL);
@@ -61,8 +112,8 @@ Matrix_build_of_stack(size_t rows, size_t cols, MatrixEleType (*stack_matrix)[co
 }
 
 
-MatrixEleType* 
-_Matrix_get_element_address(Matrix* matrix, size_t rows, size_t cols) {
+MatrixDataType* 
+_Matrix_get_element_unsafe(Matrix* matrix, size_t rows, size_t cols) {
     if (matrix == NULL) {
         fprintf(stderr, MATRIX_ACCESS_EXCEPTION);
         return NULL;
@@ -97,7 +148,7 @@ int Matrix_display(Matrix* matrix) {
     for(size_t i = 0; i < matrix->rows; i++) {
         printf("    {  ");
         for (size_t j = 0; j < matrix->cols; j++) {
-            printf("%d  ", *(_Matrix_get_element_address(matrix, i, j)));
+            printf("%d  ", *(_Matrix_get_element_unsafe(matrix, i, j)));
         }
         printf("}\n");
     }
@@ -150,7 +201,7 @@ Matrix_compress_tridiagonal_matrix(Matrix* matrix) {
         for (size_t j = 0; j < matrix->cols; j++) {
             if (abs(i - j) <= 1) {
                 compressed->data[compressed_offset++] =
-                        *(_Matrix_get_element_address(matrix, i, j));
+                        *(_Matrix_get_element_unsafe(matrix, i, j));
             }
         }
     }
@@ -160,7 +211,7 @@ Matrix_compress_tridiagonal_matrix(Matrix* matrix) {
 
 
 Matrix* 
-Matrix_uncompress_tridiagonal_matrix(CompressedMatrix* compressed, MatrixEleType* filler) {
+Matrix_uncompress_tridiagonal_matrix(CompressedMatrix* compressed, MatrixDataType* filler) {
 
     if (compressed == NULL) {
         fprintf(stderr, COMPRESSED_MATRIX_ACCESS_EXCEPTION);
@@ -180,9 +231,9 @@ Matrix_uncompress_tridiagonal_matrix(CompressedMatrix* compressed, MatrixEleType
     for (size_t i = 0; i < matrix->rows; i++) {
         for (size_t j = 0; j < matrix->cols; j++) {
             if (abs(i -j) <= 1) {
-                *(_Matrix_get_element_address(matrix, i, j)) = compressed->data[compressed_offset++];
+                *(_Matrix_get_element_unsafe(matrix, i, j)) = compressed->data[compressed_offset++];
             } else {
-                *(_Matrix_get_element_address(matrix, i, j)) = *filler;
+                *(_Matrix_get_element_unsafe(matrix, i, j)) = *filler;
             }
         }
     }
@@ -232,7 +283,7 @@ CompressedMatrix* Matrix_compress_symmetric_matrix(Matrix* matrix){
     for (size_t i = 0; i < matrix->rows; i++) {
         for (size_t j = 0; j <= i; j++) {
             compressed->data[compressed_offset++] = 
-                *(_Matrix_get_element_address(matrix, i, j));
+                *(_Matrix_get_element_unsafe(matrix, i, j));
         }
     }
 
@@ -241,7 +292,7 @@ CompressedMatrix* Matrix_compress_symmetric_matrix(Matrix* matrix){
 
 
 Matrix* 
-Matrix_uncompress_symmetric_matrix(CompressedMatrix* compressed, MatrixEleType* filler) {
+Matrix_uncompress_symmetric_matrix(CompressedMatrix* compressed, MatrixDataType* filler) {
     
     if (compressed == NULL) {
         fprintf(stderr, COMPRESSED_MATRIX_ACCESS_EXCEPTION);
@@ -260,8 +311,8 @@ Matrix_uncompress_symmetric_matrix(CompressedMatrix* compressed, MatrixEleType* 
     size_t compressed_offset = 0;
     for (size_t i = 0; i < matrix->rows; i++) {
         for (size_t j = 0; j <= i; j++) {
-            *(_Matrix_get_element_address(matrix, i, j)) = 
-                *(_Matrix_get_element_address(matrix, j, i)) =
+            *(_Matrix_get_element_unsafe(matrix, i, j)) = 
+                *(_Matrix_get_element_unsafe(matrix, j, i)) =
                 compressed->data[compressed_offset++];
         }
     }
@@ -306,7 +357,7 @@ CompressedMatrix* Matrix_compress_upper_triangular_matrix(Matrix* matrix) {
     for (size_t i = 0; i < matrix->rows; i++) {
         for (size_t j = i; j < matrix->cols; j++) {
             compressed->data[compressed_offset++] = 
-                *(_Matrix_get_element_address(matrix, i, j));
+                *(_Matrix_get_element_unsafe(matrix, i, j));
         }
     }
 
@@ -315,7 +366,7 @@ CompressedMatrix* Matrix_compress_upper_triangular_matrix(Matrix* matrix) {
 
 
 Matrix*
-Matrix_uncompress_lower_triangular_matrix(CompressedMatrix* compressed, MatrixEleType* filler) {
+Matrix_uncompress_lower_triangular_matrix(CompressedMatrix* compressed, MatrixDataType* filler) {
 
     if (compressed == NULL) {
         fprintf(stderr, COMPRESSED_MATRIX_ACCESS_EXCEPTION);
@@ -334,12 +385,12 @@ Matrix_uncompress_lower_triangular_matrix(CompressedMatrix* compressed, MatrixEl
     size_t compressed_offset = 0;
     for (size_t i = 0; i < matrix->rows; i++) {
         for (size_t j = 0; j <= i; j++) {
-            *(_Matrix_get_element_address(matrix, i, j)) = 
+            *(_Matrix_get_element_unsafe(matrix, i, j)) = 
                 compressed->data[compressed_offset++];
         }
 
         for (size_t j = i + 1; j < matrix->cols; j++) {
-            *(_Matrix_get_element_address(matrix, i, j)) = *filler;
+            *(_Matrix_get_element_unsafe(matrix, i, j)) = *filler;
         }
     }
 
@@ -348,7 +399,7 @@ Matrix_uncompress_lower_triangular_matrix(CompressedMatrix* compressed, MatrixEl
 
 
 Matrix* 
-Matrix_uncompress_upper_triangular_matrix(CompressedMatrix* compressed, MatrixEleType* filler) {
+Matrix_uncompress_upper_triangular_matrix(CompressedMatrix* compressed, MatrixDataType* filler) {
     if (compressed == NULL) {
         fprintf(stderr, COMPRESSED_MATRIX_ACCESS_EXCEPTION);
         return NULL;
@@ -366,11 +417,11 @@ Matrix_uncompress_upper_triangular_matrix(CompressedMatrix* compressed, MatrixEl
     size_t compressed_offset = 0;
     for (size_t i = 0; i < matrix->rows; i++) {
         for (size_t j = 0; j <= i; j++) {
-            *(_Matrix_get_element_address(matrix, i, j)) = *filler;
+            *(_Matrix_get_element_unsafe(matrix, i, j)) = *filler;
         }
 
         for (size_t j = i; j < matrix->cols; j++) {
-            *(_Matrix_get_element_address(matrix, i, j)) = 
+            *(_Matrix_get_element_unsafe(matrix, i, j)) = 
                 compressed->data[compressed_offset++];
         }
     }
@@ -379,7 +430,7 @@ Matrix_uncompress_upper_triangular_matrix(CompressedMatrix* compressed, MatrixEl
 }
 
 
-size_t Matrix_calculate_sparse_compress_size(Matrix* matrix, MatrixEleType* fiducial) {
+size_t Matrix_calculate_sparse_compress_size(Matrix* matrix, MatrixDataType* fiducial) {
 
     if (matrix == NULL || fiducial == NULL) {
         fprintf(stderr, MATRIX_ACCESS_EXCEPTION);
@@ -390,7 +441,7 @@ size_t Matrix_calculate_sparse_compress_size(Matrix* matrix, MatrixEleType* fidu
 
     for (size_t i = 0; i < matrix->rows; i++) {
         for (size_t j = 0; j < matrix->cols; j++) {
-            if (*(_Matrix_get_element_address(matrix, i, j)) != *fiducial) {
+            if (*(_Matrix_get_element_unsafe(matrix, i, j)) != *fiducial) {
                 compressed_size++;
             }
         }
@@ -401,7 +452,7 @@ size_t Matrix_calculate_sparse_compress_size(Matrix* matrix, MatrixEleType* fidu
 
 
 CompressedSparseMatrix*
-Matrix_compress_sparse_matrix(Matrix* matrix, MatrixEleType* fiducial) {
+Matrix_compress_sparse_matrix(Matrix* matrix, MatrixDataType* fiducial) {
 
     if (matrix == NULL || fiducial == NULL) {
         fprintf(stderr, MATRIX_ACCESS_EXCEPTION);
@@ -420,7 +471,7 @@ Matrix_compress_sparse_matrix(Matrix* matrix, MatrixEleType* fiducial) {
     size_t compressed_offset = 0;
     for (size_t i = 0; i < matrix->rows; i++) {
         for (size_t j = 0; j < matrix->cols; j++) {
-            MatrixEleType* current = _Matrix_get_element_address(matrix, i, j);
+            MatrixDataType* current = _Matrix_get_element_unsafe(matrix, i, j);
             if (*current != *fiducial) {
                 compressed->units[compressed_offset].data = *current;
                 compressed->units[compressed_offset].row = i;
@@ -433,7 +484,7 @@ Matrix_compress_sparse_matrix(Matrix* matrix, MatrixEleType* fiducial) {
 }
 
 
-Matrix* Matrix_uncompress_sparse_matrix(CompressedSparseMatrix* compressed, MatrixEleType* fiducial) {
+Matrix* Matrix_uncompress_sparse_matrix(CompressedSparseMatrix* compressed, MatrixDataType* fiducial) {
 
     if (compressed == NULL || fiducial == NULL) {
         fprintf(stderr, COMPRESSED_SPARSE_MATRIX_ACCESS_EXCEPTION);
@@ -448,7 +499,7 @@ Matrix* Matrix_uncompress_sparse_matrix(CompressedSparseMatrix* compressed, Matr
     }
 
     for (size_t i = 0; i < compressed->compressed_size; i++) {
-        *(_Matrix_get_element_address(
+        *(_Matrix_get_element_unsafe(
                         uncompressed, 
                         compressed->units[i].row, 
                         compressed->units[i].col)
@@ -469,7 +520,7 @@ CompressedMatrix* CompressedMatrix_create(size_t compressed_size) {
     }
 
     compressed->data = 
-        (MatrixEleType*) malloc (sizeof(MatrixEleType) * compressed_size);
+        (MatrixDataType*) malloc (sizeof(MatrixDataType) * compressed_size);
 
     if (compressed->data == NULL) {
         fprintf(stderr, COMPRESSED_MATRIX_CREATE_ERROR);

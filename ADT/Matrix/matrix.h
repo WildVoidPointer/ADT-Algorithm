@@ -14,6 +14,10 @@
     "MatrixCreateError: " \
     "Memory initialization of Matrix failed\n"
 
+#define MATRIX_COPY_ERROR \
+    "MatrixCopyError: " \
+    "Memory initialization of Matrix failed\n"
+
 #define MATRIX_INIT_ERROR \
     "MatrixInitError: " \
     "The initialization data address cannot be loaded\n"
@@ -50,12 +54,12 @@ typedef enum MatrixInitModeEnum {
 } MatrixInitModeEnum;
 
 
-typedef int MatrixEleType;
+typedef int MatrixDataType;
 
 
 typedef struct Matrix {
-    MatrixEleType* data;
-    MatrixEleType init_data;
+    MatrixDataType* data;
+    MatrixDataType init_data;
     size_t rows;
     size_t cols;
     int is_init;
@@ -63,7 +67,7 @@ typedef struct Matrix {
 
 
 typedef struct CompressedMatrix {
-    MatrixEleType* data;
+    MatrixDataType* data;
     size_t compressed_size;
 } CompressedMatrix;
 
@@ -71,7 +75,7 @@ typedef struct CompressedMatrix {
 typedef struct CompressedSparseMatrixUnit {
     size_t row;
     size_t col;
-    MatrixEleType data;
+    MatrixDataType data;
 } CompressedSparseMatrixUnit;
 
 
@@ -85,16 +89,29 @@ typedef struct CompressedSparseMatrix {
 
 Matrix* Matrix_create(
     size_t rows, size_t cols, 
-    MatrixInitModeEnum is_init, MatrixEleType* init_data
+    MatrixInitModeEnum is_init, MatrixDataType* init_data
 );
 
-Matrix* Matrix_build_of_stack(
+
+Matrix* Matrix_copy(Matrix* matrix);
+
+
+int Matrix_set_element(
+    Matrix* matrix, size_t row, size_t col, 
+    MatrixDataType* data
+);
+
+
+Matrix* Matrix_build_of_array(
     size_t rows, size_t cols, 
-    MatrixEleType (*stack_matrix)[cols]
+    MatrixDataType (*stack_matrix)[cols]
 );
 
-MatrixEleType* 
-_Matrix_get_element_address(Matrix* matrix, size_t rows, size_t cols);
+
+MatrixDataType* _Matrix_get_element_unsafe(
+    Matrix* matrix, size_t rows, size_t cols
+);
+
 
 int Matrix_clean(Matrix** matrix);
 
@@ -104,61 +121,84 @@ int Matrix_display(Matrix* matrix);
 size_t 
 Matrix_calculate_tridiagonal_compress_size(Matrix* matrix);
 
-size_t 
-Matrix_calculate_tridiagonal_uncompress_size(CompressedMatrix* compressed);
 
-CompressedMatrix* Matrix_compress_tridiagonal_matrix(Matrix* matrix);
+size_t Matrix_calculate_tridiagonal_uncompress_size(
+    CompressedMatrix* compressed
+);
+
+
+CompressedMatrix* 
+Matrix_compress_tridiagonal_matrix(Matrix* matrix);
+
 
 Matrix* Matrix_uncompress_tridiagonal_matrix(
-    CompressedMatrix* compressed, MatrixEleType* filler
+    CompressedMatrix* compressed, MatrixDataType* filler
 );
 
 
 size_t Matrix_calculate_symmetric_compress_size(Matrix* matrix);
 
-size_t Matrix_calculate_symmetric_uncompress_size(CompressedMatrix* compressed);
+size_t Matrix_calculate_symmetric_uncompress_size(
+    CompressedMatrix* compressed
+);
 
-CompressedMatrix* Matrix_compress_symmetric_matrix(Matrix* matrix);
+
+CompressedMatrix* 
+Matrix_compress_symmetric_matrix(Matrix* matrix);
+
 
 Matrix* Matrix_uncompress_symmetric_matrix(
-    CompressedMatrix* compressed, MatrixEleType* filler
+    CompressedMatrix* compressed, MatrixDataType* filler
 );
 
 
 size_t Matrix_calculate_triangular_compress_size(Matrix* matrix);
 
-size_t Matrix_calculate_triangular_uncompress_size(CompressedMatrix* compressed);
 
-CompressedMatrix* Matrix_compress_lower_triangular_matrix(Matrix* matrix);
+size_t Matrix_calculate_triangular_uncompress_size(
+    CompressedMatrix* compressed
+);
 
-CompressedMatrix* Matrix_compress_upper_triangular_matrix(Matrix* matrix);
+
+CompressedMatrix* 
+Matrix_compress_lower_triangular_matrix(Matrix* matrix);
+
+
+CompressedMatrix* 
+Matrix_compress_upper_triangular_matrix(Matrix* matrix);
+
 
 Matrix* Matrix_uncompress_lower_triangular_matrix(
     CompressedMatrix* compressed, 
-    MatrixEleType* filler
+    MatrixDataType* filler
 );
 
 Matrix* Matrix_uncompress_upper_triangular_matrix(
     CompressedMatrix* compressed, 
-    MatrixEleType* filler
+    MatrixDataType* filler
 );
 
 
 size_t Matrix_calculate_sparse_compress_size(
-    Matrix* matrix, MatrixEleType* fiducial
+    Matrix* matrix, MatrixDataType* fiducial
 );
 
-CompressedSparseMatrix*
-Matrix_compress_sparse_matrix(Matrix* matrix, MatrixEleType* fiducial);
+CompressedSparseMatrix*Matrix_compress_sparse_matrix(
+    Matrix* matrix, MatrixDataType* fiducial
+);
+
 
 Matrix* Matrix_uncompress_sparse_matrix(
-    CompressedSparseMatrix* compressed, MatrixEleType* fiducial
+    CompressedSparseMatrix* compressed, MatrixDataType* fiducial
 );
 
 
-CompressedMatrix* CompressedMatrix_create(size_t compressed_size);
+CompressedMatrix* 
+CompressedMatrix_create(size_t compressed_size);
+
 
 int CompressedMatrix_clean(CompressedMatrix** compressed);
+
 
 int CompressedMatrix_display(CompressedMatrix* compressed);
 

@@ -1,7 +1,7 @@
 #include "matrix.h"
 
 
-MatrixEleType TRIDIAGONAL_TEST_MATRIX[5][5] = {
+MatrixDataType TRIDIAGONAL_TEST_MATRIX[5][5] = {
     {1, 2, 0, 0, 0},
     {3, 4, 5, 0, 0},
     {0, 6, 7, 8, 0},
@@ -10,7 +10,7 @@ MatrixEleType TRIDIAGONAL_TEST_MATRIX[5][5] = {
 };
 
 
-MatrixEleType SYMMETRIC_TEST_MATRIX[4][4] = {
+MatrixDataType SYMMETRIC_TEST_MATRIX[4][4] = {
     {1, 2, 4, 6},
     {2, 3, 5, 7},
     {4, 5, 6, 8},
@@ -18,7 +18,7 @@ MatrixEleType SYMMETRIC_TEST_MATRIX[4][4] = {
 };
 
 
-MatrixEleType LOWER_TRIANGULAR_TEST_MATRIX[4][4] = {
+MatrixDataType LOWER_TRIANGULAR_TEST_MATRIX[4][4] = {
     {1, 9, 9, 9},
     {2, 3, 9, 9},
     {4, 5, 6, 9},
@@ -26,7 +26,7 @@ MatrixEleType LOWER_TRIANGULAR_TEST_MATRIX[4][4] = {
 };
 
 
-MatrixEleType UPPER_TRIANGULAR_TEST_MATRIX[4][4] = {
+MatrixDataType UPPER_TRIANGULAR_TEST_MATRIX[4][4] = {
     {1, 2, 3, 4},
     {8, 5, 6, 7},
     {8, 8, 8, 9},
@@ -34,7 +34,7 @@ MatrixEleType UPPER_TRIANGULAR_TEST_MATRIX[4][4] = {
 };
 
 
-MatrixEleType SPARSE_TEST_MATRIX[5][5] = {
+MatrixDataType SPARSE_TEST_MATRIX[5][5] = {
     {0, 0, 3, 0, 0},
     {0, 0, 0, 0, 7},
     {1, 0, 0, 0, 0},
@@ -45,23 +45,40 @@ MatrixEleType SPARSE_TEST_MATRIX[5][5] = {
 
 int main(int argc, char const *argv[])
 {
-    MatrixEleType default_filler = 0;
+    MatrixDataType default_filler = 0;
 
-    Matrix* tridiagonal_matrix = Matrix_build_of_stack(5, 5, TRIDIAGONAL_TEST_MATRIX);
-    CompressedMatrix* tridaigonal_compressed = Matrix_compress_tridiagonal_matrix(tridiagonal_matrix);
-    Matrix* tridaigonal_uncompressed = Matrix_uncompress_tridiagonal_matrix(tridaigonal_compressed, &default_filler);
+    Matrix* tridiagonal_matrix = Matrix_build_of_array(5, 5, TRIDIAGONAL_TEST_MATRIX);
+    CompressedMatrix* tridaigonal_compressed = Matrix_compress_tridiagonal_matrix(
+        tridiagonal_matrix
+    );
+    Matrix* tridaigonal_uncompressed = Matrix_uncompress_tridiagonal_matrix(
+        tridaigonal_compressed, &default_filler
+    );
     CompressedMatrix_display(tridaigonal_compressed);
     Matrix_display(tridaigonal_uncompressed);
     Matrix_clean(&tridiagonal_matrix);
     Matrix_clean(&tridaigonal_uncompressed);
     printf("Matrix clean result: %p\n", tridiagonal_matrix);
+
     CompressedMatrix_clean(&tridaigonal_compressed);
     printf("CompressedMatrix clean result: %p\n", tridaigonal_compressed);
 
 
-    Matrix* symmetric_matrix = Matrix_build_of_stack(4, 4, SYMMETRIC_TEST_MATRIX);
-    CompressedMatrix* symmetric_compressed = Matrix_compress_symmetric_matrix(symmetric_matrix);
-    Matrix* symmetric_uncompressed = Matrix_uncompress_symmetric_matrix(symmetric_compressed, &default_filler);
+    Matrix* origin_matrix = Matrix_build_of_array(4, 4, SYMMETRIC_TEST_MATRIX);
+    Matrix* copied_matrix = Matrix_copy(origin_matrix);
+    Matrix_display(origin_matrix);
+    Matrix_display(copied_matrix);
+    Matrix_clean(&origin_matrix);
+    Matrix_clean(&copied_matrix);
+
+
+    Matrix* symmetric_matrix = Matrix_build_of_array(4, 4, SYMMETRIC_TEST_MATRIX);
+    CompressedMatrix* symmetric_compressed = Matrix_compress_symmetric_matrix(
+        symmetric_matrix
+    );
+    Matrix* symmetric_uncompressed = Matrix_uncompress_symmetric_matrix(
+        symmetric_compressed, &default_filler
+    );
     CompressedMatrix_display(symmetric_compressed);
     Matrix_display(symmetric_uncompressed);
     Matrix_clean(&symmetric_matrix);
@@ -69,9 +86,11 @@ int main(int argc, char const *argv[])
     CompressedMatrix_clean(&symmetric_compressed);
 
 
-    Matrix* lower = Matrix_build_of_stack(4, 4, LOWER_TRIANGULAR_TEST_MATRIX);
+    Matrix* lower = Matrix_build_of_array(4, 4, LOWER_TRIANGULAR_TEST_MATRIX);
     CompressedMatrix* lower_compressed = Matrix_compress_lower_triangular_matrix(lower);
-    Matrix* lower_uncompressed = Matrix_uncompress_lower_triangular_matrix(lower_compressed, &default_filler);
+    Matrix* lower_uncompressed = Matrix_uncompress_lower_triangular_matrix(
+        lower_compressed, &default_filler
+    );
     CompressedMatrix_display(lower_compressed);
     Matrix_display(lower_uncompressed);
     CompressedMatrix_clean(&lower_compressed);
@@ -79,9 +98,11 @@ int main(int argc, char const *argv[])
     Matrix_clean(&lower);
 
 
-    Matrix* upper = Matrix_build_of_stack(4, 4, UPPER_TRIANGULAR_TEST_MATRIX);
+    Matrix* upper = Matrix_build_of_array(4, 4, UPPER_TRIANGULAR_TEST_MATRIX);
     CompressedMatrix* upper_compressed = Matrix_compress_upper_triangular_matrix(upper);
-    Matrix* upper_uncompressed = Matrix_uncompress_upper_triangular_matrix(upper_compressed, &default_filler);
+    Matrix* upper_uncompressed = Matrix_uncompress_upper_triangular_matrix(
+        upper_compressed, &default_filler
+    );
     CompressedMatrix_display(upper_compressed);
     Matrix_display(upper_uncompressed);
     Matrix_clean(&upper);
@@ -89,9 +110,13 @@ int main(int argc, char const *argv[])
     CompressedMatrix_clean(&upper_compressed);
 
 
-    Matrix* sparse = Matrix_build_of_stack(5, 5, SPARSE_TEST_MATRIX);
-    CompressedSparseMatrix* sparse_compressed = Matrix_compress_sparse_matrix(sparse, &default_filler);
-    Matrix* sparse_uncompressed = Matrix_uncompress_sparse_matrix(sparse_compressed, &default_filler);
+    Matrix* sparse = Matrix_build_of_array(5, 5, SPARSE_TEST_MATRIX);
+    CompressedSparseMatrix* sparse_compressed = Matrix_compress_sparse_matrix(
+        sparse, &default_filler
+    );
+    Matrix* sparse_uncompressed = Matrix_uncompress_sparse_matrix(
+        sparse_compressed, &default_filler
+    );
     CompressedSparseMatrix_display(sparse_compressed);
     Matrix_display(sparse_uncompressed);
     Matrix_clean(&sparse);
