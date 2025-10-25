@@ -1,5 +1,5 @@
 /* 题目信息
-运用矩阵可计算斐波拉契数列，使用 $C$ 语言或者 $C++$ 编写计算矩阵幂的算法，
+运用矩阵可计算斐波拉契数列，注意斐波那契数列矩阵始终为 2x2，编写计算斐波那契数列 矩阵幂 的算法，
 常用数据结构的常用操作可直接使用，但需要说明。实现算法的执行过程
 */
 
@@ -9,12 +9,52 @@
 
 #include <stdio.h>
 
-#define MAX_LEN 100
+// 将二维数组表示的矩阵乘法单独实现
+void MatrixMultiply(int (*m1)[2], int (*m2)[2]) {
+
+    // 拷贝传入的第一个矩阵
+    int copied[2][2];
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            copied[i][j] = m1[i][j];
+        }
+    }
+
+    // 使用一个临时变量存储计算得到的结果矩阵的每个结果值
+    int element = 0;
+
+    // 进行矩阵乘法与写回
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 2; k++) {
+                element += copied[i][k] * m2[k][j];
+            }
+            // 将计算后的结果写回矩阵 m1
+            m1[i][j] = element;
+            element = 0;
+        }
+    }
+}
 
 
-// 使用 二维数组 存储计算斐波那契数列的矩阵
-void CalculateFibonacciMatrixPower(int (*matrx)[2]) {
+// 使用 二维数组 存储计算斐波那契数列的初始矩阵
+void CalculateFibonacciMatrixPower(int (*matrix)[2], int n) {
     
+    // 如果传入的次方数 n 小于 1 ，则算法直接返回
+    if (n <= 1) {
+        return;
+    }
+
+    // 建立斐波那契数列单位矩阵
+    int unit[2][2] = {
+        {1, 1},
+        {1, 0}
+    };
+
+    for (int i = 1; i < n; i++) {
+        // 逐次进行输入矩阵与斐波那契数列的单位矩阵乘法
+        MatrixMultiply(matrix, unit);
+    }
 }
 
 
@@ -22,11 +62,18 @@ void CalculateFibonacciMatrixPower(int (*matrx)[2]) {
 /* 
     算法实现如上，其中：
     
-    时间复杂度为 O()	------
+    时间复杂度为 O(n)	------因为在求解斐波那契数列矩阵时，第一层循环 n - 1 次矩阵乘法函数，
+                            而矩阵乘法函数虽然内部为一次拷贝循环和三重循环求解每个元素，但是
+                            本质上由于输入数据的规模为 2 x 2 矩阵，则实际上最内层操作次数为
+                            （n-1）x 12，故综上时间复杂度为 O(n)
     
-    空间复杂度为 O()	------
+    空间复杂度为 O(1)	------算法中建立了两个 2 x 2 矩阵用于保存单位矩阵和进行乘法时需要被修改的
+                            矩阵，外加一个临时变量用于存储计算后的每个元素的值，故使用了常数个存储空间
     
-    算法思想
+    算法思想：
+        针对与斐波那契数列矩阵，我们知道进行矩阵乘法求解时，矩阵的幂数不可能小于 1，而等于 1 时直接为传入矩阵本身
+        所以对于 n 小于等于 1 时，算法直接返回，而针对斐波那契数列矩阵的特殊性，我们需要保存最基础的单位矩阵以作为
+        每次矩阵乘法时的 m2 ，这样才能使得任意次方的斐波那契数列初始数列的次方数，总是与数列下标正确关联
 	
 	测试数据
 
@@ -38,6 +85,30 @@ void CalculateFibonacciMatrixPower(int (*matrx)[2]) {
 
 // 测试主函数 此处不出现在真实考场答案中
 
+void FibonacciMatrixPrint(int (*matrix)[2]) {
+    printf("{ ");
+    for (int i = 0; i < 2; i++) {
+        printf("{ ");
+        for (int j = 0; j < 2; j++) {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("}, ");
+    }
+    printf("}\n");
+}
+
 int main() {
 
+    int matrix[2][2] = {
+        {1, 1},
+        {1, 0}
+    };
+
+    FibonacciMatrixPrint(matrix);
+
+    CalculateFibonacciMatrixPower(matrix, 4);
+
+    FibonacciMatrixPrint(matrix);
+
+    return 0;
 }
