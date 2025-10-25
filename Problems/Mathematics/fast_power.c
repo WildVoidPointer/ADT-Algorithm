@@ -46,8 +46,32 @@ int fast_power_recursion(int base, int n) {
 }
 
 
+long long fast_power_mod_iteration(long long base, int n, int mod) {
+    long long res = 1;
+
+    base = base % mod;
+
+    while (n != 0) {
+
+        if (n & 1) {
+            res = (res * base) % mod;
+        }
+
+        base = (base * base) % mod;
+
+        n = n >> 1;
+    }
+
+    return res;
+}
+
+
 int main() {
     printf("%d\n", normal_power(2, 4));
     printf("%d\n", fast_power_iteration(2, 5));
     printf("%d\n", fast_power_recursion(2, 6));
+    printf(
+        "%lld\n", 
+        fast_power_mod_iteration(2, 100, 1000000007)
+    ); // 976371285
 }
