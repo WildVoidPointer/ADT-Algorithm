@@ -55,7 +55,9 @@ int _LRUCacheDoubleStack_stack_is_empty(int st_len) {
 }
 
 
-void _LRUCacheDoubleStack_push(MemoryPage* st, int* st_len, MemoryPage page){
+void _LRUCacheDoubleStack_push(
+    MemoryPage* st, int* st_len, MemoryPage page
+){
     st[(*st_len)++] = page;
 }
 
@@ -82,8 +84,15 @@ int LRUCacheDoubleStack_is_empty(LRUCacheDoubleStack* lru){
 }
 
 
-void LRUCacheDoubleStack_load(LRUCacheDoubleStack* lru, MemoryPage page) {
-    _LRUCacheDoubleStack_push(lru->main_cache, &(lru->main_length), page);
+void LRUCacheDoubleStack_load(
+    LRUCacheDoubleStack* lru, MemoryPage page
+) {
+    _LRUCacheDoubleStack_push(
+        lru->main_cache, 
+        &(lru->main_length), 
+        page
+    );
+    
     lru->cache_num++;
 }
 
@@ -94,7 +103,10 @@ MemoryPage LRUCacheDoubleStack_drop(LRUCacheDoubleStack* lru) {
             _LRUCacheDoubleStack_push(
                 lru->help_cache, 
                 &(lru->help_length), 
-                _LRUCacheDoubleStack_pop(lru->main_cache, &(lru->main_length))
+                _LRUCacheDoubleStack_pop(
+                    lru->main_cache, 
+                    &(lru->main_length)
+                )
             );
         }
     }
@@ -108,7 +120,9 @@ MemoryPage LRUCacheDoubleStack_drop(LRUCacheDoubleStack* lru) {
 }
 
 
-int LRUCacheDoubleStack_cache_is_exists(LRUCacheDoubleStack* lru, MemoryPage page) {
+int LRUCacheDoubleStack_cache_is_exists(
+    LRUCacheDoubleStack* lru, MemoryPage page
+) {
     
     int is_exists = 0;
     
@@ -154,10 +168,15 @@ void LRUCacheDoubleStack_move_to_top(
                 _LRUCacheDoubleStack_push(
                     lru->help_cache, 
                     &(lru->help_length),
-                    _LRUCacheDoubleStack_pop(lru->main_cache, &(lru->main_length))
+                    _LRUCacheDoubleStack_pop(
+                        lru->main_cache, 
+                        &(lru->main_length)
+                    )
                 );
             } else {
-                access_page = _LRUCacheDoubleStack_pop(lru->main_cache, &(lru->main_length));
+                access_page = _LRUCacheDoubleStack_pop(
+                    lru->main_cache, &(lru->main_length)
+                );
                 is_find = 1;
             }
         }
@@ -167,7 +186,10 @@ void LRUCacheDoubleStack_move_to_top(
             _LRUCacheDoubleStack_push(
                 lru->main_cache, 
                 &(lru->main_length),
-                _LRUCacheDoubleStack_pop(lru->help_cache, &(lru->help_length))
+                _LRUCacheDoubleStack_pop(
+                    lru->help_cache, 
+                    &(lru->help_length)
+                )
             ); 
         }
 
@@ -186,10 +208,16 @@ void LRUCacheDoubleStack_move_to_top(
                 _LRUCacheDoubleStack_push(
                     lru->main_cache, 
                     &(lru->main_length),
-                    _LRUCacheDoubleStack_pop(lru->help_cache, &(lru->help_length))
+                    _LRUCacheDoubleStack_pop(
+                        lru->help_cache, 
+                        &(lru->help_length)
+                    )
                 );
             } else {
-                access_page = _LRUCacheDoubleStack_pop(lru->help_cache, &(lru->help_length));
+                access_page = _LRUCacheDoubleStack_pop(
+                    lru->help_cache, 
+                    &(lru->help_length)
+                );
                 is_find = 1;
             }
         }

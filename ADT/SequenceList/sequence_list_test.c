@@ -6,9 +6,7 @@
 
 int main(int argc, char const *argv[]) {
     
-    SequenceList* seqlist = SequenceList_create(
-        5, SEQUENCE_LIST_INIT_DISABLE, NULL
-    );
+    SequenceList* seqlist = SequenceList_create(5);
 
     SequenceList_insert(seqlist, 1, 2);
     SequenceList_display(seqlist);
@@ -28,7 +26,7 @@ int main(int argc, char const *argv[]) {
     SequenceList_insert(seqlist, 4, 5);
     SequenceList_display(seqlist);
 
-    SequenceList_expand(seqlist, 1, SEQUENCE_LIST_INIT_ENABLE);
+    SequenceList_expand(seqlist, 1);
     SequenceList_display(seqlist);
 
     SequenceList_insert(seqlist, 4, 7);
@@ -37,7 +35,7 @@ int main(int argc, char const *argv[]) {
     SequenceList_insert(seqlist, 4, 7);
     SequenceList_display(seqlist);
 
-    SequenceListEleType delete_buf;
+    SequenceListDataType delete_buf;
     size_t pos = 0;
     SequenceList_remove(seqlist, 5, &delete_buf);
     SequenceList_display(seqlist);
@@ -45,7 +43,7 @@ int main(int argc, char const *argv[]) {
     SequenceList_remove(seqlist, 1, &delete_buf);
     SequenceList_display(seqlist);
 
-    SequenceListEleType search_buf = 3;
+    SequenceListDataType search_buf = 3;
     size_t search_pos = 1;
 
     if (0) {

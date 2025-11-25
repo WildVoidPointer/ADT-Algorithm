@@ -22,7 +22,8 @@
 
 
 #define SEQUENCE_LIST_ACCESS_ERROR \
-    "SequenceListAccessError: Check whether parameter `SeqList*` is valid\n"
+    "SequenceListAccessError: " \
+    "Check whether parameter `SeqList*` is valid\n"
 
 
 #define SEQUENCE_LIST_INSERT_EXCEPTION \
@@ -34,7 +35,8 @@
 
 
 #define SEQUENCE_LIST_SEARCH_ACCESS_ERROR \
-    "SequenceListSearchAccessError: Check whether parameter buffer is valid\n"
+    "SequenceListSearchAccessError: " \
+    "Check whether parameter buffer is valid\n"
 
 
 #define SEQUENCE_LIST_SEARCH_EXCEPTION_INDEX \
@@ -45,34 +47,20 @@
     "SequenceListSearchException: Specific element not found\n"
 
 
-typedef int SequenceListEleType;
-
-
-typedef enum SequenceListInitModeEnum {
-    SEQUENCE_LIST_INIT_DISABLE = 0,
-    SEQUENCE_LIST_INIT_ENABLE = 1
-} SequenceListInitModeEnum;
+typedef int SequenceListDataType;
 
 
 typedef struct SequenceList {
-    SequenceListEleType* elements;
-    SequenceListEleType init_data;
+    SequenceListDataType* elements;
     size_t length;
     size_t size;
-    int is_init;
 } SequenceList;
 
 
-SequenceList* SequenceList_create(
-    size_t size, SequenceListInitModeEnum is_init, 
-    SequenceListEleType *init_data
-);
+SequenceList* SequenceList_create(size_t size);
 
 
-int SequenceList_expand(
-    SequenceList* seqlist, size_t expand_size, 
-    SequenceListInitModeEnum is_init
-);
+int SequenceList_expand(SequenceList* seqlist, size_t expand_size);
 
 
 size_t SequenceList_length(SequenceList* seqlist);
@@ -82,18 +70,18 @@ int SequenceList_is_empty(SequenceList* seqlist);
 
 
 int SequenceList_insert(
-    SequenceList* seqlist, size_t pos, SequenceListEleType buf
+    SequenceList* seqlist, size_t pos, SequenceListDataType buf
 );
 
 
 int SequenceList_remove(
-    SequenceList* seqlist, size_t pos, SequenceListEleType* buf
+    SequenceList* seqlist, size_t pos, SequenceListDataType* buf
 );
 
 
 int SequenceList_search(
     SequenceList* seqlist, size_t* pos, 
-    SequenceListEleType* buf, int flag
+    SequenceListDataType* buf, int flag
 );
 
 

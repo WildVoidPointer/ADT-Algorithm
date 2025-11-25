@@ -1,9 +1,7 @@
 #include "sequence_list.h"
 
 
-SequenceList* SequenceList_create(
-    size_t size, SequenceListInitModeEnum is_init, SequenceListEleType *init_data
-) {
+SequenceList* SequenceList_create(size_t size) {
 
     SequenceList* seqlist = (SequenceList*)malloc(sizeof(SequenceList));
     if (seqlist == NULL) {
@@ -11,25 +9,14 @@ SequenceList* SequenceList_create(
         return NULL;
     }
 
-    seqlist->elements = (SequenceListEleType*) malloc(
-        size * sizeof(SequenceListEleType)
+    seqlist->elements = (SequenceListDataType*) malloc(
+        size * sizeof(SequenceListDataType)
     );
     if (seqlist->elements == NULL) {
         fprintf(stderr, SEQUENCE_LIST_ELEMENTS_INIT_ERROR);
         free(seqlist);
         return NULL;
     }
-
-    if (is_init == (SequenceListInitModeEnum)SEQUENCE_LIST_INIT_ENABLE) {
-        seqlist->is_init = 1;
-        seqlist->init_data = *init_data;
-        for (size_t i = 0; i < size; i++) {
-            seqlist->elements[i] = *init_data;
-        }
-    } else {
-        seqlist->is_init = 0;
-    }
-
     
     seqlist->size = size;
     seqlist->length = 0;
@@ -37,18 +24,16 @@ SequenceList* SequenceList_create(
 }
 
 
-int SequenceList_expand(
-    SequenceList* seqlist, size_t expand_size, SequenceListInitModeEnum is_init
-) {
+int SequenceList_expand(SequenceList* seqlist, size_t expand_size) {
     if (seqlist == NULL) {
         fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
         return -1;
     }
 
-    SequenceListEleType* tmp = (SequenceListEleType*) 
+    SequenceListDataType* tmp = (SequenceListDataType*) 
         realloc (
             seqlist->elements, 
-            sizeof(SequenceListEleType) * (seqlist->size + expand_size)
+            sizeof(SequenceListDataType) * (seqlist->size + expand_size)
         );
 
     if (tmp == NULL) {
@@ -58,14 +43,6 @@ int SequenceList_expand(
         seqlist->elements = tmp;
     }
 
-    if (
-        is_init == (SequenceListInitModeEnum) SEQUENCE_LIST_INIT_ENABLE || 
-        seqlist->is_init
-    ) {
-        for (size_t i = seqlist->size; i < (seqlist->size + expand_size); i++) {
-            seqlist->elements[i] = seqlist->init_data;
-        }
-    }
     seqlist->size = seqlist->size + expand_size;
     return 0;
 }
@@ -81,7 +58,7 @@ int SequenceList_is_empty(SequenceList* seqlist) {
 }
 
 
-int SequenceList_insert(SequenceList* seqlist, size_t pos, SequenceListEleType buf) {
+int SequenceList_insert(SequenceList* seqlist, size_t pos, SequenceListDataType buf) {
     if (seqlist == NULL) {
         fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
         return -1;
@@ -107,7 +84,7 @@ int SequenceList_insert(SequenceList* seqlist, size_t pos, SequenceListEleType b
 }
 
 
-int SequenceList_remove(SequenceList* seqlist, size_t pos, SequenceListEleType* buf) {
+int SequenceList_remove(SequenceList* seqlist, size_t pos, SequenceListDataType* buf) {
     if (seqlist == NULL) {
         fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
         return -1;
@@ -124,17 +101,13 @@ int SequenceList_remove(SequenceList* seqlist, size_t pos, SequenceListEleType* 
         seqlist->elements[i] = seqlist->elements[i + 1];
     }
 
-    if (seqlist->is_init) {
-        seqlist->elements[seqlist->length - 1] = seqlist->init_data;
-    }
-
-    seqlist->length--;
+    (seqlist->length)--;
     return 0;
 }
 
 
 int SequenceList_search(
-    SequenceList* seqlist, size_t* pos, SequenceListEleType* buf, int flag
+    SequenceList* seqlist, size_t* pos, SequenceListDataType* buf, int flag
 ) {
     if (seqlist == NULL) {
         fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
