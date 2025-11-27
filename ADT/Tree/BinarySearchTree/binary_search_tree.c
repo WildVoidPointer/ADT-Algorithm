@@ -17,13 +17,13 @@ BinarySearchTree* BinarySearchTree_create() {
 }
 
 
-int BinarySearchTree_clean(BinarySearchTree** bs_tree) {
+int BinarySearchTree_destroy(BinarySearchTree** bs_tree) {
     if (bs_tree == NULL || *bs_tree == NULL) {
         fprintf(stderr, BINARY_SEARCH_TREE_ACCESS_EXCEPTION);
         return -1;
     }
 
-    _BinarySearchTree_clean_helper(&((*bs_tree)->root));
+    _BinarySearchTree_destroy_helper(&((*bs_tree)->root));
 
     free(*bs_tree);
     *bs_tree = NULL;
@@ -166,13 +166,13 @@ BinarySearchTreeNode* _BinarySearchTree_remove_helper(
         if ((*bst_node)->left == NULL) {
 
             BinarySearchTreeNode* bst_node_tmp = (*bst_node)->right;
-            BinarySearchTreeNode_clean(bst_node);
+            BinarySearchTreeNode_destroy(bst_node);
             return bst_node_tmp;
             
         } else if ((*bst_node)->right == NULL) {
 
             BinarySearchTreeNode* bst_node_tmp = (*bst_node)->left;
-            BinarySearchTreeNode_clean(bst_node);
+            BinarySearchTreeNode_destroy(bst_node);
             return bst_node_tmp;
         }
 
@@ -194,11 +194,11 @@ BinarySearchTreeNode* _BinarySearchTree_remove_helper(
 }
 
 
-int _BinarySearchTree_clean_helper(BinarySearchTreeNode** bst_node) {
+int _BinarySearchTree_destroy_helper(BinarySearchTreeNode** bst_node) {
     if (bst_node != NULL && *bst_node != NULL) {
-        _BinarySearchTree_clean_helper(&((*bst_node)->left));
-        _BinarySearchTree_clean_helper(&((*bst_node)->right));
-        BinarySearchTreeNode_clean(bst_node);
+        _BinarySearchTree_destroy_helper(&((*bst_node)->left));
+        _BinarySearchTree_destroy_helper(&((*bst_node)->right));
+        BinarySearchTreeNode_destroy(bst_node);
     }
 }
 
@@ -227,7 +227,7 @@ BinarySearchTreeNode_create(BinarySearchTreeDataType* bst_data) {
 }
 
 
-int BinarySearchTreeNode_clean(BinarySearchTreeNode** bst_node) {
+int BinarySearchTreeNode_destroy(BinarySearchTreeNode** bst_node) {
     if (bst_node == NULL) {
         fprintf(stderr, BINARY_SEARCH_TREE_NODE_ACCESS_EXCEPTION);
         return -1;

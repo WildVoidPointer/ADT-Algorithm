@@ -43,7 +43,7 @@ int main() {
     printf("BinaryTreeArrayBuildPostOrderResult: ");
     BinaryTree_display(tree, BinaryTree_post_order_traverse);
 
-    BinaryTree_clean(&tree);
+    BinaryTree_destroy(&tree);
     printf("BinaryTreeArrayBuildCleanResult: %p\n", tree);
     printf("=======================\n");
 
@@ -59,8 +59,8 @@ int main() {
     printf("CopiedBinaryTree: ");
     BinaryTree_display(copied_tree, NULL);
 
-    BinaryTree_clean(&copied_tree);
-    BinaryTree_clean(&origin_tree);
+    BinaryTree_destroy(&copied_tree);
+    BinaryTree_destroy(&origin_tree);
     printf("=======================\n");
 
 
@@ -79,7 +79,7 @@ int main() {
     BinaryTreeEleType_array_println("PostOrder ", order_len, post_order);
     BinaryTree_display(pre_order_build_res, BinaryTree_post_order_traverse);
 
-    BinaryTree_clean(&pre_order_build_res);
+    BinaryTree_destroy(&pre_order_build_res);
     printf("=======================\n");
 
 
@@ -98,7 +98,7 @@ int main() {
     BinaryTreeEleType_array_println("PostOrder ", order_len, post_order);
     BinaryTree_display(post_order_build_res, BinaryTree_post_order_traverse);
 
-    BinaryTree_clean(&post_order_build_res);
+    BinaryTree_destroy(&post_order_build_res);
     printf("=======================\n");
 
 

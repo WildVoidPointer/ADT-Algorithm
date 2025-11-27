@@ -28,8 +28,8 @@ int main(int argc, char const *argv[]) {
     ArrayStack_pop(stack, &buf);
     ArrayStack_display(stack);
 
-    ArrayStack_clean(&stack);
-    ArrayStack_clean(&stack);
+    ArrayStack_destory(&stack);
+    ArrayStack_destory(&stack);
     
     return 0;
 }

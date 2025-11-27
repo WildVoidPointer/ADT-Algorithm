@@ -6,7 +6,7 @@ DCLinkedList* DCLinkedList_create(
 ) {
     DCLinkedList* list = (DCLinkedList*) malloc(sizeof(DCLinkedList));
     if (list == NULL) {
-        fprintf(stderr, DC_LINKED_LIST_INIT_ERROR);
+        fprintf(stderr, DC_LINKED_LIST_CREATE_ERROR);
         return NULL;
     }
 

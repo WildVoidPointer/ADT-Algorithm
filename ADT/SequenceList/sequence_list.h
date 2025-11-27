@@ -85,7 +85,7 @@ int SequenceList_search(
 );
 
 
-int SequenceList_clean(SequenceList** seqlist);
+int SequenceList_destroy(SequenceList** seqlist);
 
 
 int SequenceList_display(SequenceList* seqlist);

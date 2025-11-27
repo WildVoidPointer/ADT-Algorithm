@@ -60,11 +60,11 @@ int main(int argc, char const *argv[])
     CompressedMatrix_display(tridaigonal_compressed);
     Matrix_display(tridaigonal_uncompressed);
 
-    Matrix_clean(&tridiagonal_matrix);
-    Matrix_clean(&tridaigonal_uncompressed);
+    Matrix_destroy(&tridiagonal_matrix);
+    Matrix_destroy(&tridaigonal_uncompressed);
     printf("Matrix clean result: %p\n", tridiagonal_matrix);
 
-    CompressedMatrix_clean(&tridaigonal_compressed);
+    CompressedMatrix_destroy(&tridaigonal_compressed);
     printf("CompressedMatrix clean result: %p\n", tridaigonal_compressed);
     printf("-----\n");
 
@@ -82,9 +82,9 @@ int main(int argc, char const *argv[])
     Matrix* multiply_result = Matrix_multiply(origin_matrix, origin_matrix);
     Matrix_display(multiply_result);
 
-    Matrix_clean(&origin_matrix);
-    Matrix_clean(&copied_matrix);
-    Matrix_clean(&multiply_result);
+    Matrix_destroy(&origin_matrix);
+    Matrix_destroy(&copied_matrix);
+    Matrix_destroy(&multiply_result);
     printf("-----\n");
 
 
@@ -99,9 +99,9 @@ int main(int argc, char const *argv[])
 
     CompressedMatrix_display(symmetric_compressed);
     Matrix_display(symmetric_uncompressed);
-    Matrix_clean(&symmetric_matrix);
-    Matrix_clean(&symmetric_uncompressed);
-    CompressedMatrix_clean(&symmetric_compressed);
+    Matrix_destroy(&symmetric_matrix);
+    Matrix_destroy(&symmetric_uncompressed);
+    CompressedMatrix_destroy(&symmetric_compressed);
     printf("-----\n");
 
 
@@ -112,9 +112,9 @@ int main(int argc, char const *argv[])
     );
     CompressedMatrix_display(lower_compressed);
     Matrix_display(lower_uncompressed);
-    CompressedMatrix_clean(&lower_compressed);
-    Matrix_clean(&lower_uncompressed);
-    Matrix_clean(&lower);
+    CompressedMatrix_destroy(&lower_compressed);
+    Matrix_destroy(&lower_uncompressed);
+    Matrix_destroy(&lower);
     printf("-----\n");
 
 
@@ -125,9 +125,9 @@ int main(int argc, char const *argv[])
     );
     CompressedMatrix_display(upper_compressed);
     Matrix_display(upper_uncompressed);
-    Matrix_clean(&upper);
-    Matrix_clean(&upper_uncompressed);
-    CompressedMatrix_clean(&upper_compressed);
+    Matrix_destroy(&upper);
+    Matrix_destroy(&upper_uncompressed);
+    CompressedMatrix_destroy(&upper_compressed);
 
     printf("-----\n");
 
@@ -141,9 +141,9 @@ int main(int argc, char const *argv[])
     );
     CompressedSparseMatrix_display(sparse_compressed);
     Matrix_display(sparse_uncompressed);
-    Matrix_clean(&sparse);
-    Matrix_clean(&sparse_uncompressed);
-    CompressedSparseMatrix_clean(&sparse_compressed);
+    Matrix_destroy(&sparse);
+    Matrix_destroy(&sparse_uncompressed);
+    CompressedSparseMatrix_destroy(&sparse_compressed);
 
     return 0;
 }

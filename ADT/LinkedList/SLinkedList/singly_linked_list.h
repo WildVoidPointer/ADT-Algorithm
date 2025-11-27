@@ -1,5 +1,5 @@
-#ifndef SINGLY_LINKED_LIST_H_
-#define SINGLY_LINKED_LIST_H_
+#ifndef S_LINKED_LIST_H_
+#define S_LINKED_LIST_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -121,7 +121,7 @@ int SLinkedList_reverse(SLinkedList* list);
 int SLinkedList_recursion_reverse(SLinkedList* list);
 
 SLinkedListNode* 
-_SLinkedList_recursion_reverse_node(SLinkedListNode* node);
+_SLinkedList_recursion_reverse_helper(SLinkedListNode* node);
 
 int SLinkedList_display(SLinkedList* list);
 

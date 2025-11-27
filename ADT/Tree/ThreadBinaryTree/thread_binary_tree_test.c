@@ -25,7 +25,7 @@ int main() {
     ThreadBinaryTree_display(
         built_th_tree, ThreadBinaryTree_post_order_traverse
     );
-    ThreadBinaryTree_clean(&built_th_tree);
+    ThreadBinaryTree_destroy(&built_th_tree);
     printf("ThreadBinaryTreeCleanResult: %p\n", built_th_tree);
     printf("====================\n");
 
@@ -41,7 +41,7 @@ int main() {
     ThreadBinaryTree_display(
         pre_order_thread_tree, ThreadBinaryTree_pre_order_threaded_traverse
     );
-    ThreadBinaryTree_clean(&pre_order_thread_tree);
+    ThreadBinaryTree_destroy(&pre_order_thread_tree);
     printf("====================\n");
 
 
@@ -56,7 +56,7 @@ int main() {
     ThreadBinaryTree_display(
         in_order_thread_tree, ThreadBinaryTree_in_order_threaded_traverse
     );
-    ThreadBinaryTree_clean(&in_order_thread_tree);
+    ThreadBinaryTree_destroy(&in_order_thread_tree);
     printf("====================\n");
 
 

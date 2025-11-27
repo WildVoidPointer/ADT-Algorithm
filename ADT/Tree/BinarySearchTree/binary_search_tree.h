@@ -71,7 +71,7 @@ typedef struct BinarySearchTree {
 BinarySearchTree* BinarySearchTree_create();
 
 
-int BinarySearchTree_clean(BinarySearchTree** bs_tree);
+int BinarySearchTree_destroy(BinarySearchTree** bs_tree);
 
 
 BinarySearchTree* BinarySearchTree_build_of_array(
@@ -104,7 +104,7 @@ BinarySearchTreeNode* _BinarySearchTree_remove_helper(
 );
 
 
-int _BinarySearchTree_clean_helper(BinarySearchTreeNode** bst_node);
+int _BinarySearchTree_destroy_helper(BinarySearchTreeNode** bst_node);
 
 
 
@@ -112,6 +112,6 @@ BinarySearchTreeNode*
 BinarySearchTreeNode_create(BinarySearchTreeDataType* bst_data);
 
 
-int BinarySearchTreeNode_clean(BinarySearchTreeNode** bst_node);
+int BinarySearchTreeNode_destroy(BinarySearchTreeNode** bst_node);
 
 #endif // BINARY_SEARCH_TREE_H_

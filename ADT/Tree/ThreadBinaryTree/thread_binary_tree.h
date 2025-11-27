@@ -102,7 +102,7 @@ int ThreadBinaryTree_display(
 );
 
 
-int ThreadBinaryTree_clean(ThreadBinaryTree** th_tree);
+int ThreadBinaryTree_destroy(ThreadBinaryTree** th_tree);
 
 
 ThreadBinaryTree* 
@@ -164,7 +164,7 @@ int ThreadBinaryTree_display_handler(
 );
 
 
-int ThreadBinaryTree_clean_handler(
+int ThreadBinaryTree_destroy_handler(
     ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandleContext* ctx
 );
 
@@ -182,7 +182,7 @@ ThreadBinaryTreeNode_create(ThreadBinaryTreeDataType data);
 int ThreadBinaryTreeNode_display(ThreadBinaryTreeNode* th_node);
 
 
-int ThreadBinaryTreeNode_clean(ThreadBinaryTreeNode** node);
+int ThreadBinaryTreeNode_destroy(ThreadBinaryTreeNode** node);
 
 
 #endif

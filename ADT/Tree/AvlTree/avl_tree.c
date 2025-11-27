@@ -17,13 +17,13 @@ AvlTree* AvlTree_create() {
 }
 
 
-int AvlTree_clean(AvlTree** balanced_tree) {
+int AvlTree_destroy(AvlTree** balanced_tree) {
     if (balanced_tree == NULL || *balanced_tree == NULL) {
         fprintf(stderr, AVL_TREE_ACCESS_EXCEPTION);
         return -1;
     }
 
-    _AvlTree_clean_helper((*balanced_tree)->root);
+    _AvlTree_destroy_helper((*balanced_tree)->root);
 
     *balanced_tree = NULL;
 
@@ -214,7 +214,7 @@ AvlTreeNode* _AvlTree_insert_helper(
     if (new_node->data == balanced_node->data) {
 
         fprintf(stderr, AVL_TREE_INSERT_EXCEPTION);
-        AvlTreeNode_clean(&new_node);
+        AvlTreeNode_destroy(&new_node);
         return balanced_node;
 
     } else if (new_node->data < balanced_node->data) {
@@ -294,7 +294,7 @@ AvlTreeNode* _AvlTree_remove_helper(
                 balanced_node->right == NULL ? 
                 balanced_node->left : balanced_node->right;
 
-            AvlTreeNode_clean(&balanced_node);
+            AvlTreeNode_destroy(&balanced_node);
 
             balanced_node = temp;
             
@@ -353,11 +353,11 @@ AvlTreeNode* _AvlTree_remove_helper(
 }
 
 
-void _AvlTree_clean_helper(AvlTreeNode* balanced_node) {
+void _AvlTree_destroy_helper(AvlTreeNode* balanced_node) {
     if (balanced_node != NULL) {
-        _AvlTree_clean_helper(balanced_node->left);
-        _AvlTree_clean_helper(balanced_node->right);
-        AvlTreeNode_clean(&balanced_node);
+        _AvlTree_destroy_helper(balanced_node->left);
+        _AvlTree_destroy_helper(balanced_node->right);
+        AvlTreeNode_destroy(&balanced_node);
     }
 }
 
@@ -395,7 +395,7 @@ AvlTreeNode_create(AvlTreeDataType* data) {
 }
 
 
-int AvlTreeNode_clean(AvlTreeNode** balanced_node) { 
+int AvlTreeNode_destroy(AvlTreeNode** balanced_node) { 
     if (balanced_node == NULL || (*balanced_node) == NULL) {
         fprintf(stderr, AVL_TREE_NODE_ACCESS_EXCEPTION);
         return -1;

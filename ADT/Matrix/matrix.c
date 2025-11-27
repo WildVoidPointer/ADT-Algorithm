@@ -204,7 +204,7 @@ _Matrix_get_element_unsafe(Matrix* matrix, size_t rows, size_t cols) {
 }
 
 
-int Matrix_clean(Matrix** matrix) {
+int Matrix_destroy(Matrix** matrix) {
     if (matrix == NULL || *matrix == NULL) {
         fprintf(stderr, MATRIX_ACCESS_EXCEPTION);
         return -1;
@@ -635,7 +635,7 @@ CompressedMatrix* CompressedMatrix_create(size_t compressed_size) {
 }
 
 
-int CompressedMatrix_clean(CompressedMatrix** compressed) {
+int CompressedMatrix_destroy(CompressedMatrix** compressed) {
     if (compressed == NULL | *compressed == NULL) {
         fprintf(stderr, COMPRESSED_MATRIX_ACCESS_EXCEPTION);
         return -1;
@@ -695,7 +695,7 @@ CompressedSparseMatrix_create(Matrix* matrix, size_t compressed_size
 }
 
 
-int CompressedSparseMatrix_clean(CompressedSparseMatrix** compressed) {
+int CompressedSparseMatrix_destroy(CompressedSparseMatrix** compressed) {
     if (compressed == NULL || *compressed == NULL) {
         fprintf(stderr, COMPRESSED_SPARSE_MATRIX_ACCESS_EXCEPTION);
         return -1;

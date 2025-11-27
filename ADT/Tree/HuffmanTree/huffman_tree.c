@@ -20,7 +20,7 @@ int HuffmanTree_destroy(HuffmanTree** hf_tree) {
     }
 
     HuffmanTree_post_order_traverse(
-        (*hf_tree)->root, HuffmanTree_clean_handler, NULL
+        (*hf_tree)->root, HuffmanTree_destroy_handler, NULL
     );
 
     free(*hf_tree);
@@ -249,7 +249,7 @@ int HuffmanTreeNode_destroy(HuffmanTreeNode** hf_node) {
 }
 
 
-int HuffmanTree_clean_handler(
+int HuffmanTree_destroy_handler(
     HuffmanTreeNode* hf_node, HuffmanTreeHnadleContext* ctx
 ) {
     return HuffmanTreeNode_destroy(&hf_node);

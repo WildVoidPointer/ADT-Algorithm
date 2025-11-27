@@ -70,7 +70,7 @@ int ArrayStack_pop(ArrayStack* stack, ArrayStackDataType* popped) {
 }
 
 
-int ArrayStack_clean(ArrayStack** stack) {
+int ArrayStack_destory(ArrayStack** stack) {
     if (stack == NULL || (*stack) == NULL) {
         fprintf(stderr, ARRAY_STACK_ACCESS_ERROR);
         return -1;

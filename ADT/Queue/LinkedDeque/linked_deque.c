@@ -4,24 +4,13 @@
 #include <stdlib.h>
 
 
-LinkedDeque* LinkedDeque_create(size_t size, LinkedDequeLimitedModeEnum mode) {
+LinkedDeque* LinkedDeque_create(size_t size) {
     LinkedDeque* q = (LinkedDeque*) malloc (sizeof(LinkedDeque));
     if (q == NULL) {
         fprintf(stderr, LINKED_DEQUE_CREATE_ERROR);
         return NULL;
     }
-
-    if (mode == LINKED_DEQUE_LIMITED_MODE) {
-        q->is_limited = 1;
-        q->size = size;
-    } else if (mode == LINKED_DEQUE_UNLIMITED_MODE) {
-        q->is_limited = 0;
-    } else {
-        fprintf(stderr, LINKED_DEQUE_CREATE_EXCEPTION);
-        LinkedDeque_clean(&q);
-        return NULL;
-    }
-
+    q->size = size;
     q->front = q->rear = NULL;
     q->length = 0;
     return q;
@@ -29,15 +18,14 @@ LinkedDeque* LinkedDeque_create(size_t size, LinkedDequeLimitedModeEnum mode) {
 
 
 LinkedDeque* LinkedDeque_build_of_array(
-    size_t len, LinkedDequeEleType* arr, 
-    size_t size, LinkedDequeLimitedModeEnum mode
+    size_t len, LinkedDequeEleType* arr
 ) {
     if (arr ==  NULL) {
         fprintf(stderr, LINKED_DEQUE_BUILD_EXCEPTION);
         return NULL;
     }
 
-    LinkedDeque* q = LinkedDeque_create(size, mode);
+    LinkedDeque* q = LinkedDeque_create(len);
 
     if (q == NULL) {
         fprintf(stderr, LINKED_DEQUE_BUILD_ERROR);
@@ -46,7 +34,7 @@ LinkedDeque* LinkedDeque_build_of_array(
 
     for (size_t i = 0; i < len; i++) {
         if (LinkedDeque_rear_enqueue(q, arr[i]) == -1) {
-            LinkedDeque_clean(&q);
+            LinkedDeque_destroy(&q);
             fprintf(stderr, LINKED_DEQUE_BUILD_ERROR);
             return NULL;
         }
@@ -63,20 +51,13 @@ int LinkedDeque_is_empty(LinkedDeque* q) {
 
 int LinkedDeque_is_filled(LinkedDeque* q) {
     return (
-        q != NULL && q->is_limited && q->length >= q->size
+        q != NULL && q->length >= q->size
     );
 }
 
 
-int LinkedDeque_is_limited(LinkedDeque* q) {
-    return (q != NULL) ? q->is_limited : -1;
-}
-
-
 ssize_t LinkedDeque_get_size(LinkedDeque* q) {
-    return (
-        q != NULL && q->is_limited
-    ) ? q->size : -1;
+    return q != NULL ? q->size : -1;
 }
 
 
@@ -92,7 +73,6 @@ LinkedDequeUnit* LinkedDeque_front(LinkedDeque* q) {
     }
 
     LinkedDequeUnit* buf = LinkedDequeUnit_create(&(q->front->data));
-
     if (buf == NULL) {
         fprintf(stderr, LINKED_DEQUE_UNIT_BUFFER_CREATE_ERROR);
         return NULL;
@@ -256,7 +236,7 @@ int LinkedDeque_display(LinkedDeque* q) {
 }
 
 
-int LinkedDeque_clean(LinkedDeque** q) {
+int LinkedDeque_destroy(LinkedDeque** q) {
     if (q == NULL || *q == NULL) {
         fprintf(stderr, LINKED_DEQUE_ACCESS_EXCEPTION);
         return -1;
@@ -266,7 +246,7 @@ int LinkedDeque_clean(LinkedDeque** q) {
 
     while (!LinkedDeque_is_empty(*q)) {
         tmp_unit = LinkedDeque_front_dequeue(*q);
-        LinkedDequeUnit_clean(&tmp_unit);
+        LinkedDequeUnit_destroy(&tmp_unit);
     }
 
     free(*q);
@@ -294,7 +274,7 @@ LinkedDequeUnit* LinkedDequeUnit_create(LinkedDequeEleType* data) {
 }
 
 
-int LinkedDequeUnit_clean(LinkedDequeUnit** unit) {
+int LinkedDequeUnit_destroy(LinkedDequeUnit** unit) {
     free(*unit);
     *unit = NULL;
     return 0;

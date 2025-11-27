@@ -22,7 +22,7 @@ int main() {
 
     AvlTree_in_order_println(balanced_tree);
 
-    AvlTree_clean(&balanced_tree);
+    AvlTree_destroy(&balanced_tree);
 
     return 0;
 }

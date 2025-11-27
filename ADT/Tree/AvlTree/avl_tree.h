@@ -72,7 +72,7 @@ typedef struct AvlTree {
 AvlTree* AvlTree_create();
 
 
-int AvlTree_clean(AvlTree** balanced_tree);
+int AvlTree_destroy(AvlTree** balanced_tree);
 
 
 int AvlTree_get_height(AvlTreeNode* balanced_node);
@@ -118,7 +118,7 @@ AvlTreeNode* _AvlTree_remove_helper(
 );
 
 
-void _AvlTree_clean_helper(AvlTreeNode* balanced_node);
+void _AvlTree_destroy_helper(AvlTreeNode* balanced_node);
 
 
 void _AvlTree_in_order_traversal(AvlTreeNode* balanced_node);
@@ -128,7 +128,7 @@ void _AvlTree_in_order_traversal(AvlTreeNode* balanced_node);
 AvlTreeNode* AvlTreeNode_create(AvlTreeDataType* data);
 
 
-int AvlTreeNode_clean(AvlTreeNode** balanced_node);
+int AvlTreeNode_destroy(AvlTreeNode** balanced_node);
 
 
 #endif 

@@ -44,7 +44,7 @@ int ThreadBinaryTree_display(
 }
 
 
-int ThreadBinaryTree_clean(ThreadBinaryTree** th_tree) {
+int ThreadBinaryTree_destroy(ThreadBinaryTree** th_tree) {
     if (th_tree == NULL || *th_tree == NULL) {
         fprintf(stderr, THREAD_BINARY_TREE_ACCESS_EXCEPTION);
         return -1;
@@ -55,7 +55,7 @@ int ThreadBinaryTree_clean(ThreadBinaryTree** th_tree) {
     } else {
         ThreadBinaryTree_post_order_traverse(
             (*th_tree)->root,
-            ThreadBinaryTree_clean_handler,
+            ThreadBinaryTree_destroy_handler,
             NULL
         );
     }
@@ -85,7 +85,7 @@ ThreadBinaryTree_build_of_binary_tree(BinaryTree* bin_tree) {
 
     if (th_tree_root == NULL) {
         fprintf(stderr, THREAD_BINARY_TREE_BUILD_ERROR);
-        ThreadBinaryTree_clean(&th_tree);
+        ThreadBinaryTree_destroy(&th_tree);
         return NULL;
     }
 
@@ -314,7 +314,7 @@ int ThreadBinaryTree_display_handler(
 }
 
 
-int ThreadBinaryTree_clean_handler(
+int ThreadBinaryTree_destroy_handler(
     ThreadBinaryTreeNode* th_node, ThreadBinaryTreeHandleContext* ctx
 ) {
     if (th_node == NULL) {
@@ -322,7 +322,7 @@ int ThreadBinaryTree_clean_handler(
         return -1;
     }
 
-    ThreadBinaryTreeNode_clean(&th_node);
+    ThreadBinaryTreeNode_destroy(&th_node);
     return 0;
 }
 
@@ -366,7 +366,7 @@ ThreadBinaryTreeNode_create(ThreadBinaryTreeDataType data) {
 }
 
 
-int ThreadBinaryTreeNode_clean(ThreadBinaryTreeNode** th_node) {
+int ThreadBinaryTreeNode_destroy(ThreadBinaryTreeNode** th_node) {
     if (*th_node == NULL || th_node == NULL) {
         fprintf(stderr, THREAD_BINARY_TREE_NODE_ACCESS_EXCEPTION);
         return -1;

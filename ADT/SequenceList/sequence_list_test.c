@@ -63,6 +63,6 @@ int main(int argc, char const *argv[]) {
         );
     }
 
-    SequenceList_clean(&seqlist);
+    SequenceList_destroy(&seqlist);
     return 0;
 }

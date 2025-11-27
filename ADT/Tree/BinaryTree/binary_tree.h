@@ -128,7 +128,7 @@ int BinaryTree_display(BinaryTree* tree, BinaryTreeTraverser traverser);
 BinaryTree* BinaryTree_copy(BinaryTree* tree);
 
 
-int BinaryTree_clean(BinaryTree** tree);
+int BinaryTree_destroy(BinaryTree** tree);
 
 
 int BinaryTree_pre_order_traverse(
@@ -183,7 +183,7 @@ ssize_t BinaryTree_in_order_index_search(
 int BinaryTree_collect_handler(BinaryTreeNode* node, BinaryTreeHandleContext* q);
 
 
-int BinaryTree_clean_handler(BinaryTreeNode* node,  BinaryTreeHandleContext* ctx);
+int BinaryTree_destroy_handler(BinaryTreeNode* node,  BinaryTreeHandleContext* ctx);
 
 
 BinaryTreeNode* _BinaryTreeNode_recursion_build_helper(
@@ -200,7 +200,7 @@ BinaryTreeNode* _BinaryTreeNode_recursion_copy_helper(BinaryTreeNode* node);
 BinaryTreeNode* BinaryTreeNode_create(BinaryTreeDataType data);
 
 
-int BinaryTreeNode_clean(BinaryTreeNode** node);
+int BinaryTreeNode_destroy(BinaryTreeNode** node);
 
 
 int BinaryTreeNode_display(BinaryTreeNode* node);
@@ -221,6 +221,6 @@ BinaryTreeNode* BinaryTreeHelpQueue_dequeue(BinaryTreeHelpQueue* q);
 int BinaryTreeHelpQueue_is_empty(BinaryTreeHelpQueue* q);
 
 
-int BinaryTreeHelpQueue_clean_without_free_node(BinaryTreeHelpQueue** q);
+int BinaryTreeHelpQueue_clear(BinaryTreeHelpQueue** q);
 
 #endif

@@ -136,7 +136,7 @@ MatrixDataType* _Matrix_get_element_unsafe(
 );
 
 
-int Matrix_clean(Matrix** matrix);
+int Matrix_destroy(Matrix** matrix);
 
 
 int Matrix_display(Matrix* matrix);
@@ -224,7 +224,7 @@ CompressedMatrix*
 CompressedMatrix_create(size_t compressed_size);
 
 
-int CompressedMatrix_clean(CompressedMatrix** compressed);
+int CompressedMatrix_destroy(CompressedMatrix** compressed);
 
 
 int CompressedMatrix_display(CompressedMatrix* compressed);
@@ -235,7 +235,7 @@ CompressedSparseMatrix* CompressedSparseMatrix_create(
 );
 
 
-int CompressedSparseMatrix_clean(
+int CompressedSparseMatrix_destroy(
     CompressedSparseMatrix** compressed
 );
 

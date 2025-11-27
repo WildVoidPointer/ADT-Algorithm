@@ -56,7 +56,7 @@ int BinaryTree_display(BinaryTree* tree, BinaryTreeTraverser traverser) {
     }
     printf("}\n");
 
-    BinaryTreeHelpQueue_clean_without_free_node(&q);
+    BinaryTreeHelpQueue_clear(&q);
 
     return 0;
 }
@@ -80,7 +80,7 @@ BinaryTree* BinaryTree_copy(BinaryTree* tree) {
 
     if (new_tree_root == NULL) {
         fprintf(stderr, BINARY_TREE_COPY_ERROR);
-        BinaryTree_clean(&new_tree);
+        BinaryTree_destroy(&new_tree);
         return NULL;
     }
 
@@ -90,13 +90,13 @@ BinaryTree* BinaryTree_copy(BinaryTree* tree) {
 }
 
 
-int BinaryTree_clean(BinaryTree** tree) {
+int BinaryTree_destroy(BinaryTree** tree) {
     if (tree == NULL || *tree == NULL) {
         fprintf(stderr, BINARY_TREE_ACCESS_EXCEPTION);
         return -1;
     }
 
-    BinaryTree_post_order_traverse((*tree)->root, BinaryTree_clean_handler, NULL);
+    BinaryTree_post_order_traverse((*tree)->root, BinaryTree_destroy_handler, NULL);
     
     free(*tree);
     *tree = NULL;
@@ -177,7 +177,7 @@ int BinaryTree_level_order_traverse(
             op(tmp_node, ctx);
         }
 
-        BinaryTreeHelpQueue_clean_without_free_node(&q);
+        BinaryTreeHelpQueue_clear(&q);
         return 0;
 
     } else {
@@ -202,15 +202,15 @@ BinaryTree_build_of_array(BinaryTreeDataType* array, size_t array_len) {
     BinaryTreeNode* root = BinaryTreeNode_create(array[0]);
     if (root == NULL) {
         fprintf(stderr, BINARY_TREE_BUILD_ERROR);
-        BinaryTree_clean(&tree);
+        BinaryTree_destroy(&tree);
         return NULL;
     }
 
     BinaryTreeHelpQueue* help_queue = BinaryTreeHelpQueue_create();
     if (help_queue == NULL) {
         fprintf(stderr, BINARY_TREE_BUILD_ERROR);
-        BinaryTree_clean(&tree);
-        BinaryTreeNode_clean(&root);
+        BinaryTree_destroy(&tree);
+        BinaryTreeNode_destroy(&root);
         return NULL;
     }
 
@@ -248,12 +248,12 @@ BinaryTree_build_of_array(BinaryTreeDataType* array, size_t array_len) {
         i++;
     }
     
-    BinaryTreeHelpQueue_clean_without_free_node(&help_queue);
+    BinaryTreeHelpQueue_clear(&help_queue);
     tree->root = root;
     tree->node_num = array_len;
 
     if (build_abort) {
-        BinaryTree_clean(&tree);
+        BinaryTree_destroy(&tree);
         return NULL;
     }
     return tree;
@@ -355,8 +355,8 @@ BinaryTree* BinaryTree_build_of_level_order(
     BinaryTreeHelpQueue* help_queue = BinaryTreeHelpQueue_create();
     if (help_queue == NULL) {
         fprintf(stderr, BINARY_TREE_BUILD_ERROR);
-        BinaryTree_clean(&tree);
-        BinaryTreeNode_clean(&root);
+        BinaryTree_destroy(&tree);
+        BinaryTreeNode_destroy(&root);
         return NULL;
     }
 
@@ -421,13 +421,13 @@ BinaryTree* BinaryTree_build_of_level_order(
         }
     }
 
-    BinaryTreeHelpQueue_clean_without_free_node(&help_queue);
+    BinaryTreeHelpQueue_clear(&help_queue);
 
     tree->root = root;
     tree->node_num = in_len;
 
     if (build_abort) {
-        BinaryTree_clean(&tree);
+        BinaryTree_destroy(&tree);
         return NULL;
     }
 
@@ -547,18 +547,18 @@ int BinaryTree_collect_handler(BinaryTreeNode* node, BinaryTreeHandleContext* q)
 }
 
 
-int BinaryTree_clean_handler(BinaryTreeNode* node,  BinaryTreeHandleContext* ctx) {
+int BinaryTree_destroy_handler(BinaryTreeNode* node,  BinaryTreeHandleContext* ctx) {
     if (node == NULL) {
         fprintf(stderr, BINARY_TREE_NODE_ACCESS_EXCEPTION);
         return -1;
     }
 
-    BinaryTreeNode_clean(&node);
+    BinaryTreeNode_destroy(&node);
     return 0;
 }
 
 
-int BinaryTreeNode_clean(BinaryTreeNode** node) {
+int BinaryTreeNode_destroy(BinaryTreeNode** node) {
     if (node == NULL || *node == NULL) {
         fprintf(stderr, BINARY_TREE_NODE_ACCESS_EXCEPTION);
         return -1;
@@ -652,7 +652,7 @@ int BinaryTreeHelpQueue_is_empty(BinaryTreeHelpQueue* q) {
 }
 
 
-int BinaryTreeHelpQueue_clean_without_free_node(BinaryTreeHelpQueue** q) {
+int BinaryTreeHelpQueue_clear(BinaryTreeHelpQueue** q) {
     if (q == NULL || *q == NULL) {
         fprintf(stderr, BINARY_TREE_HELP_QUEUE_ACCESS_EXCEPTION);
         return -1;

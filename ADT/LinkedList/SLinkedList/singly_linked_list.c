@@ -414,18 +414,18 @@ SLinkedList_recursion_reverse(SLinkedList* list) {
         return -1;
     }
     
-    list->head = _SLinkedList_recursion_reverse_node(list->head);
+    list->head = _SLinkedList_recursion_reverse_helper(list->head);
     return 0;
 }
 
 
 SLinkedListNode* 
-_SLinkedList_recursion_reverse_node(SLinkedListNode* node) {
+_SLinkedList_recursion_reverse_helper(SLinkedListNode* node) {
     if (node ==  NULL || node->next == NULL) {
         return node;
     }
 
-    SLinkedListNode* tmp = _SLinkedList_recursion_reverse_node(node->next);
+    SLinkedListNode* tmp = _SLinkedList_recursion_reverse_helper(node->next);
 
     node->next->next = node;
     node->next =  NULL;

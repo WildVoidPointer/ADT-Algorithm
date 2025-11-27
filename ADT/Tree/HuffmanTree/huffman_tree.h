@@ -106,7 +106,7 @@ int HuffmanTree_post_order_traverse(
 );
 
 
-int HuffmanTree_clean_handler(
+int HuffmanTree_destroy_handler(
     HuffmanTreeNode* hf_node, HuffmanTreeHnadleContext* ctx
 );
 

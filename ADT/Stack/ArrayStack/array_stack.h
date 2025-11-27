@@ -53,7 +53,7 @@ int ArrayStack_push(ArrayStack* stack, ArrayStackDataType ele);
 
 int ArrayStack_pop(ArrayStack* stack, ArrayStackDataType* buf);
 
-int ArrayStack_clean(ArrayStack** stack);
+int ArrayStack_destory(ArrayStack** stack);
 
 int ArrayStack_display(ArrayStack* stack);
 

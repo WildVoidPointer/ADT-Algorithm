@@ -148,7 +148,7 @@ int SequenceList_search(
 }
 
 
-int SequenceList_clean(SequenceList** seqlist) {
+int SequenceList_destroy(SequenceList** seqlist) {
     if (seqlist == NULL || (*seqlist) == NULL) {
         fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
         return -1;

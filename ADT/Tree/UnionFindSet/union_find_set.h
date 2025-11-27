@@ -83,7 +83,7 @@ typedef enum UnionFindSetUnionCompareModeEnum {
 SequentialUnionFindSet* SequentialUnionFindSet_create(size_t size);
 
 
-int SequentialUnionFindSet_clean(SequentialUnionFindSet** suf_set);
+int SequentialUnionFindSet_destroy(SequentialUnionFindSet** suf_set);
 
 
 int SequentialUnionFindSet_display(SequentialUnionFindSet* suf_set);

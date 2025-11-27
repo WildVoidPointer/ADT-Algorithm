@@ -15,7 +15,7 @@ SequentialUnionFindSet* SequentialUnionFindSet_create(size_t size) {
     );
     if (suf_set->units == NULL) {
         fprintf(stderr, UNION_FIND_SET_CREATE_ERROR);
-        SequentialUnionFindSet_clean(&suf_set);
+        SequentialUnionFindSet_destroy(&suf_set);
         return NULL;
     }
 
@@ -24,7 +24,7 @@ SequentialUnionFindSet* SequentialUnionFindSet_create(size_t size) {
 }
 
 
-int SequentialUnionFindSet_clean(SequentialUnionFindSet** suf_set) {
+int SequentialUnionFindSet_destroy(SequentialUnionFindSet** suf_set) {
     if (suf_set == NULL || *suf_set == NULL) {
         fprintf(stderr, UNION_FIND_SET_ACCESS_EXCEPTION);
         return -1;

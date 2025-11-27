@@ -40,7 +40,7 @@ int main() {
     binary_tree_in_order_println(built_bst);
 
 
-    BinarySearchTree_clean(&built_bst);
+    BinarySearchTree_destroy(&built_bst);
 
     return 0;
 }

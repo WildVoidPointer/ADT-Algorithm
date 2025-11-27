@@ -9,8 +9,8 @@
 #endif
 
 
-#define DC_LINKED_LIST_INIT_ERROR \
-    "DCLinkedListInitError: Failed to allocate memory\n"
+#define DC_LINKED_LIST_CREATE_ERROR \
+    "DCLinkedListCreateError: Failed to allocate memory\n"
 
 
 #define DC_LINKED_LIST_ACCESS_ERROR \
