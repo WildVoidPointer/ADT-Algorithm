@@ -131,7 +131,7 @@ int CString_clear(CString* cstring);
 
 int CString_display(CString* cstring);
 
-int _CString_unit_clean(CStringUnitType** unit);
+int _CString_unit_destroy(CStringUnitType** unit);
 
 int CString_destroy(CString** cstring);
 

@@ -44,7 +44,7 @@ int main() {
     BinaryTree_display(tree, BinaryTree_post_order_traverse);
 
     BinaryTree_destroy(&tree);
-    printf("BinaryTreeArrayBuildCleanResult: %p\n", tree);
+    printf("BinaryTreeArrayBuildDestroyResult: %p\n", tree);
     printf("=======================\n");
 
 

@@ -18,7 +18,7 @@ int main() {
     LinkedDeque_front_dequeue(empty_ulim_q);
     LinkedDeque_rear_dequeue(empty_ulim_q);
     LinkedDeque_destroy(&empty_ulim_q);
-    printf("LinkedDequeCleanResult: %p\n", empty_ulim_q);
+    printf("LinkedDequeDestroyResult: %p\n", empty_ulim_q);
 
 
     LinkedDeque* build_of_arr_q = LinkedDeque_build_of_array(
@@ -80,7 +80,7 @@ int main() {
     LinkedDequeUnit_destroy(&overflow_test_front_deq_ele);
     LinkedDequeUnit_destroy(&overflow_test_rear_deq_ele);
     printf(
-        "OverflowTestLinkedDequeDequeueUnitCleanResult: " \
+        "OverflowTestLinkedDequeDequeueUnitDestroyResult: " \
         "FrontUnit: %p  RearUnit: %p\n",
         overflow_test_front_deq_ele,
         overflow_test_rear_deq_ele

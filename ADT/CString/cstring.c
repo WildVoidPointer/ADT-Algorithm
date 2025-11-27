@@ -358,7 +358,7 @@ int CString_display(CString* cstring) {
 }
 
 
-int _CString_unit_clean(CStringUnitType** unit) {
+int _CString_unit_destroy(CStringUnitType** unit) {
     if (unit == NULL || *unit == NULL) {
         fprintf(stderr, CSTRING_UNIT_ACCESS_ERROR);
         return -1;

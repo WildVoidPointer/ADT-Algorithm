@@ -26,7 +26,7 @@ int main() {
         built_th_tree, ThreadBinaryTree_post_order_traverse
     );
     ThreadBinaryTree_destroy(&built_th_tree);
-    printf("ThreadBinaryTreeCleanResult: %p\n", built_th_tree);
+    printf("ThreadBinaryTreeDestroyResult: %p\n", built_th_tree);
     printf("====================\n");
 
 

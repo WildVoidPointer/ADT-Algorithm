@@ -62,10 +62,10 @@ int main(int argc, char const *argv[])
 
     Matrix_destroy(&tridiagonal_matrix);
     Matrix_destroy(&tridaigonal_uncompressed);
-    printf("Matrix clean result: %p\n", tridiagonal_matrix);
+    printf("Matrix destroy result: %p\n", tridiagonal_matrix);
 
     CompressedMatrix_destroy(&tridaigonal_compressed);
-    printf("CompressedMatrix clean result: %p\n", tridaigonal_compressed);
+    printf("CompressedMatrix destroy result: %p\n", tridaigonal_compressed);
     printf("-----\n");
 
 

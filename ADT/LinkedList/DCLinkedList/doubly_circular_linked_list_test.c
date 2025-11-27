@@ -92,9 +92,9 @@ int main(int argc, char const *argv[]) {
 
     // 清理链表
     DCLinkedList_destroy(&list);
-    printf("\nAfter clean:\n");
+    printf("\nAfter destroy:\n");
     if (list == NULL) {
-        printf("List is NULL (properly cleaned)\n");
+        printf("List is NULL \n");
     }
 
     return 0;

@@ -67,7 +67,7 @@ int main() {
     HuffmanTree* empty_hf_tree = HuffmanTree_create();
     HuffmanTree_display(empty_hf_tree);
     HuffmanTree_destroy(&empty_hf_tree);
-    printf("HuffmanTreeCleanReasult: %p\n", empty_hf_tree);
+    printf("HuffmanTreeDestroyReasult: %p\n", empty_hf_tree);
 
     HuffmanTree* build_from_array = HuffmanTree_build_of_any_array(
         test_arr, test_arr_len
