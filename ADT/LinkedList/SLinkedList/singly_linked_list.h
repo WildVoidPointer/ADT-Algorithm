@@ -125,7 +125,7 @@ _SLinkedList_recursion_reverse_node(SLinkedListNode* node);
 
 int SLinkedList_display(SLinkedList* list);
 
-int SLinkedList_clean(SLinkedList** list);
+int SLinkedList_destroy(SLinkedList** list);
 
 size_t SLinkedList_length(SLinkedList* list);
 

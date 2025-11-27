@@ -83,7 +83,7 @@ int main(int argc, char const *argv[]) {
         printf("Element not found.\n");
     }
 
-    SLinkedList_clean(&list);
+    SLinkedList_destroy(&list);
 
     return 0;
 }

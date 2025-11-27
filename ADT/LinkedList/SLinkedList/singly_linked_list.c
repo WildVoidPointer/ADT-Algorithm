@@ -451,7 +451,7 @@ int SLinkedList_display(SLinkedList* list) {
 }
 
 
-int SLinkedList_clean(SLinkedList** list) {
+int SLinkedList_destroy(SLinkedList** list) {
     if (list == NULL || *list == NULL) {
         fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
         return -1;
