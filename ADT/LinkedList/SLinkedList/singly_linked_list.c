@@ -1,11 +1,11 @@
-#include "single_linked_list.h"
+#include "singly_linked_list.h"
 
 
-SingleLinkedList* SingleLinkedList_create(ssize_t size) {
+SLinkedList* SLinkedList_create(ssize_t size) {
 
-    SingleLinkedList* list = (SingleLinkedList*)malloc(sizeof(SingleLinkedList));
+    SLinkedList* list = (SLinkedList*)malloc(sizeof(SLinkedList));
     if (list == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_INIT_ERROR);
+        fprintf(stderr, S_LINKED_LIST_INIT_ERROR);
         return NULL;
     }
     list->length = 0;
@@ -14,41 +14,41 @@ SingleLinkedList* SingleLinkedList_create(ssize_t size) {
 }
 
 
-int _SingleLinkedList_is_exceed_size(SingleLinkedList* list) {
+int _SLinkedList_is_exceed_size(SLinkedList* list) {
     return (list != NULL) ? 
         (list->size != -1) && (list->length + 1 > list->size) : -1;
 }
 
 
-size_t SingleLinkedList_length(SingleLinkedList* list) {
+size_t SLinkedList_length(SLinkedList* list) {
     return (list != NULL) ? list->length : -1;
 }
 
 
-ssize_t SingleLinkedList_size(SingleLinkedList* list) {
+ssize_t SLinkedList_size(SLinkedList* list) {
     return (list != NULL) ? list->size : -1;
 }
 
 
-int SingleLinkedList_is_empty(SingleLinkedList* list) {
+int SLinkedList_is_empty(SLinkedList* list) {
     return (list == NULL) ? list->length == 0 : -1;
 }
 
 
-int SingleLinkedList_push_front(SingleLinkedList* list, SingleLinkedListEleType data) {
+int SLinkedList_push_front(SLinkedList* list, SLinkedListDataType data) {
     if (list == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
         return -1;
     }
 
-    if (_SingleLinkedList_is_exceed_size(list)) {
-        fprintf(stderr, SINGLELINKEDLIST_OVERFLOW_EXCEPTION);
+    if (_SLinkedList_is_exceed_size(list)) {
+        fprintf(stderr, S_LINKED_LIST_OVERFLOW_EXCEPTION);
         return -1;
     }
 
-    SingleLinkedListNode* node = (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+    SLinkedListNode* node = (SLinkedListNode*)malloc(sizeof(SLinkedListNode));
     if (node == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_NODE_INIT_ERROR);
+        fprintf(stderr, S_LINKED_LIST_NODE_INIT_ERROR);
         return -1;
     }
 
@@ -68,27 +68,27 @@ int SingleLinkedList_push_front(SingleLinkedList* list, SingleLinkedListEleType 
 
 
 int 
-SingleLinkedList_push_back(SingleLinkedList* list, SingleLinkedListEleType data) {
+SLinkedList_push_back(SLinkedList* list, SLinkedListDataType data) {
     
     if (list == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
         return -1;
     }
 
-    if (_SingleLinkedList_is_exceed_size(list)) {
-        fprintf(stderr, SINGLELINKEDLIST_OVERFLOW_EXCEPTION);
+    if (_SLinkedList_is_exceed_size(list)) {
+        fprintf(stderr, S_LINKED_LIST_OVERFLOW_EXCEPTION);
         return -1;
     }
 
-    SingleLinkedListNode* node = 
-        (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+    SLinkedListNode* node = 
+        (SLinkedListNode*)malloc(sizeof(SLinkedListNode));
 
     if (node == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_NODE_INIT_ERROR);
+        fprintf(stderr, S_LINKED_LIST_NODE_INIT_ERROR);
         return -1;
     }
     node->data = data;
-    SingleLinkedListNode* current = list->head;
+    SLinkedListNode* current = list->head;
 
     if (list->length == 0) {
         node->next = NULL;
@@ -106,31 +106,31 @@ SingleLinkedList_push_back(SingleLinkedList* list, SingleLinkedListEleType data)
 
 
 int
-SingleLinkedList_insert(
-    SingleLinkedList* list, SingleLinkedListEleType data, size_t pos) {
+SLinkedList_insert(
+    SLinkedList* list, SLinkedListDataType data, size_t pos) {
 
     if (list == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
         return -1;
     }
 
-    if (_SingleLinkedList_is_exceed_size(list)) {
-        fprintf(stderr, SINGLELINKEDLIST_OVERFLOW_EXCEPTION);
+    if (_SLinkedList_is_exceed_size(list)) {
+        fprintf(stderr, S_LINKED_LIST_OVERFLOW_EXCEPTION);
         return -1;
     }
 
-    if (pos > list->length || pos == 0 || SingleLinkedList_is_empty(list)) {
-        fprintf(stderr, SINGLELINKEDLIST_INSERT_EXCEPTION);
+    if (pos > list->length || pos == 0 || SLinkedList_is_empty(list)) {
+        fprintf(stderr, S_LINKED_LIST_INSERT_EXCEPTION);
         return -1;
     } 
 
     if (pos == 1) {
 
-        SingleLinkedListNode* node = 
-            (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+        SLinkedListNode* node = 
+            (SLinkedListNode*)malloc(sizeof(SLinkedListNode));
 
         if (node == NULL) {
-            fprintf(stderr, SINGLELINKEDLIST_NODE_INIT_ERROR);
+            fprintf(stderr, S_LINKED_LIST_NODE_INIT_ERROR);
             return -1;
         }
 
@@ -140,16 +140,16 @@ SingleLinkedList_insert(
         list->length++;
 
     } else if (pos == list->length + 1){
-        SingleLinkedListNode* current = list->head;
+        SLinkedListNode* current = list->head;
         while (current->next != NULL) {
             current = current->next;
         }
 
-        SingleLinkedListNode* node = 
-            (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+        SLinkedListNode* node = 
+            (SLinkedListNode*)malloc(sizeof(SLinkedListNode));
 
         if (node == NULL) {
-            fprintf(stderr, SINGLELINKEDLIST_NODE_INIT_ERROR);
+            fprintf(stderr, S_LINKED_LIST_NODE_INIT_ERROR);
             return -1;
         }
         current->next = node;
@@ -158,17 +158,17 @@ SingleLinkedList_insert(
 
     } else if (pos <= list->length) {
 
-        SingleLinkedListNode* node = 
-            (SingleLinkedListNode*)malloc(sizeof(SingleLinkedListNode));
+        SLinkedListNode* node = 
+            (SLinkedListNode*)malloc(sizeof(SLinkedListNode));
 
         if (node == NULL) {
-            fprintf(stderr, SINGLELINKEDLIST_NODE_INIT_ERROR);
+            fprintf(stderr, S_LINKED_LIST_NODE_INIT_ERROR);
             return -1;
         }
 
         node->data = data;
 
-        SingleLinkedListNode* current = list->head;
+        SLinkedListNode* current = list->head;
         size_t count = 1;
 
         while ((current->next != NULL) && (count < pos - 1)) {
@@ -184,22 +184,22 @@ SingleLinkedList_insert(
 }
 
 
-int SingleLinkedList_remove(
-    SingleLinkedList* list, SingleLinkedListEleType* data, 
-    size_t pos, SingleLinkedListSearchModeEnum mode) {
+int SLinkedList_remove(
+    SLinkedList* list, SLinkedListDataType* data, 
+    size_t pos, SLinkedListSearchModeEnum mode) {
 
     if (list == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
         return -1;
     }
     if (data == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_REMOVE_EXCEPTION);
+        fprintf(stderr, S_LINKED_LIST_REMOVE_EXCEPTION);
         return -1;
     }
 
-    if (mode == SINGLELINKEDLIST_SEARCH_BY_POS && pos != 0 && pos < list->length) {
+    if (mode == S_LINKED_LIST_SEARCH_BY_POS && pos != 0 && pos < list->length) {
 
-        SingleLinkedListNode* current = list->head;
+        SLinkedListNode* current = list->head;
         size_t count = 1;
 
         if (pos == 1) {
@@ -213,22 +213,22 @@ int SingleLinkedList_remove(
                 count++;
             }
     
-            SingleLinkedListNode* target = current->next;
+            SLinkedListNode* target = current->next;
             current->next = target->next;
             *data = target->data;
             free(target);
             list->length--;
         }   
     }
-    else if (mode == SINGLELINKEDLIST_SEARCH_BY_VALUE) {
-        SingleLinkedListNode* temp = NULL;
+    else if (mode == S_LINKED_LIST_SEARCH_BY_VALUE) {
+        SLinkedListNode* temp = NULL;
         if (list->head->data == *data) {
             temp = list->head;
             list->head = list->head->next;
             list->length--;
             free(temp);
         } else {
-            SingleLinkedListNode* current = list->head;
+            SLinkedListNode* current = list->head;
         
             while (current != NULL) {
                 if (current->next != NULL && current->next->data == *data) {
@@ -243,7 +243,7 @@ int SingleLinkedList_remove(
             }
         }
     } else {
-        fprintf(stderr, SINGLELINKEDLIST_REMOVE_EXCEPTION);
+        fprintf(stderr, S_LINKED_LIST_REMOVE_EXCEPTION);
         return -1;
     }
 
@@ -252,22 +252,22 @@ int SingleLinkedList_remove(
 
 
 int
-SingleLinkedList_search(
-    SingleLinkedList* list, SingleLinkedListEleType* data, 
-    size_t* pos, SingleLinkedListSearchModeEnum mode) {
+SLinkedList_search(
+    SLinkedList* list, SLinkedListDataType* data, 
+    size_t* pos, SLinkedListSearchModeEnum mode) {
         
     if (list == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
         return -1;
     }
 
     if (data == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_SEARCH_EXCEPTION);
+        fprintf(stderr, S_LINKED_LIST_SEARCH_EXCEPTION);
         return -1;
     }
 
-    if (mode == SINGLELINKEDLIST_SEARCH_BY_POS && (*pos < list->length || *pos != 0)) {
-        SingleLinkedListNode* current = list->head;
+    if (mode == S_LINKED_LIST_SEARCH_BY_POS && (*pos < list->length || *pos != 0)) {
+        SLinkedListNode* current = list->head;
         size_t count = 1;
 
         while ((current != NULL) && (count < *pos)) {
@@ -276,8 +276,8 @@ SingleLinkedList_search(
         }
         *data = current->data;
     }
-    else if (mode == SINGLELINKEDLIST_SEARCH_BY_VALUE) {
-        SingleLinkedListNode* current = list->head;
+    else if (mode == S_LINKED_LIST_SEARCH_BY_VALUE) {
+        SLinkedListNode* current = list->head;
         size_t count = 1;
         int search_state = 0;
 
@@ -292,13 +292,13 @@ SingleLinkedList_search(
         }
 
         if (search_state == 0) {
-            fprintf(stderr, SINGLELINKEDLIST_SEARCH_EXCEPTION);
+            fprintf(stderr, S_LINKED_LIST_SEARCH_EXCEPTION);
             return -1;
         }
     }
 
     else {
-        fprintf(stderr, SINGLELINKEDLIST_SEARCH_MODE_ERROR);
+        fprintf(stderr, S_LINKED_LIST_SEARCH_MODE_ERROR);
         return -1;
     }
 
@@ -306,17 +306,17 @@ SingleLinkedList_search(
 }
 
 
-int SingleLinkedList_pop_front(SingleLinkedList* list, SingleLinkedListEleType* data) {
+int SLinkedList_pop_front(SLinkedList* list, SLinkedListDataType* data) {
     if (list == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
         return -1;
     }
 
     if (list->length == 0) {
-        fprintf(stderr, SINGLELINKEDLIST_OVERFLOW_EXCEPTION);
+        fprintf(stderr, S_LINKED_LIST_OVERFLOW_EXCEPTION);
         return -1;
     }
-    SingleLinkedListNode* node = list->head;
+    SLinkedListNode* node = list->head;
     *data = list->head->data;
     list->head = list->head->next;
     list->length--;
@@ -325,18 +325,18 @@ int SingleLinkedList_pop_front(SingleLinkedList* list, SingleLinkedListEleType* 
 }
 
 
-int SingleLinkedList_pop_back(SingleLinkedList* list, SingleLinkedListEleType* data) {
+int SLinkedList_pop_back(SLinkedList* list, SLinkedListDataType* data) {
     if (list == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
         return -1;
     }
 
     if (list->length == 0) {
-        fprintf(stderr, SINGLELINKEDLIST_OVERFLOW_EXCEPTION);
+        fprintf(stderr, S_LINKED_LIST_OVERFLOW_EXCEPTION);
         return -1;
     }
 
-    SingleLinkedListNode* current = list->head;
+    SLinkedListNode* current = list->head;
     while (current->next->next != NULL) {
         current = current->next;
     }
@@ -353,9 +353,9 @@ int SingleLinkedList_pop_back(SingleLinkedList* list, SingleLinkedListEleType* d
 }
 
 
-int SingleLinkedList_front(SingleLinkedList* list, SingleLinkedListEleType* data) {
+int SLinkedList_front(SLinkedList* list, SLinkedListDataType* data) {
     if (list == NULL || list->length == 0) {
-        fprintf(stderr, SINGLELINKEDLIST_CHECK_ERROR);
+        fprintf(stderr, S_LINKED_LIST_CHECK_ERROR);
         return -1;
     }
     *data = list->head->data;
@@ -363,13 +363,13 @@ int SingleLinkedList_front(SingleLinkedList* list, SingleLinkedListEleType* data
 }
 
 
-int SingleLinkedList_back(SingleLinkedList* list, SingleLinkedListEleType* data) {
+int SLinkedList_back(SLinkedList* list, SLinkedListDataType* data) {
     if (list == NULL || list->length == 0) {
-        fprintf(stderr, SINGLELINKEDLIST_CHECK_ERROR);
+        fprintf(stderr, S_LINKED_LIST_CHECK_ERROR);
         return -1;
     }
     
-    SingleLinkedListNode* current = list->head;
+    SLinkedListNode* current = list->head;
 
     while (current->next != NULL) {
         current = current->next;
@@ -379,10 +379,10 @@ int SingleLinkedList_back(SingleLinkedList* list, SingleLinkedListEleType* data)
 }
 
 
-int SingleLinkedList_reverse(SingleLinkedList* list) {
+int SLinkedList_reverse(SLinkedList* list) {
     
     if (list == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
         return -1;
     }
 
@@ -390,9 +390,9 @@ int SingleLinkedList_reverse(SingleLinkedList* list) {
         return 0;
     }
 
-    SingleLinkedListNode* prev = NULL;
-    SingleLinkedListNode* current = list->head;
-    SingleLinkedListNode* next = NULL;
+    SLinkedListNode* prev = NULL;
+    SLinkedListNode* current = list->head;
+    SLinkedListNode* next = NULL;
 
     while (current != NULL) {
         next = current->next;
@@ -408,24 +408,24 @@ int SingleLinkedList_reverse(SingleLinkedList* list) {
 
 
 int
-SingleLinkedList_recursion_reverse(SingleLinkedList* list) {
+SLinkedList_recursion_reverse(SLinkedList* list) {
     if (list == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
         return -1;
     }
     
-    list->head = _SingleLinkedList_recursion_reverse_node(list->head);
+    list->head = _SLinkedList_recursion_reverse_node(list->head);
     return 0;
 }
 
 
-SingleLinkedListNode* 
-_SingleLinkedList_recursion_reverse_node(SingleLinkedListNode* node) {
+SLinkedListNode* 
+_SLinkedList_recursion_reverse_node(SLinkedListNode* node) {
     if (node ==  NULL || node->next == NULL) {
         return node;
     }
 
-    SingleLinkedListNode* tmp = _SingleLinkedList_recursion_reverse_node(node->next);
+    SLinkedListNode* tmp = _SLinkedList_recursion_reverse_node(node->next);
 
     node->next->next = node;
     node->next =  NULL;
@@ -434,14 +434,14 @@ _SingleLinkedList_recursion_reverse_node(SingleLinkedListNode* node) {
 }
 
 
-int SingleLinkedList_display(SingleLinkedList* list) {
+int SLinkedList_display(SLinkedList* list) {
     if (list == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
         return -1;
     }
 
-    SingleLinkedListNode* current = list->head;
-    printf("SingleLinkedList: {  ");
+    SLinkedListNode* current = list->head;
+    printf("SLinkedList: {  ");
     while (current != NULL) {
         printf("%d  ", current->data);
         current = current->next;
@@ -451,15 +451,15 @@ int SingleLinkedList_display(SingleLinkedList* list) {
 }
 
 
-int SingleLinkedList_clean(SingleLinkedList** list) {
+int SLinkedList_clean(SLinkedList** list) {
     if (list == NULL || *list == NULL) {
-        fprintf(stderr, SINGLELINKEDLIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
         return -1;
     }
 
-    SingleLinkedListNode* current = (*list)->head;
+    SLinkedListNode* current = (*list)->head;
     while (current != NULL) {
-        SingleLinkedListNode* old = current;
+        SLinkedListNode* old = current;
         current = current->next;
         free(old);
     }
