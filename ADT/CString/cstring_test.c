@@ -24,7 +24,7 @@ int main() {
     printf("CString Compare Result: %d\n", CString_compare(cstring1, cstring2, NULL));
     printf("CString Compare Result: %d\n", CString_compare(cstring1, ectype, NULL));
 
-    CString* substring = CString_substring_split(cstring1, 0, 5);
+    CString* substring = CString_split(cstring1, 0, 5);
     CString_display(substring);
 
     CString* concated = CString_concat(cstring1, cstring2);
@@ -59,11 +59,11 @@ int main() {
     CString_clear(cstring1);
     CString_display(cstring1);
 
-    CString_clean(&cstring1);
-    CString_clean(&cstring2);
-    CString_clean(&ectype);
-    CString_clean(&substring);
-    CString_clean(&concated);
+    CString_destroy(&cstring1);
+    CString_destroy(&cstring2);
+    CString_destroy(&ectype);
+    CString_destroy(&substring);
+    CString_destroy(&concated);
 
     printf("After free, the pointer state: %p\n", cstring1);
     printf("After free, the pointer state: %p\n", cstring2);
@@ -86,8 +86,8 @@ int main() {
 
     printf("%lu \n", res);
 
-    CString_clean(&pattern_s);
-    CString_clean(&wait_matching);
+    CString_destroy(&pattern_s);
+    CString_destroy(&wait_matching);
 
     return 0;
 }

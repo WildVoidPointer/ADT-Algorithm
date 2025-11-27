@@ -13,7 +13,7 @@ HuffmanTree* HuffmanTree_create() {
 }
 
 
-int HuffmanTree_clean(HuffmanTree** hf_tree) {
+int HuffmanTree_destroy(HuffmanTree** hf_tree) {
     if (hf_tree == NULL || *hf_tree == NULL) {
         fprintf(stderr, HUFFMAN_TREE_ACCESS_EXCEPTION);
         return -1;
@@ -40,6 +40,16 @@ int HuffmanTree_display(HuffmanTree* hf_tree) {
     );
     printf("}\n");
     return 0;
+}
+
+
+ssize_t HuffmanTree_get_wpl(HuffmanTree* hf_tree) {
+    if (hf_tree ==  NULL) {
+        fprintf(stderr, HUFFMAN_TREE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    return _HuffmanTree_get_wpl_helper(hf_tree->root, 0);
 }
 
 
@@ -114,9 +124,9 @@ HuffmanTree* HuffmanTree_build_of_any_array(
         if (hf_nodes[i] == NULL) {
             fprintf(stderr, HUFFMAN_TREE_BUILD_ERROR);
             for (size_t j = 0; j < i; j++) {
-                HuffmanTreeNode_clean(&hf_nodes[j]);
+                HuffmanTreeNode_destroy(&hf_nodes[j]);
             }
-            HuffmanTree_clean(&hf_tree);
+            HuffmanTree_destroy(&hf_tree);
             free(hf_nodes);
             return NULL;
         }
@@ -139,9 +149,9 @@ HuffmanTree* HuffmanTree_build_of_any_array(
         if (merged == NULL) {
             fprintf(stderr, HUFFMAN_TREE_BUILD_ERROR);
             for (size_t i = 0; i < arr_len; i++) {
-                HuffmanTreeNode_clean(&hf_nodes[i]);
+                HuffmanTreeNode_destroy(&hf_nodes[i]);
             }
-            HuffmanTree_clean(&hf_tree);
+            HuffmanTree_destroy(&hf_tree);
             free(hf_nodes);
             return NULL;
         }
@@ -185,6 +195,24 @@ int HuffmanTree_post_order_traverse(
 }
 
 
+size_t _HuffmanTree_get_wpl_helper(
+    HuffmanTreeNode* hf_node, size_t depth
+) {
+    if (hf_node == NULL) {
+        return 0;
+    }
+
+    if (hf_node->left == NULL && hf_node->right == NULL) {
+        return hf_node->weight * depth;
+    }
+
+    size_t left_wpl = _HuffmanTree_get_wpl_helper(hf_node->left, depth + 1);
+    size_t right_wpl = _HuffmanTree_get_wpl_helper(hf_node->right, depth + 1);
+
+    return left_wpl + right_wpl;
+}
+
+
 HuffmanTreeNode* HuffmanTreeNode_create(
     HuffmanTreeDataType* data, HuffmanTreeWeightType* weight
 ) {
@@ -209,7 +237,7 @@ HuffmanTreeNode* HuffmanTreeNode_create(
 }
 
 
-int HuffmanTreeNode_clean(HuffmanTreeNode** hf_node) {
+int HuffmanTreeNode_destroy(HuffmanTreeNode** hf_node) {
     if (hf_node == NULL || *hf_node == NULL) {
         fprintf(stderr, HUFFMAN_TREE_NODE_ACCESS_EXCEPTION);
         return -1;
@@ -224,7 +252,7 @@ int HuffmanTreeNode_clean(HuffmanTreeNode** hf_node) {
 int HuffmanTree_clean_handler(
     HuffmanTreeNode* hf_node, HuffmanTreeHnadleContext* ctx
 ) {
-    return HuffmanTreeNode_clean(&hf_node);
+    return HuffmanTreeNode_destroy(&hf_node);
 }
 
 

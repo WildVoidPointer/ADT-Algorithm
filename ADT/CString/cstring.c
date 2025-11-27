@@ -104,7 +104,7 @@ int CString_compare(
 }
 
 
-CString* CString_substring_split(CString* cstring, size_t start, size_t offset) {
+CString* CString_split(CString* cstring, size_t start, size_t offset) {
 
     if (!CString_is_valid(cstring) || start > cstring->length || 
             offset > cstring->length || start > offset) {
@@ -321,7 +321,7 @@ int CString_kmp_matching(CString* cstring, CString* pattern, size_t* res) {
         }
     }
 
-    CStringPMT_clean(&pmt);
+    CStringPMT_destroy(&pmt);
     return 0;
 }
 
@@ -372,7 +372,7 @@ int _CString_unit_clean(CStringUnitType** unit) {
 }
 
 
-int CString_clean(CString** cstring) {
+int CString_destroy(CString** cstring) {
     if (cstring == NULL || !CString_is_valid(*cstring)) {
         fprintf(stderr, CSTRING_ACCESS_ERROR);
         return -1;
@@ -387,7 +387,7 @@ int CString_clean(CString** cstring) {
 }
 
 
-int CStringPMT_clean(CStringPMT** pmt) {
+int CStringPMT_destroy(CStringPMT** pmt) {
     if (pmt == NULL || *pmt == NULL) {
         fprintf(stderr, CSTRING_PMT_ACCESS_ERROR);
         return -1;

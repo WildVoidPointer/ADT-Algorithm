@@ -75,7 +75,7 @@ typedef int (*HuffmanTreeNodeHandler) (
 HuffmanTree* HuffmanTree_create();
 
 
-int HuffmanTree_clean(HuffmanTree** hf_tree);
+int HuffmanTree_destroy(HuffmanTree** hf_tree);
 
 
 int HuffmanTree_display(HuffmanTree* hf_tree);
@@ -85,6 +85,9 @@ int HuffmanTree_find_two_min_nodes(
     HuffmanTreeNode* arr[], size_t arr_len,
     ssize_t* min1, ssize_t* min2
 );
+
+
+ssize_t HuffmanTree_get_wpl(HuffmanTree* hf_tree);
 
 
 HuffmanTreeNode* HuffmanTree_merge_node(
@@ -113,12 +116,18 @@ int HuffmanTree_weight_print_handler(
 );
 
 
+size_t _HuffmanTree_get_wpl_helper(
+    HuffmanTreeNode* hf_node, size_t depth
+);
+
+
+
 HuffmanTreeNode* HuffmanTreeNode_create(
     HuffmanTreeDataType* data, HuffmanTreeWeightType* weight
 );
 
 
-int HuffmanTreeNode_clean(HuffmanTreeNode** hf_node);
+int HuffmanTreeNode_destroy(HuffmanTreeNode** hf_node);
 
 
 #endif

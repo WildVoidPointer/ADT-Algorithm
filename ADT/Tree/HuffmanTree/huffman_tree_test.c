@@ -30,12 +30,16 @@ void merge_for_integer_array_merge_sort(
 }
 
 
-void integer_array_merge_sort(int orig_arr[], int copy_arr[], int left, int right) {
+void integer_array_merge_sort(
+    int orig_arr[], int copy_arr[], int left, int right
+) {
     if (left < right) {
         int mid = (left + right) / 2;
         integer_array_merge_sort(orig_arr, copy_arr, left, mid);
         integer_array_merge_sort(orig_arr, copy_arr, mid + 1, right);
-        merge_for_integer_array_merge_sort(orig_arr, copy_arr, left, mid, right);
+        merge_for_integer_array_merge_sort(
+            orig_arr, copy_arr, left, mid, right
+        );
     }
 }
 
@@ -54,20 +58,27 @@ int main() {
     int test_arr_len = sizeof(test_arr) / sizeof(test_arr[0]);
     HuffmanTreeDataType buf_arr[test_arr_len];
     integer_array_merge_sort(test_arr, buf_arr, 0, test_arr_len - 1);
-    integer_array_println("MergeSortedResult: ", test_arr, test_arr_len);
+    integer_array_println(
+        "MergeSortedResult: ", 
+        test_arr, test_arr_len
+    );
 
 
     HuffmanTree* empty_hf_tree = HuffmanTree_create();
     HuffmanTree_display(empty_hf_tree);
-    HuffmanTree_clean(&empty_hf_tree);
+    HuffmanTree_destroy(&empty_hf_tree);
     printf("HuffmanTreeCleanReasult: %p\n", empty_hf_tree);
-
 
     HuffmanTree* build_from_array = HuffmanTree_build_of_any_array(
         test_arr, test_arr_len
     );
     HuffmanTree_display(build_from_array);
-    HuffmanTree_clean(&build_from_array);
+
+    size_t wpl = HuffmanTree_get_wpl(build_from_array);
+
+    printf("WPL:  %lu\n", wpl);
+
+    HuffmanTree_destroy(&build_from_array);
 
     return 0;
 }
