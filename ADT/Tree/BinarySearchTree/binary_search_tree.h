@@ -26,6 +26,11 @@
     "The insert BinarySearchTreeData is exists\n"
 
 
+#define BINARY_SEARCH_TREE_REMOVE_EXCEPTION \
+    "BinarySearchTreeRemoveException: " \
+    "No such BinarySearchTreeNode in the tree\n"
+
+
 #define BINARY_SEARCH_TREE_ACCESS_EXCEPTION \
     "BinarySearchTreeAccessException: " \
     "The data address of the BinarySearchTree cannot be accessed\n"
@@ -89,7 +94,12 @@ int BinarySearchTree_insert(
 );
 
 
-BinarySearchTreeNode* BinarySearchTree_remove(
+BinarySearchTreeNode* BinarySearchTree_recur_remove(
+    BinarySearchTree* bs_tree, BinarySearchTreeDataType* bst_data
+);
+
+
+BinarySearchTreeNode* BinarySearchTree_iter_remove(
     BinarySearchTree* bs_tree, BinarySearchTreeDataType* bst_data
 );
 
@@ -113,5 +123,10 @@ BinarySearchTreeNode_create(BinarySearchTreeDataType* bst_data);
 
 
 int BinarySearchTreeNode_destroy(BinarySearchTreeNode** bst_node);
+
+
+int _BinarySearchTreeNode_set_by_node(
+    BinarySearchTreeNode* dest, BinarySearchTreeNode* src
+);
 
 #endif // BINARY_SEARCH_TREE_H_

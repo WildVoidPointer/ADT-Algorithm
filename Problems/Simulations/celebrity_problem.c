@@ -55,7 +55,10 @@ Example 2:
 #include <stdio.h>
 
 
-int knows(int num, int knows_mtx[num][num], int people1, int people2) {
+int knows(
+    int num, int knows_mtx[num][num], 
+    int people1, int people2
+) {
     return knows_mtx[people1][people2];
 }
 

@@ -102,7 +102,7 @@ int BinarySearchTree_insert(
 }
 
 
-BinarySearchTreeNode* BinarySearchTree_remove(
+BinarySearchTreeNode* BinarySearchTree_recur_remove(
     BinarySearchTree* bs_tree, BinarySearchTreeDataType* bst_data
 ) {
     if (bs_tree == NULL) {
@@ -116,6 +116,74 @@ BinarySearchTreeNode* BinarySearchTree_remove(
     }
 
     return _BinarySearchTree_remove_helper((&(bs_tree)->root), bst_data);
+}
+
+
+BinarySearchTreeNode* BinarySearchTree_iter_remove(
+    BinarySearchTree* bs_tree, BinarySearchTreeDataType* bst_data
+) {
+    if (bs_tree == NULL) {
+        fprintf(stderr, BINARY_SEARCH_TREE_ACCESS_EXCEPTION);
+        return NULL;
+    }
+
+    BinarySearchTreeNode* curr = bs_tree->root;
+
+    BinarySearchTreeNode* to_delete = NULL;
+
+    BinarySearchTreeNode* prev = NULL;
+
+    while (curr != NULL && (*bst_data) != curr->data) {
+        prev = curr;
+        if ((*bst_data) > curr->data) {
+            curr = curr->right;
+        } else if ((*bst_data < curr->data)){
+            curr = curr->left;
+        }
+    }
+
+    if (curr == NULL) {
+        fprintf(stderr, BINARY_SEARCH_TREE_REMOVE_EXCEPTION);
+        return NULL;
+    } else {
+        to_delete = curr;
+    }
+
+    if (curr->left != NULL && curr->right != NULL) {
+        BinarySearchTreeNode* inorder_first = curr;
+        BinarySearchTreeNode* inorder_first_prev = NULL;
+        
+        while (inorder_first->left != NULL) {
+            inorder_first_prev = inorder_first;
+            inorder_first = inorder_first->left;
+        }
+
+        _BinarySearchTreeNode_set_by_node(curr, inorder_first);
+
+        curr = inorder_first;
+        prev = inorder_first_prev;
+    }
+
+    BinarySearchTreeNode* child = NULL;
+
+    if (curr->left != NULL) {
+        child = curr->left;
+    } else {
+        child = curr->right;
+    }
+
+    // 若被删除节点为根节点
+    if (prev ==  NULL) {
+        bs_tree->root = child;
+    } else {
+        if (prev->left == curr) {
+            prev->left = child;
+        } else {
+            prev->right = child;
+        }
+    }
+
+    return to_delete;
 }
 
 
@@ -199,6 +267,9 @@ int _BinarySearchTree_destroy_helper(BinarySearchTreeNode** bst_node) {
         _BinarySearchTree_destroy_helper(&((*bst_node)->left));
         _BinarySearchTree_destroy_helper(&((*bst_node)->right));
         BinarySearchTreeNode_destroy(bst_node);
+        return 0;
+    } else {
+        return -1;
     }
 }
 
@@ -235,5 +306,18 @@ int BinarySearchTreeNode_destroy(BinarySearchTreeNode** bst_node) {
 
     free(*bst_node);
     *bst_node = NULL;
+    return 0;
+}
+
+
+int _BinarySearchTreeNode_set_by_node(
+    BinarySearchTreeNode* dest, BinarySearchTreeNode* src
+) {
+    if (dest == NULL || src == NULL) {
+        fprintf(stderr, BINARY_SEARCH_TREE_NODE_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    dest->data = src->data;
     return 0;
 }
