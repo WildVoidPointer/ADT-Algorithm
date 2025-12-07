@@ -13,7 +13,7 @@
     "DCLinkedListCreateError: Failed to allocate memory\n"
 
 
-#define DC_LINKED_LIST_ACCESS_ERROR \
+#define DC_LINKED_LIST_ACCESS_EXCEPTION \
     "DCLinkedListAccessError: "\
     "Please check whether the `DCLinkedList` type parameter is passed\n"
 

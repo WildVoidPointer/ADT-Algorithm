@@ -9,17 +9,17 @@
 #include <stdlib.h>
 
 
-#define CSTRING_ACCESS_ERROR \
+#define CSTRING_ACCESS_EXCEPTION \
     "CStringAccessError: " \
     "The data address of the CString cannot be accessed\n"
 
 
-#define CSTRING_UNITS_ACCESS_ERROR \
+#define CSTRING_UNITS_ACCESS_EXCEPTION \
     "CStringUnitsAccessError: " \
     "The data address of the CString->units cannot be accessed\n"
 
 
-#define CSTRING_UNIT_ACCESS_ERROR \
+#define CSTRING_UNIT_ACCESS_EXCEPTION \
     "CStringUnitAccessError: " \
     "The data address of the CStringUnit cannot be accessed\n"
 
@@ -57,7 +57,7 @@
     "Memory initialization of CStringPMTunit failed\n"
 
 
-#define CSTRING_PMT_ACCESS_ERROR \
+#define CSTRING_PMT_ACCESS_EXCEPTION \
     "CStringPMTaccessError: " \
     "The data address of the CStringPMT cannot be accessed\n"
 

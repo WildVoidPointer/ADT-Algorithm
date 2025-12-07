@@ -21,7 +21,7 @@
     "SequenceListExpandError: Failed to reallocate memory\n"
 
 
-#define SEQUENCE_LIST_ACCESS_ERROR \
+#define SEQUENCE_LIST_ACCESS_EXCEPTION \
     "SequenceListAccessError: " \
     "Check whether parameter `SeqList*` is valid\n"
 
@@ -34,7 +34,7 @@
     "SequenceListRemoveException: Index access is out of bounds\n"
 
 
-#define SEQUENCE_LIST_SEARCH_ACCESS_ERROR \
+#define SEQUENCE_LIST_SEARCH_ACCESS_EXCEPTION \
     "SequenceListSearchAccessError: " \
     "Check whether parameter buffer is valid\n"
 

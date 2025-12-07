@@ -49,7 +49,7 @@ int ArrayDeque_front_enqueue(
     ArrayDeque* deque, ArrayDequeDataType ele
 ) {
     if (deque == NULL) {
-        fprintf(stderr, ARRAY_DEQUE_ACCESS_ERROR);
+        fprintf(stderr, ARRAY_DEQUE_ACCESS_EXCEPTION);
         return -1;
     }
     
@@ -68,7 +68,7 @@ int ArrayDeque_back_enqueue(
     ArrayDeque *deque, ArrayDequeDataType ele
 ) {
     if (deque == NULL) {
-        fprintf(stderr, ARRAY_DEQUE_ACCESS_ERROR);
+        fprintf(stderr, ARRAY_DEQUE_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -87,7 +87,7 @@ int ArrayDeque_front_dequeue(
     ArrayDeque *deque, ArrayDequeDataType* ele
 ) {
     if (deque == NULL) {
-        fprintf(stderr, ARRAY_DEQUE_ACCESS_ERROR);
+        fprintf(stderr, ARRAY_DEQUE_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -107,7 +107,7 @@ int ArrayDeque_back_dequeue(
 ) {
 
     if (deque == NULL) {
-        fprintf(stderr, ARRAY_DEQUE_ACCESS_ERROR);
+        fprintf(stderr, ARRAY_DEQUE_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -124,7 +124,7 @@ int ArrayDeque_back_dequeue(
 
 int ArrayDeque_display(ArrayDeque* deque) {
     if (deque == NULL) {
-        fprintf(stderr, ARRAY_DEQUE_ACCESS_ERROR);
+        fprintf(stderr, ARRAY_DEQUE_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -150,7 +150,7 @@ int ArrayDeque_display(ArrayDeque* deque) {
 
 int ArrayDeque_destroy(ArrayDeque** deque) {
     if (deque == NULL || *deque == NULL) {
-        fprintf(stderr, ARRAY_DEQUE_ACCESS_ERROR);
+        fprintf(stderr, ARRAY_DEQUE_ACCESS_EXCEPTION);
         return -1;
     }
 

@@ -5,15 +5,16 @@ ArrayStack* ArrayStack_create(size_t size) {
 
     ArrayStack* stack = (ArrayStack*) malloc (sizeof(ArrayStack));
     if (stack == NULL) {
-        fprintf(stderr, ARRAY_STACK_INIT_ERROR);
+        fprintf(stderr, ARRAY_STACK_CREATE_ERROR);
         return NULL;
     }
 
     stack->data = (ArrayStackDataType*) malloc (
         size * sizeof(ArrayStackDataType)
     );
+
     if (stack->data == NULL) {
-        fprintf(stderr, ARRAY_STACK_ELEMENTS_INIT_ERROR);
+        fprintf(stderr, ARRAY_STACK_CREATE_ERROR);
         free(stack);
         return NULL;
     }
@@ -37,7 +38,7 @@ int ArrayStack_is_empty(ArrayStack* stack) {
 
 int ArrayStack_push(ArrayStack* stack, ArrayStackDataType ele) {
     if (stack == NULL) {
-        fprintf(stderr, ARRAY_STACK_ACCESS_ERROR);
+        fprintf(stderr, ARRAY_STACK_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -55,7 +56,7 @@ int ArrayStack_push(ArrayStack* stack, ArrayStackDataType ele) {
 int ArrayStack_pop(ArrayStack* stack, ArrayStackDataType* popped) {
 
     if (stack == NULL) {
-        fprintf(stderr, ARRAY_STACK_ACCESS_ERROR);
+        fprintf(stderr, ARRAY_STACK_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -72,7 +73,7 @@ int ArrayStack_pop(ArrayStack* stack, ArrayStackDataType* popped) {
 
 int ArrayStack_destory(ArrayStack** stack) {
     if (stack == NULL || (*stack) == NULL) {
-        fprintf(stderr, ARRAY_STACK_ACCESS_ERROR);
+        fprintf(stderr, ARRAY_STACK_ACCESS_EXCEPTION);
         return -1;
     }
     free((*stack)->data);
@@ -84,7 +85,7 @@ int ArrayStack_destory(ArrayStack** stack) {
 
 int ArrayStack_display(ArrayStack* stack) {
     if (stack == NULL) {
-        fprintf(stderr, ARRAY_STACK_ACCESS_ERROR);
+        fprintf(stderr, ARRAY_STACK_ACCESS_EXCEPTION);
         return -1;
     }
 

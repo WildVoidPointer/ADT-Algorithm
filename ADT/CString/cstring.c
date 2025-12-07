@@ -26,7 +26,7 @@ size_t CString_length(CString* cstring) {
 CString* CString_create(CStringUnitType* units, size_t length) {
 
     if (units == NULL) {
-        fprintf(stderr, CSTRING_UNITS_ACCESS_ERROR);
+        fprintf(stderr, CSTRING_UNITS_ACCESS_EXCEPTION);
         return NULL;
     }
 
@@ -58,7 +58,7 @@ CString* CString_create(CStringUnitType* units, size_t length) {
 CString* CString_deepcopy(CString* cstring) {
 
     if (!CString_is_valid(cstring)) {
-        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return NULL;
     }
 
@@ -77,7 +77,7 @@ int CString_compare(
     CString* cstring1, CString* cstring2, CStringComparator comparator) {
 
     if (!CString_is_valid(cstring1) || !CString_is_valid(cstring2)) {
-        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -109,7 +109,7 @@ CString* CString_split(CString* cstring, size_t start, size_t offset) {
     if (!CString_is_valid(cstring) || start > cstring->length || 
             offset > cstring->length || start > offset) {
 
-        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return NULL;
     }
 
@@ -141,7 +141,7 @@ CString* CString_split(CString* cstring, size_t start, size_t offset) {
 CString* CString_concat(CString* cstring1, CString* cstring2) {
 
     if (!CString_is_valid(cstring1) || !CString_is_valid(cstring2)) {
-        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return NULL;
     }
 
@@ -178,7 +178,7 @@ CString* CString_concat(CString* cstring1, CString* cstring2) {
 
 int CString_violent_matching(CString* cstring1, CString* cstring2, size_t* pos) {
     if (! CString_is_valid(cstring1) || ! CString_is_valid(cstring2)) {
-        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -213,7 +213,7 @@ int CString_search(
     CString* cstring, CStringUnitType* unit, size_t* index, CStringSearchModeEnum mode) {
 
     if (!CString_is_valid(cstring)) {
-        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -289,7 +289,7 @@ CStringPMT* CStringPMT_build(CString* s) {
 
 int CString_kmp_matching(CString* cstring, CString* pattern, size_t* res) {
     if (cstring == NULL || pattern == NULL) {
-        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -328,7 +328,7 @@ int CString_kmp_matching(CString* cstring, CString* pattern, size_t* res) {
 
 int CString_clear(CString* cstring) {
     if (!CString_is_valid(cstring)) {
-        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -344,7 +344,7 @@ int CString_clear(CString* cstring) {
 
 int CString_display(CString* cstring) {
     if (!CString_is_valid(cstring)) {
-        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -360,7 +360,7 @@ int CString_display(CString* cstring) {
 
 int _CString_unit_destroy(CStringUnitType** unit) {
     if (unit == NULL || *unit == NULL) {
-        fprintf(stderr, CSTRING_UNIT_ACCESS_ERROR);
+        fprintf(stderr, CSTRING_UNIT_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -374,7 +374,7 @@ int _CString_unit_destroy(CStringUnitType** unit) {
 
 int CString_destroy(CString** cstring) {
     if (cstring == NULL || !CString_is_valid(*cstring)) {
-        fprintf(stderr, CSTRING_ACCESS_ERROR);
+        fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -389,7 +389,7 @@ int CString_destroy(CString** cstring) {
 
 int CStringPMT_destroy(CStringPMT** pmt) {
     if (pmt == NULL || *pmt == NULL) {
-        fprintf(stderr, CSTRING_PMT_ACCESS_ERROR);
+        fprintf(stderr, CSTRING_PMT_ACCESS_EXCEPTION);
         return -1;
     }
 

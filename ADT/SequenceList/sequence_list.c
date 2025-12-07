@@ -26,7 +26,7 @@ SequenceList* SequenceList_create(size_t size) {
 
 int SequenceList_expand(SequenceList* seqlist, size_t expand_size) {
     if (seqlist == NULL) {
-        fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -60,7 +60,7 @@ int SequenceList_is_empty(SequenceList* seqlist) {
 
 int SequenceList_insert(SequenceList* seqlist, size_t pos, SequenceListDataType buf) {
     if (seqlist == NULL) {
-        fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -86,7 +86,7 @@ int SequenceList_insert(SequenceList* seqlist, size_t pos, SequenceListDataType 
 
 int SequenceList_remove(SequenceList* seqlist, size_t pos, SequenceListDataType* buf) {
     if (seqlist == NULL) {
-        fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -110,12 +110,12 @@ int SequenceList_search(
     SequenceList* seqlist, size_t* pos, SequenceListDataType* buf, int flag
 ) {
     if (seqlist == NULL) {
-        fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
     if (pos == NULL || buf == NULL) {
-        fprintf(stderr, SEQUENCE_LIST_SEARCH_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_SEARCH_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -150,7 +150,7 @@ int SequenceList_search(
 
 int SequenceList_destroy(SequenceList** seqlist) {
     if (seqlist == NULL || (*seqlist) == NULL) {
-        fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_ACCESS_EXCEPTION);
         return -1;
     }
     free((*seqlist)->elements);
@@ -162,7 +162,7 @@ int SequenceList_destroy(SequenceList** seqlist) {
 
 int SequenceList_display(SequenceList* seqlist) {
     if (seqlist == NULL) {
-        fprintf(stderr, SEQUENCE_LIST_ACCESS_ERROR);
+        fprintf(stderr, SEQUENCE_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 

@@ -58,7 +58,7 @@ int DCLinkedList_push_front(
 ) {
 
     if (list == NULL) {
-        fprintf(stderr, DC_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, DC_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -93,7 +93,7 @@ int DCLinkedList_push_back(
 ) {
     
     if (list == NULL) {
-        fprintf(stderr, DC_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, DC_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -129,7 +129,7 @@ int DCLinkedList_insert(
 ) {
 
     if (list == NULL) {
-        fprintf(stderr, DC_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, DC_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -171,7 +171,7 @@ int DCLinkedList_pop_front(
 ) {
 
     if (list == NULL) {
-        fprintf(stderr, DC_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, DC_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -195,7 +195,7 @@ int DCLinkedList_pop_back(
 ) {
 
     if (list == NULL) {
-        fprintf(stderr, DC_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, DC_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -220,7 +220,7 @@ int DCLinkedList_remove(
 ) {
 
     if (list == NULL) {
-        fprintf(stderr, DC_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, DC_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -309,7 +309,7 @@ int DCLinkedList_search(
 ) {
 
     if (list == NULL) {
-        fprintf(stderr, DC_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, DC_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -368,7 +368,7 @@ int DCLinkedList_search(
 
 int DCLinkedList_display(DCLinkedList* list){
     if (list == NULL) {
-        fprintf(stderr, DC_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, DC_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -385,7 +385,7 @@ int DCLinkedList_display(DCLinkedList* list){
 
 int DCLinkedList_destroy(DCLinkedList** list){
     if (list == NULL || *list == NULL) {
-        fprintf(stderr, DC_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, DC_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 

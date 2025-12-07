@@ -19,7 +19,7 @@
     "Failed to allocate memory for the `elements` of `ArrayDeque`\n"
 
 
-#define ARRAY_DEQUE_ACCESS_ERROR \
+#define ARRAY_DEQUE_ACCESS_EXCEPTION \
     "ArrayDequeAccessException: " \
     "Please check whether the `ArrayDeque*` type parameter is passed\n"
 

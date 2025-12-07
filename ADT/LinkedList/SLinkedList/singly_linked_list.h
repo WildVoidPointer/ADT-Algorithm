@@ -13,7 +13,7 @@
     "SLinkedListInitError: Failed to allocate memory\n"
 
 
-#define S_LINKED_LIST_ACCESS_ERROR \
+#define S_LINKED_LIST_ACCESS_EXCEPTION \
     "SLinkedListAccessError: " \
     "Please check whether the `SLinkedList` type parameter is passed\n"
 

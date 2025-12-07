@@ -9,17 +9,12 @@
 #endif
 
 
-#define ARRAY_STACK_INIT_ERROR \
-    "ArrayStackInitError: " \
+#define ARRAY_STACK_CREATE_ERROR \
+    "ArrayStackCreateError: " \
     "Failed to allocate memory for the `ArrayStack`\n"
 
 
-#define ARRAY_STACK_ELEMENTS_INIT_ERROR \
-    "ArrayStackInitError: " \
-    "Failed to allocate memory for the `elements` of `ArrayStack`\n"
-
-
-#define ARRAY_STACK_ACCESS_ERROR \
+#define ARRAY_STACK_ACCESS_EXCEPTION \
     "ArrayStackAccessException: " \
     "Check whether parameter `ArrayStack*` is valid ?\n"
 

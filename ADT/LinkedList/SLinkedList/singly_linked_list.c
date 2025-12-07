@@ -37,7 +37,7 @@ int SLinkedList_is_empty(SLinkedList* list) {
 
 int SLinkedList_push_front(SLinkedList* list, SLinkedListDataType data) {
     if (list == NULL) {
-        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -71,7 +71,7 @@ int
 SLinkedList_push_back(SLinkedList* list, SLinkedListDataType data) {
     
     if (list == NULL) {
-        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -110,7 +110,7 @@ SLinkedList_insert(
     SLinkedList* list, SLinkedListDataType data, size_t pos) {
 
     if (list == NULL) {
-        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -189,7 +189,7 @@ int SLinkedList_remove(
     size_t pos, SLinkedListSearchModeEnum mode) {
 
     if (list == NULL) {
-        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
     if (data == NULL) {
@@ -257,7 +257,7 @@ SLinkedList_search(
     size_t* pos, SLinkedListSearchModeEnum mode) {
         
     if (list == NULL) {
-        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -308,7 +308,7 @@ SLinkedList_search(
 
 int SLinkedList_pop_front(SLinkedList* list, SLinkedListDataType* data) {
     if (list == NULL) {
-        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -327,7 +327,7 @@ int SLinkedList_pop_front(SLinkedList* list, SLinkedListDataType* data) {
 
 int SLinkedList_pop_back(SLinkedList* list, SLinkedListDataType* data) {
     if (list == NULL) {
-        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -382,7 +382,7 @@ int SLinkedList_back(SLinkedList* list, SLinkedListDataType* data) {
 int SLinkedList_reverse(SLinkedList* list) {
     
     if (list == NULL) {
-        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -410,7 +410,7 @@ int SLinkedList_reverse(SLinkedList* list) {
 int
 SLinkedList_recursion_reverse(SLinkedList* list) {
     if (list == NULL) {
-        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
     
@@ -436,7 +436,7 @@ _SLinkedList_recursion_reverse_helper(SLinkedListNode* node) {
 
 int SLinkedList_display(SLinkedList* list) {
     if (list == NULL) {
-        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
@@ -453,7 +453,7 @@ int SLinkedList_display(SLinkedList* list) {
 
 int SLinkedList_destroy(SLinkedList** list) {
     if (list == NULL || *list == NULL) {
-        fprintf(stderr, S_LINKED_LIST_ACCESS_ERROR);
+        fprintf(stderr, S_LINKED_LIST_ACCESS_EXCEPTION);
         return -1;
     }
 
