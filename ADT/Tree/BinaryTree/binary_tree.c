@@ -51,7 +51,7 @@ int BinaryTree_display(BinaryTree* tree, BinaryTreeTraverser traverser) {
 
 
     printf("BinaryTree: {  ");
-    while (!BinaryTreeHelpQueue_is_empty(q)) {
+    while (! BinaryTreeHelpQueue_is_empty(q)) {
         BinaryTreeNode_display(BinaryTreeHelpQueue_dequeue(q));
     }
     printf("}\n");
@@ -162,7 +162,7 @@ int BinaryTree_level_order_traverse(
         BinaryTreeHelpQueue* q = BinaryTreeHelpQueue_create();
         BinaryTreeHelpQueue_enqueue(q, node);
        
-        while (!BinaryTreeHelpQueue_is_empty(q)) {
+        while (! BinaryTreeHelpQueue_is_empty(q)) {
 
             tmp_node = BinaryTreeHelpQueue_dequeue(q);
 
@@ -219,7 +219,7 @@ BinaryTree_build_of_array(BinaryTreeDataType* array, size_t array_len) {
     int build_abort = 0;
     
     int i = 1;
-    while (i < array_len && !BinaryTreeHelpQueue_is_empty(help_queue)) {
+    while (i < array_len && ! BinaryTreeHelpQueue_is_empty(help_queue)) {
         BinaryTreeNode* current = BinaryTreeHelpQueue_dequeue(help_queue);
         
         // 处理左子节点
@@ -367,7 +367,7 @@ BinaryTree* BinaryTree_build_of_level_order(
     int build_abort = 0;
 
     while (
-        !BinaryTreeHelpQueue_is_empty(help_queue) && 
+        ! BinaryTreeHelpQueue_is_empty(help_queue) && 
         level_index < level_len
     ) {
         BinaryTreeNode* current = BinaryTreeHelpQueue_dequeue(help_queue);
@@ -658,7 +658,7 @@ int BinaryTreeHelpQueue_clear(BinaryTreeHelpQueue** q) {
         return -1;
     }
 
-    while (!BinaryTreeHelpQueue_is_empty(*q)) {
+    while (! BinaryTreeHelpQueue_is_empty(*q)) {
         BinaryTreeHelpQueue_dequeue(*q);
     }
 

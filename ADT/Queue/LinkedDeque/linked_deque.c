@@ -244,7 +244,7 @@ int LinkedDeque_destroy(LinkedDeque** q) {
 
     LinkedDequeUnit* tmp_unit = NULL;
 
-    while (!LinkedDeque_is_empty(*q)) {
+    while (! LinkedDeque_is_empty(*q)) {
         tmp_unit = LinkedDeque_front_dequeue(*q);
         LinkedDequeUnit_destroy(&tmp_unit);
     }

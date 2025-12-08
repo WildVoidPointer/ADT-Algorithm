@@ -75,7 +75,7 @@ int has_celebrity(int num, int knows_mtx[num][num]) {
     for (int i = 0; i < num; i++) {
         if (i != candidate) {
             if (
-                !knows(num, knows_mtx, i, candidate) || 
+                ! knows(num, knows_mtx, i, candidate) || 
                 knows(num, knows_mtx, candidate, i)
             ) {
                 return -1;

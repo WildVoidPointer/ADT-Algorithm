@@ -103,7 +103,7 @@ int main(int argc, char const *argv[]) {
         }
 
         else {
-            while (!is_empty(&operators) && 
+            while (! is_empty(&operators) && 
                 (get_precedence(prec, prec_map_len, peek(&operators)) >= 
                     get_precedence(prec, prec_map_len, _infix_iter))) {
                 push(&postfix, pop(&operators));
@@ -114,10 +114,10 @@ int main(int argc, char const *argv[]) {
 
     }
 
-    while (! is_empty(&operators))
+    while (!  is_empty(&operators))
         push(&postfix, pop(&operators));
 
-    if (! is_empty(&postfix)) {
+    if (!  is_empty(&postfix)) {
         int _postfix_len = postfix.index;
         for (int i = 0; i < _postfix_len; i++) 
             printf("%c", postfix.characters[i]);

@@ -84,7 +84,7 @@ static int binary_tree_pre_order_iterate_traverse(TreeNode* t, int st_size) {
     stack_push(st, t);
     TreeNode* popped_node = NULL;
 
-    while (! stack_is_empty(st)) {
+    while (!  stack_is_empty(st)) {
         popped_node = stack_pop(st);
 
         if (popped_node != NULL) {
@@ -114,7 +114,7 @@ static int binary_tree_in_order_iterate_traverse(TreeNode* t, int st_size){
     }
 
     TreeNode* curr = t;
-    while (curr != NULL || !stack_is_empty(st)) {
+    while (curr != NULL || ! stack_is_empty(st)) {
         // 一路向左，将所有左子节点压栈
         while (curr != NULL) {
             stack_push(st, curr);
@@ -155,7 +155,7 @@ static int binary_tree_post_order_iterate_traverse(TreeNode* t, int st_size) {
     TreeNode* popped_node = NULL;
 
     // 第一个栈用于模拟类似前序的遍历（根->右->左）
-    while (!stack_is_empty(st1)) {
+    while (! stack_is_empty(st1)) {
         popped_node = stack_pop(st1);
         
         if (popped_node != NULL) {
@@ -174,7 +174,7 @@ static int binary_tree_post_order_iterate_traverse(TreeNode* t, int st_size) {
     }
 
     // 第二个栈出栈顺序就是后序遍历（左->右->根）
-    while (!stack_is_empty(st2)) {
+    while (! stack_is_empty(st2)) {
         popped_node = stack_pop(st2);
 
         if (popped_node != NULL) {
@@ -203,7 +203,7 @@ static int binary_tree_post_order_iterate_single_stack(TreeNode* t, int st_size)
     TreeNode* last_visited = NULL;
     TreeNode* peeked_node = NULL;
 
-    while (current != NULL || !stack_is_empty(st)) {
+    while (current != NULL || ! stack_is_empty(st)) {
         // 一路向左
         if (current != NULL) {
             stack_push(st, current);

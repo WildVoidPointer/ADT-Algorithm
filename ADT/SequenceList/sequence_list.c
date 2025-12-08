@@ -135,7 +135,7 @@ int SequenceList_search(
                 break;
             }
         }
-        if (!found_state) {
+        if (! found_state) {
             fprintf(stderr, SEQUENCE_LIST_SEARCH_NOT_FOUND);
             return -1;
         }

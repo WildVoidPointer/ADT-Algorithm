@@ -38,7 +38,7 @@ int LinkedStack_push(LinkedStack* stack, LinkedStackDataType ele) {
         return -1;
     }
 
-    if (!LinkedStack_is_full(stack)) {
+    if (! LinkedStack_is_full(stack)) {
         LinkedStackNode* new = LinkedStackNode_create(&ele);
         if (new == NULL) {
             fprintf(stderr, LINKED_STACK_PUSH_ERROR);

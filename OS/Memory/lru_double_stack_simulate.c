@@ -99,7 +99,7 @@ void LRUCacheDoubleStack_load(
 
 MemoryPage LRUCacheDoubleStack_drop(LRUCacheDoubleStack* lru) {
     if (_LRUCacheDoubleStack_stack_is_empty(lru->help_length)) {
-        while (! _LRUCacheDoubleStack_stack_is_empty(lru->main_length)) {
+        while (!  _LRUCacheDoubleStack_stack_is_empty(lru->main_length)) {
             _LRUCacheDoubleStack_push(
                 lru->help_cache, 
                 &(lru->help_length), 
@@ -126,7 +126,7 @@ int LRUCacheDoubleStack_cache_is_exists(
     
     int is_exists = 0;
     
-    if (! LRUCacheDoubleStack_is_empty(lru)) {
+    if (!  LRUCacheDoubleStack_is_empty(lru)) {
 
         for (int i = 0; i < lru->main_length; i++) {
             if (lru->main_cache[i] == page) {
@@ -150,18 +150,18 @@ int LRUCacheDoubleStack_cache_is_exists(
 void LRUCacheDoubleStack_move_to_top(
     LRUCacheDoubleStack* lru, MemoryPage page
 ) {
-    if (! LRUCacheDoubleStack_is_empty(lru)) {
+    if (!  LRUCacheDoubleStack_is_empty(lru)) {
         int old_length = lru->help_length;
         int is_find = 0;
         MemoryPage access_page;
 
         // 扫描主栈
         while (
-            ! _LRUCacheDoubleStack_stack_is_empty(lru->main_length) 
-            && ! is_find
+            !  _LRUCacheDoubleStack_stack_is_empty(lru->main_length) 
+            && !  is_find
         ) {
 
-            if (! _LRUCacheDoubleStack_peek_verify(
+            if (!  _LRUCacheDoubleStack_peek_verify(
                     lru->main_cache, lru->main_length, page
                 )
             ) {
@@ -197,11 +197,11 @@ void LRUCacheDoubleStack_move_to_top(
         old_length = lru->main_length;
 
         while (
-            ! _LRUCacheDoubleStack_stack_is_empty(lru->help_length)
-            && ! is_find
+            !  _LRUCacheDoubleStack_stack_is_empty(lru->help_length)
+            && !  is_find
         ) {
 
-            if (! _LRUCacheDoubleStack_peek_verify(
+            if (!  _LRUCacheDoubleStack_peek_verify(
                     lru->help_cache, lru->help_length, page
                 )
             ) {
