@@ -1,127 +1,181 @@
-#include<stdio.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 
-#define MAX_LENGTH 1000
+static struct OpsPrecMap {
+
+    struct unit {
+        char op;
+        int precedence;
+    };
+
+    struct unit units[5];
+
+    int len;
+
+} DefaultOpsPrecMap = {
+
+    .units = { 
+        { .op = '+', .precedence = 2 },
+        { .op = '-', .precedence = 2 },
+        { .op = '*', .precedence = 3 },
+        { .op = '/', .precedence = 3 },
+        { .op = '(', .precedence = 1 },
+    },
+    .len = 5
+};
 
 
-typedef struct PrecMap {
-    char symbol;
-    int precedence;
-} PrecMap;
 
-
-int get_precedence(PrecMap *prec, int len, char op) {
-    for (int i = 0; i < len; i++) {
-        if (prec[i].symbol == op) {
-            return prec[i].precedence;
+static int prec_map_get_precedence(struct OpsPrecMap *prec, char op) {
+    for (int i = 0; i < prec->len; i++) {
+        if (prec->units[i].op == op) {
+            return prec->units[i].precedence;
         }
     }
     return -1;
 }
 
 
-typedef struct Stack {
-    char characters[MAX_LENGTH];
-    int index;
-} Stack;
+static int prec_map_cmp_gt(struct OpsPrecMap *prec, char c1, char c2) {
+    int prec_c1 = 0;
+    int prec_c2 = 0;
 
+    for (int i = 0; i < prec->len; i++) {
+        if (c1 == prec->units[i].op) {
+            prec_c1 = prec->units[i].precedence;
+        }
 
-void init(Stack *stack) {
-    for (int i = 0; i < MAX_LENGTH; i++) {
-        stack->characters[i] = '\0';
+        if (c2 == prec->units[i].op) {
+            prec_c2 = prec->units[i].precedence;
+        }
     }
-    stack->index = 0;
+
+    return prec_c1 >= prec_c2;
 }
 
 
-void push(Stack *stack, char num) {
-    stack->characters[stack->index] = num;
-    stack->index++;
+static struct Stack {
+    char* chars;
+    int len;
+    int size;
+};
+
+static struct Stack* stack_create(int size) {
+
+    if (size <= 0) {
+        return NULL;
+    }
+
+    struct Stack* st = malloc (sizeof(struct Stack));
+    if (st == NULL) {
+        return NULL;
+    }
+
+    st->chars = malloc (sizeof(char) * size);
+    if (st->chars == NULL) {
+        free(st);
+        return NULL;
+    }
+
+    st->size = size;
+
+    st->len = 0;
 }
 
 
-char pop(Stack *stack) {
-    stack->index--;
-    char _pop_ele = stack->characters[stack->index];
-    stack->characters[stack->index] = '\0';
-    return _pop_ele;
+
+static void stack_push(struct Stack *stack, char op) {
+    if (stack->len >= stack->size) {
+        return;
+    }
+    stack->chars[stack->len++] = op;
 }
 
 
-char peek(Stack *stack) {
-    return stack->characters[stack-> index - 1];
+static char stack_pop(struct Stack* stack) {
+    if (stack->len <= 0) {
+        return '\0';
+    }
+    char popped = stack->chars[--(stack->len)];
+
+    return popped;
 }
 
 
-int is_empty(Stack *stack) {
-    return stack->index == 0;
+static char stack_peek(struct Stack* stack) {
+    return stack->chars[stack->len - 1];
+}
+
+
+static int stack_is_empty(struct Stack* stack) {
+    return stack->len <= 0;
+}
+
+
+static int char_is_letter(char c) {
+    if (
+        (c >= 'a' && c <= 'z') ||
+        (c >= 'A' && c <= 'Z') ||
+        (c >= '0' && c <= '9')
+    ) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+
+static char_is_op(struct OpsPrecMap* prec_map, char c) {
+    for (int i = 0; i < prec_map->len; i++) {
+        if (c == prec_map->units[i].op) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+
+static void println_postfix_of_infix(
+    struct OpsPrecMap* prec_map,
+    char* infix,
+    int infix_len
+) {
+    struct Stack* st = stack_create(30);
+
+    if (st == NULL) {
+        return;
+    }
+
+    struct Stack* postfix = stack_create(infix_len);
+    if (postfix == NULL) {
+        return;
+    }
+
+    for (int i = 0; i < infix_len - 1; i++) {
+        if (char_is_letter(infix[i])) {
+            stack_push(postfix, infix[i]);
+
+        } else if (char_is_op(prec_map, infix[i])) {
+            if (
+                prec_map_cmp_gt(
+                    prec_map, 
+                    stack_peek(st),
+                    infix[i]
+                ) 
+                || stack_is_empty(st)
+            ) {
+                stack_push(st, infix[i]);
+            } else {
+            }
+        }
+    }
 }
 
 
 int main(int argc, char const *argv[]) {
-
     char *infix = "(A+B)*C";
     char *allow_chars = "ABCDEFGHIJKMNOPQRSTUVWXYZ";
-
-    PrecMap prec[] = {
-        {'+', 2},
-        {'-', 2},
-        {'*', 3},
-        {'/', 3},
-        {'(', 1}, 
-    };
-    const int prec_map_len = 5;
-
-    Stack operators;
-    init(&operators);
-
-    Stack postfix;
-    init(&postfix);
-
-    int infix_len = strlen(infix);
-
-    for (int i = 0; i < infix_len; i++) {
-
-        char _infix_iter = infix[i];
-
-        if (_infix_iter >= 'A' && _infix_iter <= 'Z' 
-            || _infix_iter >= '0' && _infix_iter <= '9')
-
-            push(&postfix, _infix_iter);
-
-        else if (_infix_iter == '(')
-            push(&operators, _infix_iter);
-
-        else if (_infix_iter == ')') {
-            char _top_op = pop(&operators);
-
-            while (_top_op != '(') {
-                push(&postfix, _top_op);
-                _top_op = pop(&operators);
-            }
-        }
-
-        else {
-            while (! is_empty(&operators) && 
-                (get_precedence(prec, prec_map_len, peek(&operators)) >= 
-                    get_precedence(prec, prec_map_len, _infix_iter))) {
-                push(&postfix, pop(&operators));
-            }
-            
-            push(&operators, _infix_iter);
-        }
-
-    }
-
-    while (!  is_empty(&operators))
-        push(&postfix, pop(&operators));
-
-    if (!  is_empty(&postfix)) {
-        int _postfix_len = postfix.index;
-        for (int i = 0; i < _postfix_len; i++) 
-            printf("%c", postfix.characters[i]);
-        puts("");
-    }
-    return 0;
 }
