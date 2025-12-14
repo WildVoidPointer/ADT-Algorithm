@@ -14,10 +14,6 @@
     "Failed to allocate memory for the `LinkedStack`\n"
 
 
-#define LINKED_STACK_INIT_ERROR \
-    "LinkedStackInitError: " \
-    "Failed to allocate memory for the `elements` of `LinkedStack`\n"
-
 #define LINKED_STACK_PUSH_ERROR \
     "LinkedStackPushError: " \
     "Failed to allocate memory for the `LinkedStack`\n"
@@ -25,16 +21,32 @@
 
 #define LINKED_STACK_ACCESS_EXCEPTION \
     "LinkedStackAccessException: " \
-    "Check whether parameter `LinkedStack*` is valid ?\n"
+    "Check whether parameter `LinkedStack*` is valid \n"
 
 
 #define LINKED_STACK_PUSH_EXCEPTION \
-    "LinkedStackPushException: The LinkedStack structure is full\n"
+    "LinkedStackPushException: " \
+    "The LinkedStack structure is full or data is NULL\n"
 
 
 #define LINKED_STACK_POP_EXCEPTION \
     "LinkedStackPopException: " \
     "The LinkedStack structure is empty or buffer is NULL\n"
+
+
+#define LINKED_STACK_NODE_CREATE_ERROR \
+    "LinkedStackNodeCreateError: " \
+    "Failed to allocate memory for the `LinkedStack`\n"
+
+
+#define LINKED_STACK_NODE_ACCESS_EXCEPTION \
+    "LinkedStackNodeAccessException: " \
+    "Check whether parameter `LinkedStackNode*` is valid \n"
+
+
+#define LINKED_STACK_NODE_DATA_ACCESS_EXCEPTION \
+    "LinkedStackNodeDataAccessException: " \
+    "Check whether parameter `LinkedStackDataType* data` is valid \n"
 
 
 typedef int LinkedStackDataType;
@@ -43,6 +55,7 @@ typedef int LinkedStackDataType;
 typedef struct LinkedStackNode {
     LinkedStackDataType data;
     struct LinkedStackNode* next;
+    struct LinkedStackNode* prev;
 } LinkedStackNode;
 
 
@@ -60,11 +73,13 @@ int LinkedStack_is_full(LinkedStack* stack);
 
 int LinkedStack_is_empty(LinkedStack* stack);
 
+size_t LinkedStack_length(LinkedStack* stack);
+
+size_t LinkedStack_size(LinkedStack* stack);
+
 int LinkedStack_push(LinkedStack* stack, LinkedStackDataType ele);
 
 int LinkedStack_pop(LinkedStack* stack, LinkedStackDataType* popped);
-
-int LinkedStack_clear(LinkedStack* stack);
 
 int LinkedStack_destroy(LinkedStack** stack);
 
