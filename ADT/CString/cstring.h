@@ -41,7 +41,8 @@
 
 
 #define CSTRING_SEARCH_BUFFER_ERROR \
-    "CStringSearchBufferError: The search buffer of CString cannot be accessed\n"
+    "CStringSearchBufferError: " \
+    "The search buffer of CString cannot be accessed\n"
 
 
 #define CSTRING_SEARCH_MODE_ERROR \

@@ -21,8 +21,14 @@ int main() {
 
     CString_display(ectype);
 
-    printf("CString Compare Result: %d\n", CString_compare(cstring1, cstring2, NULL));
-    printf("CString Compare Result: %d\n", CString_compare(cstring1, ectype, NULL));
+    printf(
+        "CString Compare Result: %d\n", 
+        CString_compare(cstring1, cstring2, NULL)
+    );
+    printf(
+        "CString Compare Result: %d\n", 
+        CString_compare(cstring1, ectype, NULL)
+    );
 
     CString* substring = CString_split(cstring1, 0, 5);
     CString_display(substring);

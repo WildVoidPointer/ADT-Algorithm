@@ -14,16 +14,20 @@ int CString_is_valid(CString* cstring) {
 
 
 int CString_is_empty(CString* cstring) {
-    return (CString_is_valid(cstring)) ? cstring->length == 0 : -1;
+    return (CString_is_valid(cstring)) ? 
+        cstring->length == 0 : -1;
 }
 
 
 size_t CString_length(CString* cstring) {
-    return (CString_is_valid(cstring)) ? cstring->length : -1;
+    return (CString_is_valid(cstring)) ? 
+        cstring->length : -1;
 }
 
 
-CString* CString_create(CStringUnitType* units, size_t length) {
+CString* CString_create(
+    CStringUnitType* units, size_t length
+) {
 
     if (units == NULL) {
         fprintf(stderr, CSTRING_UNITS_ACCESS_EXCEPTION);
@@ -37,7 +41,9 @@ CString* CString_create(CStringUnitType* units, size_t length) {
         return NULL;
     }
 
-    cstring->data = (CStringUnitType*) malloc (sizeof(CStringUnitType) * length);
+    cstring->data = (CStringUnitType*) malloc (
+        sizeof(CStringUnitType) * length
+    );
 
     if (cstring->data == NULL) {
         fprintf(stderr, CSTRING_UNITS_INIT_ERROR);
@@ -62,7 +68,9 @@ CString* CString_deepcopy(CString* cstring) {
         return NULL;
     }
 
-    CString* ectype = CString_create(cstring->data, cstring->length);
+    CString* ectype = CString_create(
+        cstring->data, cstring->length
+    );
 
     if (! CString_is_valid(ectype)) {
         fprintf(stderr, CSTRING_DEEPCOPY_ERROR);
@@ -74,9 +82,14 @@ CString* CString_deepcopy(CString* cstring) {
 
 
 int CString_compare(
-    CString* cstring1, CString* cstring2, CStringComparator comparator) {
+    CString* cstring1, CString* cstring2, 
+    CStringComparator comparator
+) {
 
-    if (! CString_is_valid(cstring1) || ! CString_is_valid(cstring2)) {
+    if (
+        ! CString_is_valid(cstring1) || 
+        ! CString_is_valid(cstring2)
+    ) {
         fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return -1;
     }
@@ -86,7 +99,8 @@ int CString_compare(
     }
 
     size_t min_iter = (cstring1->length > cstring2->length) ? 
-                            cstring2->length : cstring1->length;
+                            cstring2->length : 
+                            cstring1->length;
 
     int compare_res = 0;
     
@@ -104,7 +118,9 @@ int CString_compare(
 }
 
 
-CString* CString_split(CString* cstring, size_t start, size_t offset) {
+CString* CString_split(
+    CString* cstring, size_t start, size_t offset
+) {
 
     if (! CString_is_valid(cstring) || start > cstring->length || 
             offset > cstring->length || start > offset) {
@@ -120,7 +136,9 @@ CString* CString_split(CString* cstring, size_t start, size_t offset) {
         return NULL;
     }
 
-    subcstring->data = (CStringUnitType*) malloc (sizeof(CStringUnitType) * offset);
+    subcstring->data = (CStringUnitType*) malloc (
+        sizeof(CStringUnitType) * offset
+    );
 
     if (subcstring == NULL) {
         fprintf(stderr, CSTRING_UNITS_INIT_ERROR);
@@ -140,7 +158,10 @@ CString* CString_split(CString* cstring, size_t start, size_t offset) {
 
 CString* CString_concat(CString* cstring1, CString* cstring2) {
 
-    if (! CString_is_valid(cstring1) || ! CString_is_valid(cstring2)) {
+    if (
+        ! CString_is_valid(cstring1) || 
+        ! CString_is_valid(cstring2)
+    ) {
         fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return NULL;
     }
@@ -152,8 +173,9 @@ CString* CString_concat(CString* cstring1, CString* cstring2) {
         return NULL;
     }
 
-    concated->data = (CStringUnitType*) malloc 
-            (sizeof(CStringUnitType) * cstring1->length + cstring2->length);
+    concated->data = (CStringUnitType*) malloc (
+        sizeof(CStringUnitType) * cstring1->length + cstring2->length
+    );
 
     if (concated->data == NULL) {
         fprintf(stderr, CSTRING_UNITS_INIT_ERROR);
@@ -176,8 +198,13 @@ CString* CString_concat(CString* cstring1, CString* cstring2) {
 }
 
 
-int CString_violent_matching(CString* cstring1, CString* cstring2, size_t* pos) {
-    if (!  CString_is_valid(cstring1) || !  CString_is_valid(cstring2)) {
+int CString_violent_matching(
+    CString* cstring1, CString* cstring2, size_t* pos
+) {
+    if (
+        ! CString_is_valid(cstring1) || 
+        ! CString_is_valid(cstring2)
+    ) {
         fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return -1;
     }
@@ -190,8 +217,14 @@ int CString_violent_matching(CString* cstring1, CString* cstring2, size_t* pos) 
     size_t cstring1_offset = 0;
     size_t cstring2_offset = 0;
 
-    while (cstring1_offset < cstring1->length && cstring2_offset < cstring2->length) {
-        if (cstring1->data[cstring1_offset] == cstring2->data[cstring2_offset]) {
+    while (
+        cstring1_offset < cstring1->length 
+        && cstring2_offset < cstring2->length
+    ) {
+        if (
+            cstring1->data[cstring1_offset] == 
+                cstring2->data[cstring2_offset]
+        ) {
             cstring1_offset++;
             cstring2_offset++;
         } else {
@@ -210,7 +243,9 @@ int CString_violent_matching(CString* cstring1, CString* cstring2, size_t* pos) 
 
 
 int CString_search(
-    CString* cstring, CStringUnitType* unit, size_t* index, CStringSearchModeEnum mode) {
+    CString* cstring, CStringUnitType* unit, 
+    size_t* index, CStringSearchModeEnum mode
+) {
 
     if (! CString_is_valid(cstring)) {
         fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
@@ -287,7 +322,9 @@ CStringPMT* CStringPMT_build(CString* s) {
 }
 
 
-int CString_kmp_matching(CString* cstring, CString* pattern, size_t* res) {
+int CString_kmp_matching(
+    CString* cstring, CString* pattern, size_t* res
+) {
     if (cstring == NULL || pattern == NULL) {
         fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return -1;
@@ -327,6 +364,7 @@ int CString_kmp_matching(CString* cstring, CString* pattern, size_t* res) {
 
 
 int CString_clear(CString* cstring) {
+    
     if (! CString_is_valid(cstring)) {
         fprintf(stderr, CSTRING_ACCESS_EXCEPTION);
         return -1;

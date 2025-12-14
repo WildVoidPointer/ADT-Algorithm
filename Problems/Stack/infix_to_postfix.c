@@ -26,7 +26,9 @@ static struct OpsPrecMap {
 
 
 
-static int prec_map_get_precedence(struct OpsPrecMap *prec, char op) {
+static int prec_map_get_precedence(
+    struct OpsPrecMap *prec, char op
+) {
     for (int i = 0; i < prec->len; i++) {
         if (prec->units[i].op == op) {
             return prec->units[i].precedence;
@@ -36,7 +38,10 @@ static int prec_map_get_precedence(struct OpsPrecMap *prec, char op) {
 }
 
 
-static int prec_map_prec_cmp_gt(struct OpsPrecMap *prec, char c1, char c2) {
+static int prec_map_prec_cmp_gt(
+    struct OpsPrecMap *prec, 
+    char c1, char c2
+) {
     int prec_c1 = 0;
     int prec_c2 = 0;
 
@@ -134,7 +139,10 @@ static int char_is_letter(char c) {
 }
 
 
-static int char_is_op(struct OpsPrecMap* prec_map, char c) {
+static int char_is_op(
+    struct OpsPrecMap* prec_map, char c
+) {
+    
     for (int i = 0; i < prec_map->len; i++) {
         if (c == prec_map->units[i].op) {
             return 1;
