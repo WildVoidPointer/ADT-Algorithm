@@ -5,12 +5,10 @@
 
 static struct OpsPrecMap {
 
-    struct unit {
+    struct {
         char op;
         int precedence;
-    };
-
-    struct unit units[5];
+    } units[5];
 
     int len;
 
@@ -38,7 +36,7 @@ static int prec_map_get_precedence(struct OpsPrecMap *prec, char op) {
 }
 
 
-static int prec_map_cmp_gt(struct OpsPrecMap *prec, char c1, char c2) {
+static int prec_map_prec_cmp_gt(struct OpsPrecMap *prec, char c1, char c2) {
     int prec_c1 = 0;
     int prec_c2 = 0;
 
@@ -56,11 +54,12 @@ static int prec_map_cmp_gt(struct OpsPrecMap *prec, char c1, char c2) {
 }
 
 
-static struct Stack {
+struct Stack {
     char* chars;
     int len;
     int size;
 };
+
 
 static struct Stack* stack_create(int size) {
 
@@ -83,7 +82,6 @@ static struct Stack* stack_create(int size) {
 
     st->len = 0;
 }
-
 
 
 static void stack_push(struct Stack *stack, char op) {
@@ -114,6 +112,15 @@ static int stack_is_empty(struct Stack* stack) {
 }
 
 
+static void stack_println(struct Stack* stack) {
+    for (int i = 0; i < stack->len; i++) {
+        printf("%c  ", stack->chars[i]);
+    }
+
+    printf("\n");
+}
+
+
 static int char_is_letter(char c) {
     if (
         (c >= 'a' && c <= 'z') ||
@@ -127,7 +134,7 @@ static int char_is_letter(char c) {
 }
 
 
-static char_is_op(struct OpsPrecMap* prec_map, char c) {
+static int char_is_op(struct OpsPrecMap* prec_map, char c) {
     for (int i = 0; i < prec_map->len; i++) {
         if (c == prec_map->units[i].op) {
             return 1;
@@ -154,28 +161,53 @@ static void println_postfix_of_infix(
         return;
     }
 
-    for (int i = 0; i < infix_len - 1; i++) {
+    for (int i = 0; i < infix_len; i++) {
+
         if (char_is_letter(infix[i])) {
+
             stack_push(postfix, infix[i]);
 
+        } else if (infix[i] == ')') {
+            // 需要单独处理括号 此处仅有 "(" 与 ")
+            while (stack_peek(st) != '(') {
+                stack_push(postfix, stack_pop(st));
+            }
+
+            stack_pop(st);
+
         } else if (char_is_op(prec_map, infix[i])) {
-            if (
-                prec_map_cmp_gt(
-                    prec_map, 
+            while (
+                ! stack_is_empty(st) 
+                && prec_map_prec_cmp_gt(
+                    prec_map,
                     stack_peek(st),
                     infix[i]
-                ) 
-                || stack_is_empty(st)
+                )
+                && stack_peek(st) != '('
             ) {
-                stack_push(st, infix[i]);
-            } else {
+                stack_push(postfix, stack_pop(st));
             }
+
+            stack_push(st, infix[i]);
         }
     }
+
+    while (! stack_is_empty(st)) {
+        stack_push(postfix, stack_pop(st));
+    }
+
+    stack_println(postfix);
 }
 
 
 int main(int argc, char const *argv[]) {
-    char *infix = "(A+B)*C";
-    char *allow_chars = "ABCDEFGHIJKMNOPQRSTUVWXYZ";
+    char* infix = "(A+B)*C";    // A B + C *
+
+    int infix_len = strlen(infix);
+
+    println_postfix_of_infix(
+        &DefaultOpsPrecMap,
+        infix,
+        infix_len
+    );
 }
