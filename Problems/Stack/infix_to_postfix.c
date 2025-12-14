@@ -86,6 +86,8 @@ static struct Stack* stack_create(int size) {
     st->size = size;
 
     st->len = 0;
+
+    return st;
 }
 
 
