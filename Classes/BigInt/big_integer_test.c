@@ -50,7 +50,28 @@ static int BigInt_subtract_Test() {
 }
 
 
+static int BigInt_multiply_Test() {
+    u_char* num1 = "-0023";
+    u_char* num2 = "-0032";
+    int num_len = 5;
+
+    BigInt* big_num1 = BigInt_of_chars(num1, num_len);
+    BigInt* big_num2 = BigInt_of_chars(num2, num_len);
+
+    BigInt_display(big_num1);
+    BigInt_display(big_num2);
+
+    BigInt_multiply(big_num1, big_num2);
+
+    BigInt_display(big_num1);
+    BigInt_display(big_num2);
+
+    BigInt_destroy(&big_num1);
+    BigInt_destroy(&big_num2);
+}
+
+
 int main () {
-    BigInt_subtract_Test();
+    BigInt_multiply_Test();
     
 }

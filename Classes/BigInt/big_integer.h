@@ -89,7 +89,7 @@ typedef struct BigInt {
 } BigInt;
 
 
-BigInt* BigInt_of_chars(u_char* s, int len);
+BigInt* BigInt_of_chars(u_char* s, int num_len);
 
 
 int BigInt_destroy(BigInt** this);
@@ -125,6 +125,14 @@ int BigInt_abs_add(BigInt* this, BigInt* n);
 int BigInt_abs_subtract(BigInt* this, BigInt* n);
 
 
+int BigInt_abs_multiply(
+    BigInt* this, BigInt* n, BigInt* result
+);
+
+
+int BigInt_abs_divide(BigInt* this, BigInt* n);
+
+
 int BigInt_add(BigInt* this, BigInt* n);
 
 
@@ -137,7 +145,7 @@ int BigInt_multiply(BigInt* this, BigInt* n);
 int BigInt_divide(BigInt* this, BigInt* n);
 
 
-BigInt* _BigInt_alloc(int cap);
+BigInt* _BigInt_alloc(int cap, BigIntSignFlag flag);
 
 
 int _BigInt_realloc(BigInt* n, int new_cap);

@@ -125,7 +125,7 @@ BigInt* Bigint_deepcopy(BigInt* this) {
         return NULL;
     }
 
-    BigInt* copied = _BigInt_alloc(this->cap);
+    BigInt* copied = _BigInt_alloc(this->cap, this->sign_flag);
 
     if (copied == NULL) {
         fprintf(stderr, BIG_INTEGER_DEEPCOPY_ERROR);
@@ -261,6 +261,7 @@ int BigInt_abs_add(BigInt* this, BigInt* n) {
     int new_len = 0;
 
     for (int i = 0; i < max_len || carry; i++) {
+
         int sum = carry;
 
         if (i < this->len) {
@@ -313,10 +314,52 @@ int BigInt_abs_subtract(BigInt* this, BigInt* n) {
         this->number[i] = diff;
     }
 
-    BigInt_strip(this);
+    return 0;
+}
+
+
+int BigInt_abs_multiply(
+    BigInt* this, BigInt* n, BigInt* result
+) {
+
+    if (this == NULL || n == NULL || result == NULL) {
+        fprintf(stderr, BIG_INTEGER_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    for (int i = 0; i < n->len; i++) {
+
+        int carry = 0;
+
+        for (int j = 0; j < this->len; j++) {
+
+            int product = result->number[i + j] + 
+                n->number[i] * this->number[j] + carry;
+
+            result->number[i + j] = 
+                product % BIG_INTEGER_BASE_TEN;
+
+            carry = product / BIG_INTEGER_BASE_TEN;
+        }
+
+        int pos = i + this->len;
+
+        while (carry) {
+
+            result->number[pos] = result->number[pos] + 
+                carry % BIG_INTEGER_BASE_TEN;
+
+            carry = carry / BIG_INTEGER_BASE_TEN;
+
+            pos++;
+        }
+    }
 
     return 0;
 }
+
+
+int BigInt_abs_divide(BigInt* this, BigInt* n);
 
 
 int BigInt_add(BigInt* this, BigInt* n) {
@@ -337,6 +380,8 @@ int BigInt_subtract(BigInt* this, BigInt* n) {
         return -1;
     }
 
+    int subtract_status = 0;
+
     if (BigInt_has_same_sign(this, n)) {
 
         int cmp = 0;
@@ -345,13 +390,13 @@ int BigInt_subtract(BigInt* this, BigInt* n) {
 
         if (cmp > 0) {
 
-            return BigInt_abs_subtract(this, n);
+            subtract_status = BigInt_abs_subtract(this, n);
 
         } else {
 
             BigInt* tmp = Bigint_deepcopy(n);
 
-            BigInt_abs_subtract(tmp, this);
+            subtract_status = BigInt_abs_subtract(tmp, this);
 
             _BigInt_relocate_drop(&tmp, this);
 
@@ -359,18 +404,58 @@ int BigInt_subtract(BigInt* this, BigInt* n) {
         }
         
     } else {
-        return BigInt_abs_add(this, n);
+        subtract_status = BigInt_abs_add(this, n);
     }
+
+    BigInt_strip(this);
+
+    return subtract_status;
 }
 
 
-int BigInt_multiply(BigInt* this, BigInt* n);
+int BigInt_multiply(BigInt* this, BigInt* n) {
+
+    if (this == NULL || n == NULL) {
+        fprintf(stderr, BIG_INTEGER_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    BigInt* result = _BigInt_alloc(
+        this->cap + n->cap, this->sign_flag
+    );
+
+    if (result == NULL) {
+        return -1;
+    }
+
+    int multiply_status = BigInt_abs_multiply(
+        this, n, result
+    );
+
+    if (multiply_status == -1) {
+        return -1;
+    }
+
+    result->len = this->len + n->len;
+
+    BigInt_strip(result);
+
+    _BigInt_relocate_drop(&result, this);
+
+    if (! BigInt_has_same_sign(this, n)) {
+        BigInt_set_sign(this, BIG_INTEGER_IS_NEGATIVE);
+    } else {
+        BigInt_set_sign(this, BIG_INTEGER_IS_NOT_NEGATIVE);
+    }
+
+    return 0;
+}
 
 
 int BigInt_divide(BigInt* this, BigInt* n);
 
 
-BigInt* _BigInt_alloc(int cap) {
+BigInt* _BigInt_alloc(int cap, BigIntSignFlag flag) {
 
     if (cap <= 0) {
         fprintf(stderr, BIG_INTEGER_CAPACITY_ERROR);
@@ -392,11 +477,15 @@ BigInt* _BigInt_alloc(int cap) {
         return NULL;
     }
 
+    for (int i = 0; i < cap; i++) {
+        n->number[i] = 0;
+    }
+
     n->len = 0;
 
     n->cap = cap;
 
-    n->sign_flag = 0;
+    n->sign_flag = flag;
 
     return n;
 }
