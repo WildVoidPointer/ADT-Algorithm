@@ -59,6 +59,11 @@
     "Check whether parameter BigIntCharType is valid ?\n"
 
 
+#define BIG_INTEGER_DIVIDE_ZERO_EXCEPTION \
+    "BigIntDivideZeroException: " \
+    "BigInt Division by Zero Exception\n"
+
+
 #define BIG_INTEGER_ZERO '0'
 
 #define BIG_INTEGER_NINE '9'
@@ -116,6 +121,9 @@ int BigInt_set_sign(BigInt* this, BigIntSignChar flag);
 int BigInt_reverse_sign(BigInt* this);
 
 
+int BigInt_is_zero(BigInt* this);
+
+
 int BigInt_abs_compare(BigInt* a, BigInt* b, int* state);
 
 
@@ -130,7 +138,7 @@ int BigInt_abs_multiply(
 );
 
 
-int BigInt_abs_divide(BigInt* this, BigInt* n);
+int BigInt_abs_divide(BigInt* this, BigInt* n, BigInt* result);
 
 
 int BigInt_add(BigInt* this, BigInt* n);
@@ -143,6 +151,9 @@ int BigInt_multiply(BigInt* this, BigInt* n);
 
 
 int BigInt_divide(BigInt* this, BigInt* n);
+
+
+int _BigInt_can_divide(BigInt* this, BigInt* n, int this_idx);
 
 
 BigInt* _BigInt_alloc(int cap, BigIntSignFlag flag);

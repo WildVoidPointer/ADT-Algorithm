@@ -71,7 +71,20 @@ static int BigInt_multiply_Test() {
 }
 
 
+static int BigInt_divide_Test() {
+    u_char* num1 = "-0250";
+    u_char* num2 = "0025";
+    int num_len = 4;
+
+    BigInt* big_num1 = BigInt_of_chars(num1, num_len + 1);
+    BigInt* big_num2 = BigInt_of_chars(num2, num_len);
+
+    BigInt_divide(big_num1, big_num2);
+
+    BigInt_display(big_num1);
+}
+
+
 int main () {
-    BigInt_multiply_Test();
-    
+    BigInt_divide_Test();
 }

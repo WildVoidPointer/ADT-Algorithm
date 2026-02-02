@@ -214,6 +214,28 @@ int BigInt_reverse_sign(BigInt* this) {
 }
 
 
+int BigInt_is_zero(BigInt* this) {
+
+    if (this == NULL) {
+        fprintf(stderr, BIG_INTEGER_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    if (this->len <= 0) {
+        return 1;
+    } else {
+        for (int i = 0; i < this->len; i++) {
+            if (this->number[i] != 0) {
+                return 0;
+            }
+        }
+
+        return 1;
+    }
+
+}
+
+
 int BigInt_abs_compare(BigInt* a, BigInt* b, int* state) {
 
     if (a == NULL || b == NULL) {
@@ -298,6 +320,7 @@ int BigInt_abs_subtract(BigInt* this, BigInt* n) {
     int borrow = 0;
 
     for (int i = 0; i < this->len; i++) {
+
         int diff = this->number[i] - borrow;
 
         if (i < n->len) {
@@ -359,7 +382,52 @@ int BigInt_abs_multiply(
 }
 
 
-int BigInt_abs_divide(BigInt* this, BigInt* n);
+int BigInt_abs_divide(BigInt* this, BigInt* n, BigInt* result) {
+
+    if (this == NULL || n == NULL || result == NULL) {
+        fprintf(stderr, BIG_INTEGER_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    int this_idx = this->len - n->len;
+
+    while (this_idx >= 0) {
+
+        result->number[this_idx] = 0;
+
+        while (_BigInt_can_divide(this, n, this_idx)) {
+
+            int borrow = 0;
+
+            for (int i = 0; i < n->len; i++) {
+                int diff = this->number[this_idx + i] 
+                    - n->number[i] 
+                    - borrow;
+                
+                if (diff < 0) {
+                    diff = diff + BIG_INTEGER_BASE_TEN;
+                    borrow = 1;
+                } else {
+                    borrow = 0;
+                }
+
+                this->number[this_idx + i] = diff;
+            }
+
+            if (borrow > 0) {
+                this->number[this_idx + n->len] -= 1;
+            }
+
+            BigInt_strip(this);
+
+            result->number[this_idx] += 1;
+        }
+
+        this_idx--;
+    }
+
+    return 0;
+}
 
 
 int BigInt_add(BigInt* this, BigInt* n) {
@@ -452,8 +520,71 @@ int BigInt_multiply(BigInt* this, BigInt* n) {
 }
 
 
-int BigInt_divide(BigInt* this, BigInt* n);
+int BigInt_divide(BigInt* this, BigInt* n) {
 
+    if (this == NULL || n == NULL) {
+        fprintf(stderr, BIG_INTEGER_ACCESS_EXCEPTION);
+        return -1;
+    }
+
+    if (BigInt_is_zero(n)) {
+        fprintf(stderr, BIG_INTEGER_DIVIDE_ZERO_EXCEPTION);
+        return -1;
+    }
+
+    BigInt* res = _BigInt_alloc(this->len - n->len + 2, this->sign_flag);
+    if (res == NULL) {
+        return -1;
+    }
+
+    res->len = this->len - n->len + 1;
+
+    BigInt_abs_divide(this, n, res);
+
+    BigInt_strip(res);
+
+    _BigInt_relocate_drop(&res, this);
+
+    if (! BigInt_has_same_sign(this, n)) {
+        BigInt_set_sign(this, BIG_INTEGER_IS_NEGATIVE);
+    } else {
+        BigInt_set_sign(this, BIG_INTEGER_IS_NOT_NEGATIVE);
+    }
+
+    return 0;
+}
+
+
+int _BigInt_can_divide(BigInt* this, BigInt* n, int this_idx) {
+
+    if (this == NULL || n == NULL) {
+        fprintf(stderr, BIG_INTEGER_ACCESS_EXCEPTION);
+        return 0;
+    }
+
+    if (this->len - this_idx < n->len) {
+        return 0;
+    }
+    
+    if (this->len - this_idx > n->len) {
+        return 1;
+    }
+    
+    for (int i = n->len - 1; i >= 0; i--) {
+
+        int this_digit = this->number[this_idx + i];
+
+        int n_digit = n->number[i];
+        
+        if (this_digit > n_digit) {
+            return 1;
+        } else if (this_digit < n_digit) {
+            return 0;
+        }
+    }
+    
+    return 1;
+}
 
 BigInt* _BigInt_alloc(int cap, BigIntSignFlag flag) {
 
