@@ -26,8 +26,10 @@ Example 2:
 
 
 Notes:
-    Each element in the array represents the height of a bar with a width of one unit.  
-    Calculate the amount of water that can be trapped in the dips between the bars.
+    Each element in the array represents the height of a bar 
+    with a width of one unit.  
+    Calculate the amount of water that can be trapped 
+    in the dips between the bars.
 */
 
 

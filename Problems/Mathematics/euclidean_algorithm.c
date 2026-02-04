@@ -1,9 +1,11 @@
 #include <stdio.h>
 
 
-int gcd(int dividend, int divisor) {
+int gcd_with_recursion(int dividend, int divisor) {
     if (divisor > 0) {
-        return gcd(divisor, dividend % divisor);
+        return gcd_with_recursion(
+            divisor, dividend % divisor
+        );
     } else {
         return dividend;
     }
@@ -24,6 +26,6 @@ int gcd_with_iteration(int devidend, int divisor) {
 
 
 int main() {
-    printf("%d\n", gcd(35, 7));
+    printf("%d\n", gcd_with_recursion(7, 35));
     printf("%d\n", gcd_with_iteration(33, 11));
 }

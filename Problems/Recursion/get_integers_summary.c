@@ -1,11 +1,13 @@
 #include <stdio.h>
 
 
-int sum_of_loop (int *nums, int len) {
+int sum_of_iteration(int *nums, int len) {
     int sum = 0;
+
     for (int i = 0; i < len; i++) {
         sum += nums[i];
     }
+    
     return sum;
 }
 

@@ -4,15 +4,20 @@ From:
 
     
 Description:
-    There is a rectangle with a length of 343,720 units and a width of 233,333 units. 
-    Inside the rectangle, at the top-left corner, there is a small ball (its volume can be ignored).
-    The initial velocity of the ball is shown in the diagram, and it maintains a constant speed. 
-    The velocity components in the length and width directions are in a ratio of 𝑑𝑥:𝑑𝑦=15:17
+    There is a rectangle with a length of 343,720 units 
+    and a width of 233,333 units. Inside the rectangle, at the top-left corner, 
+    there is a small ball (its volume can be ignored).
+    The initial velocity of the ball is shown in the diagram, 
+    and it maintains a constant speed. 
+    The velocity components in the length and 
+    width directions are in a ratio of 𝑑𝑥:𝑑𝑦=15:17
     When the ball hits the edge of the rectangle, it bounces off, 
     with the angle of incidence equal to the angle of reflection. 
     Therefore, the ball changes direction 
-    while maintaining the same speed (if the ball exactly hits a corner, it will return along the same path). 
-    How far does the ball travel from the starting point until it reaches the top-left corner for the first time? 
+    while maintaining the same speed (if the ball exactly hits a corner, 
+    it will return along the same path). 
+    How far does the ball travel from the starting point 
+    until it reaches the top-left corner for the first time? 
     The answer should be rounded to two decimal places.
 
 
@@ -25,7 +30,7 @@ Answer:
 #include <math.h>
 
 
-int gcd(int a, int b) {
+int gcd_with_recursion(int a, int b) {
     while (b != 0) {
         int temp = b;
         b = a % b;
@@ -36,7 +41,7 @@ int gcd(int a, int b) {
 
 
 int lcm(int a, int b) {
-    return a * b / gcd(a, b);
+    return a * b / gcd_with_recursion(a, b);
 }
 
 
