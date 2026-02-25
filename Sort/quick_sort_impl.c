@@ -3,7 +3,9 @@
 #include <stdio.h>
 
 
-void quick_sort_with_fixed_partition(int array[], int left_index, int right_index) {
+void quick_sort_with_fixed_partition(
+    int array[], int left_index, int right_index
+) {
 
     if (left_index >= right_index) 
         return;
@@ -38,7 +40,9 @@ void quick_sort_with_fixed_partition(int array[], int left_index, int right_inde
 }
 
 
-int quick_sort_first_partition_helper(int array[], int left_index, int right_index) {
+int quick_sort_first_partition_helper(
+    int array[], int left_index, int right_index
+) {
     int pivot_val = array[left_index];
 
     while (left_index < right_index && array[right_index] > pivot_val) {
@@ -56,9 +60,17 @@ int quick_sort_first_partition_helper(int array[], int left_index, int right_ind
 }
 
 
-void quick_sort_with_first_partition(int array[], int left_index, int right_index) {
+void quick_sort_with_first_partition(
+    int array[], int left_index, int right_index
+) {
     if (left_index < right_index) {
-        int pivot_index = quick_sort_first_partition_helper(array, left_index, right_index);
+        
+        int pivot_index = quick_sort_first_partition_helper(
+            array, 
+            left_index, 
+            right_index
+        );
+
         quick_sort_with_first_partition(array, pivot_index + 1, right_index);
         quick_sort_with_first_partition(array, left_index, pivot_index - 1);
     }

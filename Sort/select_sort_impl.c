@@ -28,9 +28,14 @@ int main() {
 
     int test_array[] = {4, 3, 2, 1, 0, 8, 7, 6, 5};
     int test_array_len = sizeof(test_array) / sizeof(test_array[0]);
-    select_sort(test_array, test_array_len);
-    integer_array_println("SelectSortedArray:  ", test_array, test_array_len);
 
+    select_sort(test_array, test_array_len);
+
+    integer_array_println(
+        "SelectSortedArray:  ", 
+        test_array, 
+        test_array_len
+    );
     
     return 0;
 }

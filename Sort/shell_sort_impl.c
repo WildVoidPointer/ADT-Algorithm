@@ -29,10 +29,16 @@ void shell_sort(int* array, int len) {
 int main() {
 
     int test_array[] = {4, 3, 2, 1, 0, 8, 7, 6, 5};
-    int test_array_len = sizeof(test_array) / sizeof(test_array[0]);
-    shell_sort(test_array, test_array_len);
-    integer_array_println("ShellSortedArray:  ", test_array, test_array_len);
 
+    int test_array_len = sizeof(test_array) / sizeof(test_array[0]);
+
+    shell_sort(test_array, test_array_len);
+
+    integer_array_println(
+        "ShellSortedArray:  ", 
+        test_array, 
+        test_array_len
+    );
     
     return 0;
 }

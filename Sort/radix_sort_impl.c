@@ -32,7 +32,9 @@ int get_integer_specified_num(int num, int digit) {
 }
 
 
-void radix_sort_with_sequence_storage(int arr[], int len, int digit, int sp) {
+void radix_sort_with_sequence_storage(
+    int arr[], int len, int digit, int sp
+) {
 
     RadixSortQ** qs = (RadixSortQ**) malloc (sizeof(RadixSortQ*) * 10);
 
