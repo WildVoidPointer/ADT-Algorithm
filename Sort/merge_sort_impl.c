@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 
-void merge_sort_merge_helper(
+static void merge_sort_merge_helper(
     int orig_arr[], int* copy_arr, int left, int mid, int right
 ) {
     for (int i = left; i <= right; i++) {
@@ -34,7 +34,9 @@ void merge_sort_merge_helper(
 }
 
 
-void merge_sort_with_self_recursion(int orig_arr[], int copy_arr[], int left, int right) {
+static void merge_sort_with_self_recursion(
+    int orig_arr[], int copy_arr[], int left, int right
+) {
     if (left < right) {
         int mid = (right + left) / 2;
         merge_sort_with_self_recursion(orig_arr, copy_arr, left, mid);
@@ -44,7 +46,9 @@ void merge_sort_with_self_recursion(int orig_arr[], int copy_arr[], int left, in
 }
 
 
-void merge_sort_with_self_iterable(int orig_arr[], int copy_arr[], int len) {
+static void merge_sort_with_self_iterable(
+    int orig_arr[], int copy_arr[], int len
+) {
 
     if (len <= 1) {
         return;
@@ -93,11 +97,24 @@ void merge_sort_with_self_iterable(int orig_arr[], int copy_arr[], int len) {
 
 
 int main() {
+
     int test_array1[] = {4, 3, 2, 1, 0, 8, 7, 6, 5};
     int test_array_len1 = sizeof(test_array1) / sizeof(test_array1[0]);
+
     int copy_arr[test_array_len1];
-    merge_sort_with_self_recursion(test_array1, copy_arr, 0, test_array_len1 - 1);
-    integer_array_println("SelfRecursionMergeSortedArray:  ", test_array1, test_array_len1);
+
+    merge_sort_with_self_recursion(
+        test_array1, 
+        copy_arr, 
+        0, 
+        test_array_len1 - 1
+    );
+
+    integer_array_println(
+        "SelfRecursionMergeSortedArray:  ", 
+        test_array1, 
+        test_array_len1
+    );
 
 
     int test_array2[] = {4, 3, 2, 1, 0, 8, 7, 6, 5};
