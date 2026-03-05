@@ -4,13 +4,17 @@ From:
 
     
 Description:
-    In the universe Earth C-137, Rick discovered a special form of magnetic force between two balls 
-    if they are put in his new invented basket. Rick has n empty baskets, the ith basket is at position[i], 
+    In the universe Earth C-137, Rick discovered a special 
+    form of magnetic force between two balls 
+    if they are put in his new invented basket. 
+    Rick has n empty baskets, the ith basket is at position[i], 
     Morty has m balls and needs to distribute the balls into the baskets 
     such that the minimum magnetic force between any two balls is maximum.
-    Rick stated that magnetic force between two different balls at positions x and y is |x - y|.
+    Rick stated that magnetic force between two different balls 
+    at positions x and y is |x - y|.
 
-    Given the integer array position and the integer m. Return the required force.
+    Given the integer array position and the integer m. 
+    Return the required force.
 
 
 Example 1:
@@ -52,7 +56,7 @@ Constraints:
 #include <stdio.h>
 
 
-void quick_sort_with_fixed_partition(int array[], int left, int right) {
+static void quick_sort_int_hoare(int array[], int left, int right) {
     if (left >= right)
         return;
     
@@ -78,16 +82,16 @@ void quick_sort_with_fixed_partition(int array[], int left, int right) {
     }
 
     if (left < t_right) {
-        quick_sort_with_fixed_partition(array, left, t_right);
+        quick_sort_int_hoare(array, left, t_right);
     }
 
     if (t_left < right) {
-        quick_sort_with_fixed_partition(array, t_left, right);
+        quick_sort_int_hoare(array, t_left, right);
     }
 }
 
 
-int is_valid_distance(int step_size, int* pos, int pos_size, int balls) {
+static int is_valid_distance(int step_size, int* pos, int pos_size, int balls) {
     int pre_pos = pos[0];
     int placed = 1;
 
@@ -102,8 +106,9 @@ int is_valid_distance(int step_size, int* pos, int pos_size, int balls) {
 }
 
 
-int max_distance(int* pos, int pos_size, int balls) {
-    quick_sort_with_fixed_partition(pos, 0, pos_size - 1);
+static int max_distance(int* pos, int pos_size, int balls) {
+    
+    quick_sort_int_hoare(pos, 0, pos_size - 1);
 
     int res = 0;
     int left = 1;
